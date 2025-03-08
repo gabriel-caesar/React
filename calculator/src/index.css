@@ -1,0 +1,99 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height:100vh;
+  background-color: #515151;
+  font-family: monospace;
+}
+
+.calculator-grid {
+  display: block;
+  border: none;
+  background-color: #510e0e;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+#root {
+  width: 400px;
+  height: 500px;
+}
+
+.row {
+  width: 100%;
+  display: flex;
+}
+
+.row > button {
+  font-size: 2rem;
+  padding: 20px;
+  flex: 1;
+  background-color: #3c4587;
+  border: .5px solid #000000;
+  color: #c9c9c9;
+  transition: opacity 0.15s;
+}
+
+.row > button:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.row > button:active {
+  opacity: 0.4;
+  transition: none;
+}
+
+.span-two {
+  grid-column: span 2;
+}
+
+.output {
+  grid-column: 1 / -1;
+  background-color: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-around;
+  padding: .75rem;
+  word-wrap: break-word;
+  word-break: break-all;
+  height: 65px;
+}
+
+.previous-operand {
+  font-size: 1.5rem;
+  color: #c9c9c9;
+  opacity: 0.7;
+}
+
+.current-operand {
+  font-size: 2rem;
+  color: #c9c9c9;
+}
+
+.buttons {
+  font-size: 2rem;
+  padding: 20px;
+}
+
+span {
+  font-size: 3rem;
+  margin-inline: 3rem;
+  color: #fff;
+}
+
+input {
+  font-size: 2rem;
+  padding: 10px;
+}
+
+.todoCard {
+  background-color: #cfcfcf;
+  box-shadow: 0 0 10px 2px #000;
+  border-radius: 4px;
+  padding: 6px;
+  margin-top: 25px;
+  font-size: 20px;
+}

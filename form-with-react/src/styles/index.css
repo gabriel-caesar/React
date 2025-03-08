@@ -1,0 +1,50 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: monospace;
+}
+
+:root {
+  --theme-color:#363636;
+  --main-font-color: #dddddd;
+  --dark-font-color: #c6c6c6;
+  --highlight-color: #dab27a;
+}
+
+body {
+  background-color: var(--theme-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--main-font-color);
+  font-family: system-ui, -apple-system;
+  position: relative;
+  overflow: auto;
+}
+
+.documentTitle {
+  position: absolute;
+  font-weight: 700;
+  font-size: 1.5rem;
+  left: 6px;
+  top: 6px;
+  font-family: 'Tahoma';
+  text-decoration: underline;
+  font-style: italic;
+  color: var(--highlight-color);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.datesWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mainWrapper {
+  width: 80%;
+}

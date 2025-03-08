@@ -1,0 +1,9 @@
+@import 'tailwindcss';
+
+* {
+  font-family: Tahoma;
+}
+
+p {
+  font-family: Fira Code;
+}
