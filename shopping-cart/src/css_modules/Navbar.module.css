@@ -1,0 +1,73 @@
+:root {
+  --theme: #283739;
+  --secTheme: #e3f6f5;
+  --thiTheme: #a2c11c;
+}
+
+.name {
+  font-weight: 300;
+  font-size: 2rem;
+  color: var(--secTheme);
+}
+
+.navContainer {
+  display: flex;
+  background-color: var(--theme);
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.searchInput {
+  border-radius: 6px;
+  outline: none;
+  border: none;
+  font-size: 22px;
+  padding: 6px 3rem 6px 1rem;
+  width: 100%;
+  font-weight: 300;
+  background-color: var(--secTheme);
+}
+
+.searchMagnifier {
+  position: absolute;
+  top: 20px;
+  right: 10px;
+}
+
+.itemsCount {
+  color: var(--theme);
+  font-size: 22px;
+  font-weight: 300;
+  margin-left: 0.5rem;
+}
+
+.firstContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.secondContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 40%;
+}
+
+.boxCartButtonContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--secTheme);
+  border-radius: 6px;
+  padding: 10px;
+  height: 40%;
+  border: none;
+  transition: box-shadow 0.2s
+}
+
+.boxCartButtonContainer:hover {
+  cursor: pointer;
+  box-shadow: 0 0 15px var(--thiTheme);
+}

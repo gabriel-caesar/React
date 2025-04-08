@@ -1,0 +1,22 @@
+.mainContainer {
+  background-color: var(--theme);
+  height: 80px;
+  text-align: center;
+  padding-top: 10px;
+  color: var(--secTheme);
+}
+
+.header {
+  font-weight: 300;
+  font-size: 1.2rem;
+}
+
+.header > a {
+  text-decoration: none;
+  color: var(--thiTheme);
+  transition: color 0.2s;
+}
+
+.header > a:hover {
+  color: var(--secTheme);
+}

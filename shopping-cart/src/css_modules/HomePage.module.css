@@ -1,0 +1,42 @@
+
+.mainContainer {
+  background-color: var(--secTheme);
+  height: 74.7vh;
+  padding-top: 3rem;
+
+}
+
+.headerContainer {
+  color: var(--thiTheme);
+  background-color: var(--theme);
+  width: 50%;
+  border-radius: 6px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 300;
+  padding-block: 1rem;
+  box-shadow: 0 0 15px var(--thiTheme);
+  margin-bottom: 2rem;
+}
+
+.caroselContainer {
+  background-color: var(--secTheme);
+  padding: 2rem 6rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.arrowButtons {
+  border: none;
+  border-radius: 6px;
+  background-color: var(--theme);
+  transition: box-shadow 0.2s;
+}
+
+.arrowButtons:hover {
+  cursor: pointer;
+  box-shadow: 0 0 15px var(--thiTheme);
+}
