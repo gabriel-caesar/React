@@ -17,23 +17,6 @@
   padding: 1rem;
 }
 
-.searchInput {
-  border-radius: 6px;
-  outline: none;
-  border: none;
-  font-size: 22px;
-  padding: 6px 3rem 6px 1rem;
-  width: 100%;
-  font-weight: 300;
-  background-color: var(--secTheme);
-}
-
-.searchMagnifier {
-  position: absolute;
-  top: 20px;
-  right: 10px;
-}
-
 .itemsCount {
   color: var(--theme);
   font-size: 22px;
@@ -47,13 +30,6 @@
   justify-content: center;
 }
 
-.secondContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  width: 40%;
-}
 
 .boxCartButtonContainer {
   display: flex;
@@ -62,7 +38,7 @@
   background-color: var(--secTheme);
   border-radius: 6px;
   padding: 10px;
-  height: 40%;
+  height: 100%;
   border: none;
   transition: box-shadow 0.2s
 }
@@ -70,4 +46,15 @@
 .boxCartButtonContainer:hover {
   cursor: pointer;
   box-shadow: 0 0 15px var(--thiTheme);
+}
+
+.boxCartButtonContainer:active {
+  box-shadow: 0 0 25px var(--thiTheme);
+}
+
+.link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
 }

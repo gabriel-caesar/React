@@ -4,10 +4,11 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
 import ErrorPage from './routes/ErrorPage';
 import HomePage from './routes/HomePage';
+import CartPage from './routes/CartPage';
 
 import './main.css';
 
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
         index: true,
         element: <HomePage />,
       },
+      {
+        path: 'boxcart',
+        element: <CartPage />
+      }
     ]
   },
 ]);

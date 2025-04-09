@@ -1,0 +1,65 @@
+.carouselItem {
+  background-color: var(--theme);
+  border-radius: 6px;
+  padding: 10px;
+  margin-inline: 10px;
+  color: var(--secTheme);
+  width: 270px;
+  height: 270px;
+  overflow: auto;
+  text-align: center;
+}
+
+.image {
+  width: 100px;
+  height: 100px;
+  object-fit: fill;
+  border-radius: 6px;
+
+}
+
+.title {
+  font-weight: 400;
+  font-size: 1.3rem;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--secTheme);
+  padding-bottom: 16px;
+}
+
+.wrapper2 {
+  font-weight: 300;
+  font-size: 2rem;
+  display: flex;
+  color: var(--thiTheme);
+  flex-direction: column;
+}
+
+.buyButton {
+  border: none;
+  background-color: var(--secTheme);
+  border-radius: 6px;
+  font-size: 1.5rem;
+  padding-block: 2px;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 15px var(--thiTheme);
+  font-weight: 300;
+  transition: background-color 0.15s;
+}
+
+.buyButton:hover {
+  cursor: pointer;
+  background-color: var(--thiTheme);
+}
+
+.buyButton:active {
+  opacity: 0.8;
+}

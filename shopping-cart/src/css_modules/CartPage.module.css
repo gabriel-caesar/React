@@ -1,0 +1,5 @@
+.mainContainer {
+  background-color: var(--secTheme);
+  height: 74.7vh;
+  padding-top: .5rem;
+}

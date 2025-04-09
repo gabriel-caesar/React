@@ -2,23 +2,22 @@
 .mainContainer {
   background-color: var(--secTheme);
   height: 74.7vh;
-  padding-top: 3rem;
+  padding-top: .5rem;
 
 }
 
 .headerContainer {
-  color: var(--thiTheme);
-  background-color: var(--theme);
+  color: var(--theme);
+  background-color: var(--secTheme);
   width: 50%;
-  border-radius: 6px;
   margin: auto;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 300;
   padding-block: 1rem;
-  box-shadow: 0 0 15px var(--thiTheme);
   margin-bottom: 2rem;
+  border-bottom: 2px solid var(--theme);
 }
 
 .caroselContainer {
@@ -38,5 +37,46 @@
 
 .arrowButtons:hover {
   cursor: pointer;
+  box-shadow: 0 0 15px var(--thiTheme);
+}
+
+.arrowButtons:active {
+  opacity: 0.9;
+}
+
+.itemsContainer {
+  display: flex;
+
+}
+
+.searchMagnifier {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.inputContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 40%;
+  margin: auto;
+}
+
+.searchInput {
+  border-radius: 6px;
+  outline: none;
+  border: none;
+  font-size: 22px;
+  padding: 6px 3rem 6px 1rem;
+  width: 100%;
+  font-weight: 300;
+  background-color: var(--theme);
+  color: var(--secTheme);
+  transition: box-shadow 0.3s;
+}
+
+.searchInput:focus-within {
   box-shadow: 0 0 15px var(--thiTheme);
 }
