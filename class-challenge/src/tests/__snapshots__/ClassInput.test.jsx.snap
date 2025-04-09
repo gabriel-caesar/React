@@ -1,0 +1,61 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`User Interactions Test > Creates a snapshot for comparisons 1`] = `
+<div>
+  <section>
+    <h3 />
+    <form>
+      <label
+        for="task-entry"
+      >
+        Enter a task: 
+      </label>
+      <input
+        aria-label="task-entry"
+        placeholder="enter your todo..."
+        type="text"
+        value=""
+      />
+      <button
+        type="submit"
+      >
+        Submit
+      </button>
+      <div>
+        2
+      </div>
+    </form>
+    <h4>
+      All the tasks!
+    </h4>
+    <ul>
+      <div>
+        <li>
+          Just some demo tasks
+        </li>
+        <button>
+          Delete
+        </button>
+        <button
+          data-testid="0"
+        >
+          Edit
+        </button>
+      </div>
+      <div>
+        <li>
+          As an example
+        </li>
+        <button>
+          Delete
+        </button>
+        <button
+          data-testid="1"
+        >
+          Edit
+        </button>
+      </div>
+    </ul>
+  </section>
+</div>
+`;

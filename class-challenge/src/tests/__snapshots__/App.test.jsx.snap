@@ -1,0 +1,12 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`App component > renders correct heading 1`] = `
+<DocumentFragment>
+  <h1
+    class="fancy"
+    data-testid="this-header"
+  >
+    Mama
+  </h1>
+</DocumentFragment>
+`;
