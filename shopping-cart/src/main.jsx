@@ -5,7 +5,7 @@ import App from './App';
 import ErrorPage from './routes/ErrorPage';
 import HomePage from './routes/HomePage';
 import CartPage from './routes/CartPage';
-
+import Checkout from './routes/Checkout'
 import './main.css';
 
 export const router = createBrowserRouter([
@@ -21,6 +21,10 @@ export const router = createBrowserRouter([
       {
         path: 'boxcart',
         element: <CartPage />
+      },
+      {
+        path: 'boxcart/checkout',
+        element: <Checkout />
       }
     ]
   },

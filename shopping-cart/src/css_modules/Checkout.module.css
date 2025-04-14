@@ -1,0 +1,206 @@
+.mainContainer {
+  background-color: var(--secTheme);
+  height: 74.7vh;
+  padding-top: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.checkoutTable {
+  background-color: var(--theme);
+  color: var(--secTheme);
+  border-radius: 6px;
+  border: none;
+  width: 50%;
+  height: 95%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 0 0 20px #444444;
+  padding: 1rem 3rem;
+}
+
+.checkoutTable > h1 {
+  font-weight: 300;
+  margin-bottom: 1rem;
+}
+
+.feeContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  width: 100%;
+  border-bottom: 1px solid #7f7f7f81;
+  padding-bottom: 0.5rem;
+}
+
+.feeContainer:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+.feeContainer > p {
+  font-size: 1.3rem;
+}
+
+.feeContainer > h3 {
+  font-weight: 500;
+  font-size: 1.5rem;
+}
+
+.totalAmountContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  width: 100%;
+  border-bottom: 1px solid #7f7f7f81;
+  margin-top: 1rem;
+  padding-bottom: 0.3rem;
+  color: var(--thiTheme);
+}
+
+.totalAmountContainer > h1 {
+  font-weight: 500;
+}
+
+.totalAmountContainer > p {
+  font-weight: 400;
+  font-size: 2rem;
+}
+
+.buttonsContainer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  margin-top: 3rem;
+}
+
+.payButton {
+  padding: 0.1rem 2rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 2rem;
+  color: var(--theme);
+  background-color: var(--secTheme);
+  transition: box-shadow 0.15s ease-out;
+  font-weight: 300;
+}
+
+.backButton {
+  padding: 0.1rem 2rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 2rem;
+  color: var(--theme);
+  background-color: var(--secTheme);
+  transition:
+    box-shadow,
+    color 0.15s ease-out;
+  font-weight: 300;
+}
+
+.payButton:hover,
+.backButton:hover {
+  cursor: pointer;
+  box-shadow: 0 0 15px var(--thiTheme);
+  color: var(--thiTheme);
+}
+
+.payButton:active 
+.payButton:active {
+  opacity: 0.8;
+}
+
+.successfulPayment {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+}
+
+.successfulPayment > h1 {
+  font-weight: 300;
+  font-size: 2.5rem;
+  text-align: center;
+}
+
+.infoContainer {
+  border: none;
+  padding: 0.5rem;
+  display: flex;
+  width: 70%;
+  height: 60%;
+  margin-top: 2rem;
+  color: #a1a1a1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.infoContainer > p {
+  font-size: 1.3rem;
+  font-weight: 300;
+  margin-right: 1rem;
+}
+
+.boxes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  color: #a1a1a1;
+  font-weight: 300;
+  font-size: 2rem;
+  margin-top: 2rem;
+}
+
+/* LOADING ANIMATION */
+
+.spinnerContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 0.5rem;
+  background-color: transparent;
+}
+
+.spinnerIcon {
+  width: 88px;
+  height: 88px;
+  color: var(--thiTheme);
+  animation:
+    spin 1.2s linear infinite,
+    pulse 2s ease-in-out infinite;
+}
+
+.loadingText {
+  color: #a1a1a1;
+  font-size: 2rem;
+  letter-spacing: 0.05em;
+  font-family: sans-serif;
+  opacity: 0.8;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 2px var(--thiTheme));
+  }
+  50% {
+    filter: drop-shadow(0 0 8px var(--thiTheme));
+  }
+}

@@ -14,7 +14,7 @@
   display: flex;
   background-color: var(--theme);
   justify-content: space-between;
-  padding: 1rem;
+  padding: 1rem 3rem;
 }
 
 .itemsCount {

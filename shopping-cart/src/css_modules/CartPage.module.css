@@ -2,4 +2,207 @@
   background-color: var(--secTheme);
   height: 74.7vh;
   padding-top: .5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.secondContainer {
+  background-color: var(--theme);
+  border-radius: 6px;
+  padding: 1rem;
+  width: 70%;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 0 0 15px #444444;
+}
+
+.itemTable {
+  width: 90%;
+  height: 80%;
+  padding: 1rem;
+  max-height: 350px;
+  border-bottom: 4px solid var(--thiTheme);
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.verticalItemCards {
+  background-color: var(--secTheme);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 1rem;
+  padding-block: 1rem;
+  border-radius: 4px;
+  width: 75%;
+  height: 54px;
+  margin-inline: 1rem;
+  overflow: hidden;
+}
+
+.wrapper:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+
+.productCount {
+  background-color: var(--secTheme);
+  border-radius: 4px;
+  border: 3px solid var(--thiTheme);
+  padding: 0.5rem 1rem;
+  font-weight: 300;
+  font-size: 1.5rem;
+}
+
+.productDeleteButton {
+  margin-right: 1rem;
+}
+
+.productDeleteButton,
+.productAddButton {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: 3px solid var(--thiTheme);
+  padding: 8px;
+  color: var(--thiTheme);
+  transition: color, box-shadow, border-color 0.2s ease-out;
+  border-radius: 4px;
+}
+
+.productDeleteButton:hover,
+.productAddButton:hover {
+  cursor: pointer;
+  color: var(--secTheme);
+  box-shadow: 0 0 15px var(--thiTheme);
+  border-color: var(--secTheme)
+}
+
+.productDeleteButton:active,
+.productAddButton:active,
+.backHomeButton:active,
+.checkoutButton:active,
+.clearAllButton:active {
+  opacity: 0.5;
+}
+
+.buttonsContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-inline: 3.5rem;
+}
+
+.clearAllButton {
+  background-color: var(--thiTheme);
+  border-radius: 4px;
+  font-size: 1.5rem;
+  font-weight: 300;
+  border: none;
+  padding: 0.2rem 2rem;
+  margin: auto;
+  color: var(--theme);
+  transition: box-shadow, color 0.15s ease-out;
+}
+
+.clearAllButton:hover {
+  cursor: pointer;
+  color: var(--secTheme);
+  box-shadow: 0 0 15px var(--secTheme);
+}
+
+.backHomeButton,
+.checkoutButton,
+.totalAmount {
+  background-color: var(--secTheme);
+  text-decoration: none;
+  color: var(--theme);
+  border-radius: 4px;
+  padding: 1rem 2rem;
+  font-weight: 300;
+  font-size: 1.5rem;
+  transition: box-shadow, color 0.15s ease-out;
+}
+
+.checkoutButton {
+  margin-inline: 2rem;
+}
+
+.backHomeButton:hover,
+.checkoutButton:hover {
+  cursor: pointer;
+  box-shadow: 0 0 15px var(--thiTheme);
+  color: var(--thiTheme);
+}
+
+.amountNumber {
+  color: var(--theme);
+  margin-left: 0.5rem;
+  font-weight: 500;
+}
+
+.productName {
+  max-width: 70%;
+}
+
+.productPrice {
+  font-size: 1.4rem;
+}
+
+.emptyBoxCart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  color: #a1a1a1;
+  font-weight: 300;
+  font-size: 2rem;
+}
+
+.itemTable::-webkit-scrollbar-track {
+  border-radius: 10px;
+  margin-bottom: 0.5rem;
+}
+
+.itemTable::-webkit-scrollbar {
+  width: 8px;
+  
+}
+
+.itemTable::-webkit-scrollbar-track {
+  background: var(--secTheme);
+  border-radius: 6px;
+}
+
+.itemTable::-webkit-scrollbar-thumb {
+  background-color: var(--thiTheme);
+  border-radius: 6px;
+}
+
+.itemTable::-webkit-scrollbar-thumb:hover {
+  background-color: #666;
+}
+
+@media (max-width: 1100px) {
+  .secondContainer {
+    width: 780px;
+    height: 428px;
+  }
 }

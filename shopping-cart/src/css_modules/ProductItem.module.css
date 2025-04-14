@@ -4,10 +4,11 @@
   padding: 10px;
   margin-inline: 10px;
   color: var(--secTheme);
-  width: 270px;
-  height: 270px;
+  width: 300px;
+  height: 300px;
   overflow: auto;
   text-align: center;
+  box-shadow: 0 0 15px #444444;
 }
 
 .image {
@@ -38,6 +39,7 @@
   display: flex;
   color: var(--thiTheme);
   flex-direction: column;
+  width: 120px;
 }
 
 .buyButton {
@@ -50,16 +52,66 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 15px var(--thiTheme);
   font-weight: 300;
-  transition: background-color 0.15s;
+  transition: box-shadow 0.15s;
 }
 
 .buyButton:hover {
   cursor: pointer;
-  background-color: var(--thiTheme);
+  box-shadow: 0 0 15px var(--thiTheme);
 }
 
 .buyButton:active {
   opacity: 0.8;
+}
+
+.carouselItem::-webkit-scrollbar-track {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.carouselItem::-webkit-scrollbar {
+  width: 8px;
+}
+
+.carouselItem::-webkit-scrollbar-track {
+  background: var(--secTheme);
+}
+
+.carouselItem::-webkit-scrollbar-thumb {
+  background-color: var(--thiTheme);
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.carouselItem::-webkit-scrollbar-thumb:hover {
+  background-color: #666;
+}
+
+.spanContainer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: var(--secTheme);
+  color: var(--theme);
+  font-weight: 700;
+  font-size: 1.5rem;
+  border-radius: 6px;
+  margin-top: 6px;
+  width: 100%;
+  padding-block: 6px;
+}
+
+.incrementButton,
+.decrementButton {
+  background-color: transparent;
+  border: none;
+  color: var(--theme);
+  transition: color 0.15s;
+}
+
+.incrementButton:hover,
+.decrementButton:hover {
+  color: var(--thiTheme);
+  cursor: pointer;
 }
