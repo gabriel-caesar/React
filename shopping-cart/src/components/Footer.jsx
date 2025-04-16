@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styles from '../css_modules/Footer.module.css';
 
 const Footer = () => {
@@ -12,6 +13,9 @@ const Footer = () => {
         </a>
         .
       </p>
+      <Link to='error' className={styles.errorPage}> 
+        Error Page
+      </Link>
     </main>
   );
 };

@@ -4,6 +4,7 @@
   text-align: center;
   padding-top: 10px;
   color: var(--secTheme);
+  position: relative;
 }
 
 .header {
@@ -19,4 +20,31 @@
 
 .header > a:hover {
   color: var(--secTheme);
+}
+
+.errorPage {
+  padding: 0.1rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.5rem;
+  color: var(--theme);
+  background-color: var(--secTheme);
+  transition:
+    box-shadow,
+    color 0.15s ease-out;
+  font-weight: 300;
+  text-decoration: none;
+  position: absolute;
+  top: 35%;
+  right: 2%;
+}
+
+.errorPage:hover {
+  cursor: pointer;
+  box-shadow: 0 0 15px var(--thiTheme);
+  color: var(--thiTheme);
+}
+
+.errorPage:active {
+  opacity: 0.8;
 }

@@ -1,0 +1,73 @@
+.navbar {
+  display: flex;
+  background-color: var(--theme);
+  justify-content: space-between;
+  padding: 1rem 3rem;
+}
+
+.mainContainer {
+  background-color: var(--secTheme);
+  height: 74.7vh;
+  padding-top: .5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.mainContainer > h1 {
+  font-weight: 300;
+  font-size: 3rem;
+  text-decoration: underline;
+  color: var(--theme);
+}
+
+.mainContainer > p {
+  color: #5a5a5a;
+}
+
+.boxContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.name {
+  font-weight: 300;
+  font-size: 2rem;
+  color: var(--secTheme);
+}
+
+.emptyBoxCart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 50%;
+  color: #5a5a5a;
+  font-weight: 300;
+  font-size: 2rem;
+}
+
+.backButton {
+  padding: 0.1rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.5rem;
+  color: var(--theme);
+  background-color: var(--secTheme);
+  transition:
+    box-shadow,
+    color 0.15s ease-out;
+  font-weight: 300;
+}
+
+.backButton:hover {
+  cursor: pointer;
+  box-shadow: 0 0 15px var(--thiTheme);
+  color: var(--thiTheme);
+}
+
+.backButton:active {
+  opacity: 0.8;
+}

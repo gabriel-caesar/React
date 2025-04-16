@@ -20,9 +20,16 @@ const HomePage = () => {
   const handleSearchEngine = (e) => setSearchEngine(e.target.value);
 
   const fetchData = async () => {
-    const response = await fetch('https://fakestoreapi.com/products');
-    const data = await response.json();
-    setProducts(data);
+    try {
+      const response = await fetch('https://fakestoreapi.com/products');
+      if (!response.ok) {
+        throw new Error(`Failed to fetch API. ${response.status}`)
+      }
+      const data = await response.json();
+      setProducts(data);
+    } catch(error) {
+      console.error(error.message);
+    }
   };
 
   const slideRight = (array) => {
