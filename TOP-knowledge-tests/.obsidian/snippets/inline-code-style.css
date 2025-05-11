@@ -1,0 +1,35 @@
+/* For reading/preview mode */
+.markdown-preview-view code {
+  background-color: #fffae6 !important; /* change color as needed */
+  color: black;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+/* For Live Preview (source mode) */
+.cm-inline-code {
+  background-color: #89362f !important; /* match color */
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+body .cm-inline-code {
+  color: #e6d3d3 !important;
+}
+
+.cm-header-2,
+.markdown-preview-view h2 {
+  color: #ff6f61 !important; /* H1 color */
+}
+
+/* Reading View (Preview mode) */
+.markdown-preview-view strong {
+  color: #ff6f61 !important; /* or rgb(255, 111, 97) */
+  font-weight: bold; /* or try 700+, or even lighter if you want */
+}
+
+/* Live Preview (Source mode) */
+.cm-strong {
+  color: #5c6bc0 !important;
+  font-weight: bold;
+}

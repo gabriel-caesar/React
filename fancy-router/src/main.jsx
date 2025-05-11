@@ -3,8 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './components/App.jsx';
 import ErrorPage from './components/ErrorPage.jsx';
-import Buggs from './components/Buggs.jsx';
-import BuggsDesc from './components/BuggsDesc.jsx';
+import Profiles from './components/Profiles.jsx';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 const router = createBrowserRouter([
@@ -12,12 +11,14 @@ const router = createBrowserRouter([
     path: '/',
     element: <App />,
     errorElement: <ErrorPage />,
+    children: [
+      {
+        path: 'profiles',
+        element: <Profiles /> 
+      },
+    ]
   },
-  {
-    path: 'buggs',
-    element: <Buggs />,
-    children: [{ path: 'buggsDesc', element: <BuggsDesc /> }],
-  },
+  
 ]);
 
 createRoot(document.getElementById('root')).render(

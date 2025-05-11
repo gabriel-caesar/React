@@ -1,0 +1,235 @@
+{
+  "main": {
+    "id": "daa27088ae064f2e",
+    "type": "split",
+    "children": [
+      {
+        "id": "471b6eb7db76b406",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "98bfab66004edb1d",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Guide for new projects.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Guide for new projects"
+            }
+          },
+          {
+            "id": "5302158a6a1cef31",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "NodeJS/Introduction to the Back End.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Introduction to the Back End"
+            }
+          },
+          {
+            "id": "3f5cfd39a4acdacd",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "CS50/The Web.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "The Web"
+            }
+          },
+          {
+            "id": "46fd6c1ce13767e5",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Debugging Taskerer.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Debugging Taskerer"
+            }
+          }
+        ],
+        "currentTab": 3
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "dcdb7e601c3526d5",
+    "type": "split",
+    "children": [
+      {
+        "id": "b1684eb53b050364",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "8d223f8678dbd215",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "d3970bba8687698a",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "bf7ee1c1336eec85",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 303.5,
+    "collapsed": true
+  },
+  "right": {
+    "id": "405765336cf26a1a",
+    "type": "split",
+    "children": [
+      {
+        "id": "abf5201699b7a317",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "83df669c1fecf31d",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "SQL/Databases.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": true,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Databases"
+            }
+          },
+          {
+            "id": "99f49415f1ad716f",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Knowledge Tests for REACT.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Knowledge Tests for REACT"
+            }
+          },
+          {
+            "id": "9baeae9e96014da8",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "0e2800ab15b25751",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Knowledge Tests for REACT.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Knowledge Tests for REACT"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "46fd6c1ce13767e5",
+  "lastOpenFiles": [
+    "React/Context API.md",
+    "Debugging Taskerer.md",
+    "CS50/The Web.md",
+    "NodeJS/Introduction to the Back End.md",
+    "CS50",
+    "Guide for new projects.md",
+    "NodeJS",
+    "React/Reducer Hook.md",
+    "React/Refs and Memoization.md",
+    "SQL/Databases and SQL.md",
+    "SQL/Databases.md",
+    "Untitled.canvas",
+    "SQL",
+    "Knowledge Tests for REACT.md",
+    "React",
+    "guide.md",
+    "Welcome.md"
+  ]
+}
