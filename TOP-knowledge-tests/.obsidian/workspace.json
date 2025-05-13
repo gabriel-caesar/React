@@ -62,9 +62,23 @@
               "icon": "lucide-file",
               "title": "Debugging Taskerer"
             }
+          },
+          {
+            "id": "6fa8c95269f0d701",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "React/Reducer Hook.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Reducer Hook"
+            }
           }
         ],
-        "currentTab": 3
+        "currentTab": 4
       }
     ],
     "direction": "vertical"
@@ -121,8 +135,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 303.5,
-    "collapsed": true
+    "width": 303.5
   },
   "right": {
     "id": "405765336cf26a1a",
@@ -212,9 +225,10 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "46fd6c1ce13767e5",
+  "active": "6fa8c95269f0d701",
   "lastOpenFiles": [
     "React/Context API.md",
+    "Buccal Fat Removal Inquiries.md",
     "Debugging Taskerer.md",
     "CS50/The Web.md",
     "NodeJS/Introduction to the Back End.md",
