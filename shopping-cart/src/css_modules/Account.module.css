@@ -1,0 +1,134 @@
+.mainContainer {
+  background-color: var(--secTheme);
+  height: 74.7vh;
+  padding-top: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profileContainer {
+  background-color: var(--theme);
+  color: var(--secTheme);
+  border-radius: 6px;
+  border: none;
+  width: 50%;
+  height: 95%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 0 0 20px #444444;
+  padding: 1rem 3rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+}
+
+.profileContainer h1 {
+  margin-bottom: 3rem;
+  text-align: center;
+  font-size: 2.5rem;
+  color: var(--thiTheme);
+}
+
+.profileContainer label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 65%;
+  margin-bottom: 1rem;
+  background-color: #40574d;
+  border-radius: 4px;
+  padding-block: 0.5rem;
+  padding-inline: 1rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--secTheme);
+  overflow: hidden;
+}
+
+.profileContainer input {
+  border: none;
+  border-radius: 4px;
+  padding: 0.1rem 0.5rem;
+  font-size: 1.2rem;
+  font-weight: 300;
+  width: 50%;
+}
+
+.profileContainer label > p {
+  font-weight: 300;
+}
+
+.profileContainer h4 {
+  text-align: center;
+  margin-top: 1rem;
+  color: #c8c8c8b1;
+}
+
+.profileContainer button {
+  background-color: var(--thiTheme);
+  text-decoration: none;
+  color: var(--theme);
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-weight: 700;
+  font-size: 1.5rem;
+  width: 60%;
+  transition:
+    box-shadow,
+    color 0.15s ease-out;
+  border: none;
+}
+
+.profileContainer button:hover {
+  cursor: pointer;
+  box-shadow: 0 0 15px var(--secTheme);
+  color: var(--secTheme);
+}
+
+.editButton {
+  position: absolute;
+  right: 3%;
+  top: 5%;
+  transition: 0.2s;
+  border-radius: 6px;
+  padding: 2px;
+}
+
+.editButton:hover {
+  cursor: pointer;
+  color: var(--thiTheme);
+  box-shadow: 0 0 0px 1px var(--thiTheme);
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.errorFeedback {
+  width: 45%;
+  padding-inline: 0.5rem;
+  background-color: var(--errorTheme);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 4px;
+  padding-block: 1rem;
+  margin-block: 1rem;
+  color: var(--secTheme);
+  font-size: 1.2rem;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+@media (max-width: 1090px) {
+  .profileContainer label {
+    width: 100%;
+  }
+}

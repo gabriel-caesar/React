@@ -214,39 +214,3 @@
   color: var(--thiTheme);
   cursor: pointer;
 }
-
-/* LOADING ANIMATION */
-
-.spinnerContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: auto;
-  margin-inline: 4rem;
-  gap: 0.5rem;
-  background-color: transparent;
-}
-
-.spinnerIcon {
-  width: 88px;
-  height: 88px;
-  color: var(--thiTheme);
-  animation: spin 1.2s linear infinite, pulse 2s ease-in-out infinite;
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes pulse {
-  0%, 100% {
-  }
-  50% {
-  }
-}

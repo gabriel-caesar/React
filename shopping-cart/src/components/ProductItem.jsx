@@ -1,10 +1,9 @@
 import styles from '../css_modules/ProductItem.module.css';
-import PropTypes from 'prop-types';
+import { auth } from '../firebase';
 import { PackagePlus } from 'lucide-react';
 import { PackageMinus } from 'lucide-react';
 
 const ProductItem = ({ item, cart, increment, decrement, handleBuyAction }) => {
-
   return (
     <div className={styles.carouselItem}>
       <div className={styles.wrapper}>
@@ -14,27 +13,28 @@ const ProductItem = ({ item, cart, increment, decrement, handleBuyAction }) => {
           {cart.some((p) => p.name === item.title) ? (
             <span className={styles.spanContainer}>
               <button
-                className={styles.incrementButton}
-                onClick={() => increment(item)}
-                data-testid='increment-button'
-              >
-                <PackagePlus size={32} strokeWidth={1}/>
-              </button>
-              {cart.find((p) => p.name === item.title).count}
-              <button
                 className={styles.decrementButton}
                 onClick={() => decrement(item)}
                 data-testid='decrement-button'
               >
-                <PackageMinus size={32} strokeWidth={1}/>
+                <PackageMinus size={32} strokeWidth={1} />
+              </button>
+              {cart.find((p) => p.name === item.title).count}
+              <button
+                className={styles.incrementButton}
+                onClick={() => increment(item)}
+                data-testid='increment-button'
+              >
+                <PackagePlus size={32} strokeWidth={1} />
               </button>
             </span>
           ) : (
             <button
               onClick={() => handleBuyAction(item)}
               className={styles.buyButton}
+              disabled={auth.currentUser ? false : true}
             >
-              Buy
+              {auth.currentUser ? 'Buy' : 'Log In to buy'}
             </button>
           )}
         </span>
@@ -43,11 +43,5 @@ const ProductItem = ({ item, cart, increment, decrement, handleBuyAction }) => {
     </div>
   );
 };
-
-// ProductItem.PropTypes = { // defining this component's types
-//   item: PropTypes.object,
-// }
-
-// PropTypes slows the carousel down, I will avoid it
 
 export default ProductItem;

@@ -1,0 +1,79 @@
+.mainContainer {
+  background-color: var(--secTheme);
+  height: 74.7vh;
+  padding-top: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.formContainer {
+  background-color: var(--theme);
+  color: var(--secTheme);
+  border-radius: 6px;
+  border: none;
+  width: 50%;
+  height: 95%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 0 0 20px #444444;
+  padding: 1rem 3rem;
+  overflow: auto;
+}
+
+.formContainer label {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+}
+
+.input {
+  border: none;
+  border-radius: 4px;
+  padding: 0.2rem 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 300;
+  width: 400px;
+}
+
+.formContainer button {
+  background-color: var(--secTheme);
+  text-decoration: none;
+  color: var(--theme);
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-weight: 700;
+  font-size: 1.5rem;
+  transition: box-shadow, color 0.15s ease-out;
+  border: none;
+  margin-top: 1.7rem;
+}
+
+.formContainer button:hover {
+  cursor: pointer;
+  box-shadow: 0 0 15px var(--thiTheme);
+  color: var(--thiTheme);
+}
+
+.formContainer h1 {
+  color: var(--thiTheme);
+}
+
+.errorFeedback {
+  width: 45%;
+  padding-inline: 0.5rem;
+  background-color: var(--errorTheme);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 4px;
+  padding-block: 1rem;
+  margin-top: 1rem;
+  color: var(--secTheme);
+  font-size: 1.2rem;
+  word-break: normal;
+  overflow-wrap: break-word;
+}

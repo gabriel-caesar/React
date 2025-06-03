@@ -19,6 +19,8 @@
   flex-direction: column;
   box-shadow: 0 0 20px #444444;
   padding: 1rem 3rem;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .checkoutTable > h1 {
@@ -101,7 +103,8 @@
 }
 
 .payButton:hover,
-.backButton:hover {
+.backButton:hover,
+.buyMeCoffee:hover {
   cursor: pointer;
   box-shadow: 0 0 15px var(--thiTheme);
   color: var(--thiTheme);
@@ -155,6 +158,72 @@
   font-weight: 300;
   font-size: 2rem;
   margin-top: 2rem;
+}
+
+.headerContainer {
+  display: flex;
+  width: 350px;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 1rem;
+  background-color: #1d2021;
+  padding-inline: 1rem;
+  border-radius: 8px;
+  position: relative;
+  z-index: 2;
+}
+
+.selector {
+  content: '';
+  width: 150px;
+  height: 38px;
+  border-radius: 8px;
+  background-color: #7e7f7f82;
+  display: flex;
+  position: absolute;
+  top: 5%;
+  transition: left 0.2s, right 0.2s;
+  z-index: 3;
+}
+
+.headerContainer h1 {
+  font-weight: 300;
+  transition: 0.2s;
+  z-index: 4;
+}
+
+.checkoutTable h3 {
+  font-weight: 300;
+  font-size: 1.5rem;
+  text-decoration: underline;
+}
+
+.checkout:hover,
+.donation:hover {
+  cursor: pointer;
+  color: var(--thiTheme);
+}
+
+.buyMeCoffee {
+  display: flex;
+  justify-content: space-between;
+  width: 305px;
+  align-items: center;
+  margin-top: 8rem;
+  padding: 0.1rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 2rem;
+  color: var(--theme);
+  background-color: var(--secTheme);
+  transition: 0.15s;
+  font-weight: 300;
+}
+
+.poweredByStripe {
+  text-align: center;
+  margin-top: 2rem;
+  color:#c8c8c8b1
 }
 
 /* LOADING ANIMATION */

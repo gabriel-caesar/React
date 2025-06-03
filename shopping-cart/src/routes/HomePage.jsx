@@ -1,33 +1,35 @@
 import {
   ChevronLeft,
-  LoaderCircle,
   ChevronRight,
   PackageMinus,
   PackagePlus,
   Search,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
-
+import Loading from '../components/reusable_components/Loading';
 import styles from '../css_modules/HomePage.module.css';
 import ProductItem from '../components/ProductItem';
 import { useOutletContext } from 'react-router-dom';
+import { auth, db } from '../firebase';
+import { doc, updateDoc } from 'firebase/firestore';
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
   const [searchEngine, setSearchEngine] = useState('');
-  const [cart, setCart] = useOutletContext();
+  const [ userObject, dispatch ] = useOutletContext();
+  const user = auth.currentUser;
 
   const handleSearchEngine = (e) => setSearchEngine(e.target.value);
 
-  const fetchData = async () => {
+  const fetchAPI = async () => {
     try {
       const response = await fetch('https://fakestoreapi.com/products');
       if (!response.ok) {
-        throw new Error(`Failed to fetch API. ${response.status}`)
+        throw new Error(`Failed to fetch API. ${response.status}`);
       }
       const data = await response.json();
       setProducts(data);
-    } catch(error) {
+    } catch (error) {
       console.error(error.message);
     }
   };
@@ -50,47 +52,70 @@ const HomePage = () => {
     }
   };
 
-  const increment = (product) => {
-    // add more of the given product to the shopping cart
-    setCart((prev) =>
-      prev.map((item) =>
-        item.name === product.title ? { ...item, count: item.count + 1 } : item
-      )
+  const increment = async (product) => {
+    // shallow copy of the updated user's cart array
+    const updatedUserCart = userObject.cart.map((item) =>
+      item.id === product.id ? { ...item, count: item.count + 1 } : item
     );
+
+    try {
+      await updateStateAndFirestore(updatedUserCart);
+    } catch (error) {
+      throw new Error(`Couldn't increment product. ${error.message}`);
+    }
+    
   };
 
-  const decrement = (product) => {
-    // take away the given product to the shopping cart
-    setCart(
-      (prev) =>
-        prev
-          .map((item) => {
-            // map and the decrement the item that the user clicks
-            if (item.name === product.title) {
-              return { ...item, count: item.count - 1 };
-            } else {
-              return item;
-            }
-          })
-          .filter((item) => item.count > 0) // at the same time filter all items to be item.count > 0
-    );
+  const decrement = async (product) => {
+    // shallow copy of the updated user's cart array
+    const updatedUserCart = userObject.cart
+      .map((item) => {
+        // map and the decrement the item that the user clicks
+        if (item.id === product.id) {
+          return { ...item, count: item.count - 1 };
+        } else {
+          return item;
+        }
+      })
+      .filter((item) => item.count > 0); // at the same time filter all items to be item.count > 0
+
+    try {
+      await updateStateAndFirestore(updatedUserCart);
+    } catch (error) {
+      throw new Error(`Couldn't decrement product. ${error.message}`);
+    }
   };
 
-  const handleBuyAction = (product) => {
-    setCart((prev) => {
-      const newItem = {
-        // new item being created
-        name: product.title,
-        price: product.price,
-        id: product.id,
-        count: 1,
-      };
-      return [...prev, newItem]; // spread the previous items in the cart alongside the new one
-    }); // updating the cart array
+  const handleBuyAction = async (product) => {
+
+    const newItem = {
+      // new item being created
+      name: product.title,
+      price: product.price,
+      id: product.id,
+      count: 1,
+    };
+
+    // shallow copy
+    const updatedUserCart = [...userObject.cart, newItem]
+
+    try {
+      await updateStateAndFirestore(updatedUserCart);
+    } catch (error) {
+      throw new Error(`Couldn't add the first product. ${error.message}`);
+    }
   };
+
+  // reusable function to update the local user state and the firebase user record
+  async function updateStateAndFirestore(productObj) {
+    const userRef = doc(db, 'users', user.uid); // user reference from db
+    await updateDoc(userRef, { cart: productObj }); // updates the firestore
+    const updatedUser = { ...userObject, cart: productObj };
+    return dispatch({type: 'update-user', payload: updatedUser}); // updates the user object
+  }
 
   useEffect(() => {
-    fetchData();
+    fetchAPI();
   }, []);
 
   return (
@@ -104,16 +129,24 @@ const HomePage = () => {
           type='text'
           id='searchForItemsInput'
           className={styles.searchInput}
-          placeholder='Search for a product to box...'
+          placeholder={userObject ? 'Search for a product to box...' : 'Log in to begin your search...'}
           onChange={(e) => handleSearchEngine(e)}
-          onKeyDown={(e) => e.key === 'Escape' && e.target.blur()}
+          // clicking 'Esc' closes the dropdown
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') {
+              e.target.blur();
+              return setSearchEngine('');
+            }
+          }}
           value={searchEngine}
+          disabled={userObject ? false : true}
         />
         <div className={styles.searchMagnifier}>
           <Search color='#e3f6f5' size={24} />
         </div>
         <div
           className={`${styles.searchDropdownContainer} ${searchEngine === '' ? styles.hidden : ''}`}
+          
         >
           {searchEngine !== '' &&
             products.map((product) => {
@@ -127,18 +160,8 @@ const HomePage = () => {
                       <p>{product.title}</p>
                       <div className={styles.wrapperDiv}>
                         <h1>${product.price}</h1>
-                        {cart.some((p) => p.name === product.title) ? (
+                        {userObject.cart.some((p) => p.name === product.title) ? (
                           <span className={styles.spanContainer}>
-                            <button
-                              className={styles.incrementButton}
-                              onClick={() => increment(product)}
-                              data-testid='increment-button'
-                            >
-                              <PackagePlus size={28} strokeWidth={1} />
-                            </button>
-                            <p aria-label='item-count'>
-                              {cart.find((p) => p.name === product.title).count}
-                            </p>
                             <button
                               className={styles.decrementButton}
                               onClick={() => decrement(product)}
@@ -146,13 +169,24 @@ const HomePage = () => {
                             >
                               <PackageMinus size={28} strokeWidth={1} />
                             </button>
+                            <p aria-label='item-count'>
+                              {userObject.cart.find((p) => p.name === product.title).count}
+                            </p>
+                            <button
+                              className={styles.incrementButton}
+                              onClick={() => increment(product)}
+                              data-testid='increment-button'
+                            >
+                              <PackagePlus size={28} strokeWidth={1} />
+                            </button>
                           </span>
                         ) : (
                           <button
                             onClick={() => handleBuyAction(product)}
                             className={styles.buyButton}
+                            disabled={auth.currentUser ? false : true}
                           >
-                            Buy
+                            {auth.currentUser ? 'Buy' : 'Log In to buy'}
                           </button>
                         )}
                       </div>
@@ -185,27 +219,25 @@ const HomePage = () => {
                 decrement={decrement}
                 increment={increment}
                 handleBuyAction={handleBuyAction}
-                cart={cart}
+                cart={userObject !== null ? userObject.cart : []}
               />
               <ProductItem
                 item={products[1]}
                 decrement={decrement}
                 increment={increment}
                 handleBuyAction={handleBuyAction}
-                cart={cart}
+                cart={userObject !== null ? userObject.cart : []}
               />
               <ProductItem
                 item={products[2]}
                 decrement={decrement}
                 increment={increment}
                 handleBuyAction={handleBuyAction}
-                cart={cart}
+                cart={userObject !== null ? userObject.cart : []}
               />
             </>
           ) : (
-            <div className={styles.spinnerContainer}>
-              <LoaderCircle className={styles.spinnerIcon} />
-            </div>
+            <Loading />
           )}
         </div>
         <button
