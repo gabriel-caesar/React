@@ -7,7 +7,7 @@ import { doc, updateDoc } from 'firebase/firestore';
 import Loading from '../components/reusable_components/Loading';
 
 function Account() {
-  const [userObject, dispatch, goToCheckout, setGoToCheckout, isUserLogged] =
+  const [userObject, dispatch] =
     useOutletContext();
 
   // edit flag

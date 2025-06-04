@@ -9,24 +9,32 @@ import {
 import Loading from '../components/reusable_components/Loading';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
-import { useState } from 'react';
 
 // Form action
 export async function action({ request }) {
-  try {
-    // getting form data
-    let formData = await request.formData();
-    let email = formData.get('email');
-    let pass = formData.get('pass');
+  // getting form data
+  let formData = await request.formData();
+  let email = formData.get('email');
+  let pass = formData.get('pass');
 
-    if (email === '' || pass === '') {
-      // handling blank input fields
-      return { message: `Fill up all the input fields` };
-    }
+  if (email === '' || pass === '') {
+    // handling blank input fields
+    return { message: `Fill up all the input fields` };
+  }
 
-    // function to log user in
-    await signInWithEmailAndPassword(auth, email, pass);
+  // function to log user in
+  if ((await tryLoggingIn(auth, email, pass)) === true) {
     return redirect('/');
+  } else {
+    return { message: 'Invalid account' };
+  }
+}
+
+// adding this function to fix render mal-function in production
+async function tryLoggingIn(e, p) {
+  try {
+    await signInWithEmailAndPassword(auth, e, p);
+    return true; // if returned, the user can be redirected
   } catch (error) {
     return { message: error.message };
   }
@@ -36,17 +44,6 @@ function Login() {
   let data = useActionData(); // tracks messages coming from the action function
   const navigation = useNavigation(); // tracks the form state (useful to handle loading animations)
   const navigate = useNavigate();
-
-  // making data errors more user friendly
-  if (data) {
-    // if data exists
-    switch (data.message) {
-      case 'Firebase: Error (auth/invalid-credential).':
-        return (data.message = 'Invalid credential');
-      case 'Firebase: Error (auth/invalid-email).':
-        return (data.message = 'Invalid email');
-    }
-  }
 
   return (
     <div className={styles.mainContainer}>
