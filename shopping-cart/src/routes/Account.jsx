@@ -1,5 +1,5 @@
 import { useOutletContext } from 'react-router-dom';
-import { Pencil } from 'lucide-react';
+import { Pencil, CircleAlert, CircleCheck } from 'lucide-react';
 import styles from '../css_modules/Account.module.css';
 import { useState } from 'react';
 import { auth, db } from '../firebase';
@@ -14,9 +14,13 @@ function Account() {
   const [edit, setEdit] = useState(false);
 
   // form data
-  const [firstName, setFirstName] = useState(userObject && userObject.firstName);
+  const [firstName, setFirstName] = useState(
+    userObject && userObject.firstName
+  );
   const [lastName, setLastName] = useState(userObject && userObject.lastName);
-  const [phoneNumber, setPhoneNumber] = useState(userObject && userObject.phoneNumber);
+  const [phoneNumber, setPhoneNumber] = useState(
+    userObject && userObject.phoneNumber
+  );
   const [address, setAddress] = useState(userObject && userObject.address);
   const [loading, setLoading] = useState(false);
 
@@ -105,10 +109,37 @@ function Account() {
               </span>
               <h1>Profile Details</h1>
               <div className={styles.inputWrapper}>
-                <label>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginBottom: '1rem'
+                  }}
+                >
+                  {auth.currentUser.emailVerified ? (
+                    <CircleCheck color={'#a2c11c'}/>
+                  ) : (
+                    <CircleAlert color={'#ec2f2fd2'}/>
+                  )}
+                  <p
+                    className={styles.verification}
+                    style={
+                      auth.currentUser.emailVerified
+                        ? { color: '#a2c11c' }
+                        : { color: '#ec2f2fd2' }
+                    }
+                  >
+                    {auth.currentUser.emailVerified
+                      ? 'Email verified'
+                      : `Email not verified (check spam)`}
+                  </p>
+                </div>
+                <label className={styles.emailLabel}>
                   Email:
                   <p>{userObject.email}</p>
                 </label>
+
                 <label>
                   First name:
                   {edit ? (
@@ -189,7 +220,7 @@ function Account() {
             </>
           )
         ) : (
-          <Loading marginTop={'10rem'}/>
+          <Loading marginTop={'10rem'} />
         )}
       </div>
     </div>

@@ -10,8 +10,9 @@ import HomePage from './routes/HomePage';
 import CartPage from './routes/CartPage';
 import Checkout from './routes/Checkout';
 import RegisterProfile from './routes/RegisterProfile';
-import './main.css';
 import Account from './routes/Account';
+import ThankYou from './routes/ThankYou';
+import './main.css';
 
 export const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ export const router = createBrowserRouter([
       {
         path: 'account',
         element: <Account />
+      },
+      {
+        path: 'thankyou',
+        element: <ThankYou />
       }
     ],
   },

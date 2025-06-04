@@ -1,0 +1,88 @@
+.mainContainer {
+  background-color: var(--secTheme);
+  height: 74.7vh;
+  padding-top: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.thanksContainer {
+  background-color: var(--theme);
+  color: var(--secTheme);
+  border-radius: 6px;
+  border: none;
+  width: 50%;
+  height: 95%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 0 0 20px #444444;
+  padding: 1rem 3rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.successfulPayment {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+}
+
+.successfulPayment > h1 {
+  font-weight: 300;
+  font-size: 2.5rem;
+  text-align: center;
+}
+
+.infoContainer {
+  border: none;
+  padding: 0.5rem;
+  display: flex;
+  width: 70%;
+  height: 60%;
+  margin-top: 2rem;
+  color: #a1a1a1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.infoContainer > p {
+  font-size: 1.3rem;
+  font-weight: 300;
+  margin-right: 1rem;
+}
+
+.boxes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  color: #a1a1a1;
+  font-weight: 300;
+  font-size: 2rem;
+  margin-top: 2rem;
+}
+
+.backButton {
+  padding: 0.1rem 2rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 2rem;
+  color: var(--theme);
+  background-color: var(--secTheme);
+  transition:
+    box-shadow,
+    color 0.15s ease-out;
+  font-weight: 300;
+}
+
+.backButton:hover {
+  cursor: pointer;
+  box-shadow: 0 0 15px var(--thiTheme);
+  color: var(--thiTheme);
+}
