@@ -21,22 +21,12 @@ export async function action({ request }) {
     // handling blank input fields
     return { message: `Fill up all the input fields` };
   }
-
-  // function to log user in
-  if ((await tryLoggingIn(auth, email, pass)) === true) {
-    return redirect('/');
-  } else {
-    return { message: 'Invalid account' };
-  }
-}
-
-// adding this function to fix render mal-function in production
-async function tryLoggingIn(e, p) {
   try {
-    await signInWithEmailAndPassword(auth, e, p);
-    return true; // if returned, the user can be redirected
-  } catch (error) {
-    return { message: error.message };
+    // function to log user in
+    await signInWithEmailAndPassword(auth, email, pass);
+    return redirect('/');
+  } catch {
+    return { message: 'Invalid account' };
   }
 }
 
