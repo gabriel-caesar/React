@@ -1,1 +1,13 @@
-/* /index.html 200!
+# Serve static assets normally
+/assets/*    /assets/:splat     200
+*.js         /:splat            200
+*.css        /:splat            200
+*.webp       /:splat            200
+*.svg        /:splat            200
+*.woff2      /:splat            200
+
+# Handle POSTs correctly for React Router actions
+POST /*       /index.html       200
+
+# Fallback for all other GET routes (SPA routing)
+/*            /index.html       200
