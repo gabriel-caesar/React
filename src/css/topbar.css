@@ -1,0 +1,23 @@
+/* handling rezising for desktop */
+
+@media (max-width: 1400px) {
+  #topbar-1 {
+    margin-bottom: 0px;
+  }
+}
+
+@media (max-width: 1020px) {
+  #topbar-1 {
+    display: none;
+  }
+
+  #topbar-2 {
+    display: flex;
+  }
+}
+
+/* handling rezising for iphone */
+
+@media (max-width: 430px) and (max-height: 932px) {
+  
+}
