@@ -1,0 +1,9 @@
+@import 'tailwindcss';
+
+.fontUncial {
+  font-family: 'Uncial Antiqua';
+}
+
+.fontCinzel {
+  font-family: 'Cinzel';
+}
