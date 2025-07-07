@@ -39,9 +39,10 @@ function MonthlyMenu() {
           className={`border-2 fontCinzel font-bold mb-20 rounded-md transition-all duration-500 
           ${
             openCategoryForm
-              ? `w-102 ${error ? 'h-100' : 'h-90'} border-gray-100 flex flex-col justify-start items-center`
+              ? `border-gray-100 flex flex-col justify-start items-center ${error ? 'h-120' : 'h-100'} ${window.innerWidth <= 450 ? 'w-full' : 'w-102'}`
               : 'w-25 h-12 text-center border-transparent bg-gray-100 text-gray-950 hover:bg-gray-950 hover:text-gray-100 hover:border-gray-100 hover:cursor-pointer'
           }`}
+          id='add-category-container'
           onClick={() => setOpenCategoryForm(!openCategoryForm)}
         >
           {openCategoryForm ? (
@@ -79,7 +80,7 @@ function CategoryDrawer({
   setOpenCategoryList,
   isAdmin,
   error,
-  setError,
+  setError
 }) {
   const [openAddPastry, setOpenAddPastry] = useState(false);
 
@@ -91,8 +92,6 @@ function CategoryDrawer({
 
   // pastry price
   const [pastryPrice, setPastryPrice] = useState('');
-
-  const [windowSize, setWindowSize] = useState(null);
 
   // states to edit the category list
   const [editCategory, setEditCategory] = useState('');
@@ -188,6 +187,9 @@ function CategoryDrawer({
     // closes the edit form
     setEditCategory('');
 
+    // closes add pastry form
+    setOpenAddPastry(false);
+
     // clearing error code
     setError('');
   }
@@ -200,18 +202,6 @@ function CategoryDrawer({
       }, 300);
     }
   }, [openAddPastry]);
-
-  // keeping track with the up to date window size
-  useEffect(() => {
-    const handleResize = () => setWindowSize(window.innerWidth);
-
-    window.addEventListener('resize', handleResize);
-
-    // Set initial value immediately
-    handleResize();
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   return (
     <div
@@ -245,7 +235,7 @@ function CategoryDrawer({
 
             <div
               id='category-list-outter-container'
-              className={`flex justify-between items-center w-full px-2 ${editCategory === category.title && 'border-b-2'}`}
+              className={`flex justify-between items-center w-full px-2 ${editCategory === category.title && 'border-b-2 flex-col'}`}
             >
               <div
                 id='arrow-icon-title-wrapper-container'
@@ -405,7 +395,7 @@ function CategoryDrawer({
                         }}
                       />
                       <p
-                        id='recently-added-p'
+                        id='recently-added-p-edit'
                         className='font-bold text-2xl font-family-normal text-gray-950'
                       >
                         Recently Added!
@@ -442,6 +432,23 @@ function CategoryDrawer({
                   </button>
                 </div>
               </div>
+              {editCategory === category.title && (
+                  <div id='save-delete-container' className='flex mb-8 z-2'>
+                    <button
+                      onClick={() => editCategoryList(category)}
+                      className='rounded-md border-2 mr-2 border-transparent bg-gray-950 text-gray-100 h-8 w-30 mt-4 hover:cursor-pointer hover:bg-gray-100 hover:text-gray-950 hover:border-gray-950 transition-all duration-300'
+                    >
+                      Save
+                    </button>
+
+                    <button
+                      onClick={() => {}}
+                      className='rounded-md border-2 border-transparent bg-red-600 text-gray-950 h-8 w-30 mt-4 hover:cursor-pointer hover:bg-gray-100 hover:text-gray-950 hover:border-gray-950 transition-all duration-300'
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
             </div>
 
             {openCategoryList === category.title && (
@@ -538,24 +545,6 @@ function CategoryDrawer({
                     </button>
                   )}
 
-                {editCategory && (
-                  <div id='save-delete-container' className='flex'>
-                    <button
-                      onClick={() => editCategoryList(category)}
-                      className='rounded-md border-2 mr-2 border-transparent bg-gray-950 text-gray-100 h-8 w-30 mt-4 hover:cursor-pointer hover:bg-gray-100 hover:text-gray-950 hover:border-gray-950 transition-all duration-300'
-                    >
-                      Save
-                    </button>
-
-                    <button
-                      onClick={() => {}}
-                      className='rounded-md border-2 border-transparent bg-red-600 text-gray-950 h-8 w-30 mt-4 hover:cursor-pointer hover:bg-gray-100 hover:text-gray-950 hover:border-gray-950 transition-all duration-300'
-                    >
-                      Delete
-                    </button>
-                  </div>
-                )}
-
                 {category.pastries.length > 0 ? (
                   category.pastries.map((pastry) => (
                     <div
@@ -607,7 +596,7 @@ function AddCategoryForm({
 
   const [categoryTitle, setCategoryTitle] = useState('');
 
-  const [categoryHeight, setCategoryHeight] = useState('');
+  const [categoryHeight, setCategoryHeight] = useState(25);
 
   const formRef = useRef(null);
 
@@ -633,8 +622,8 @@ function AddCategoryForm({
     } else if (!categoryTitle.trim()) {
       setError('Invalid title');
       return;
-    } else if (!categoryHeight.trim()) {
-      setError('Invalid list height');
+    } else if (categoryHeight < 25) {
+      setError('Min. height is 25');
       return;
     }
 
@@ -678,7 +667,7 @@ function AddCategoryForm({
         src={logoWhite}
         alt='logo'
         id='white-logo'
-        className='w-45 absolute -top-3 right-28 text-gray-100 opacity-20 z-1'
+        className='w-45 text-gray-100 opacity-20 z-1'
       />
 
       <label id='label-for-title' className='flex flex-col z-2'>
@@ -788,6 +777,7 @@ function AddCategoryForm({
             e.stopPropagation();
             if (e.target.value.length <= 4) setCategoryHeight(e.target.value);
           }}
+          placeholder='20...'
           type='number'
           id='list-height-input'
           className={`
@@ -796,7 +786,9 @@ function AddCategoryForm({
         />
       </label>
 
-      <div className='w-full flex justify-between items-center'>
+      <div 
+      id='create-and-p-wrapper'
+      className='w-full flex justify-between items-center'>
         <label
           className='flex items-center'
           onClick={(e) => e.stopPropagation()}
@@ -813,7 +805,9 @@ function AddCategoryForm({
               );
             }}
           />
-          <p className='font-bold text-2xl fontCinzel text-gray-100 z-2'>
+          <p 
+          id='recently-added-p'
+          className='font-bold text-2xl fontCinzel text-gray-100 z-2'>
             Recently Added!
           </p>
         </label>

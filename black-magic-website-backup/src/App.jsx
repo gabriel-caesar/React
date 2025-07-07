@@ -4,7 +4,7 @@ import Footer from './components/Footer';
 import { format } from 'date-fns';
 import { Outlet, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { createContext, useState } from 'react';
+import { createContext, useState, useEffect } from 'react';
 
 export const globalContext = createContext(null);
 
@@ -13,15 +13,29 @@ function App() {
 
   const [isAdmin, setIsAdmin] = useState(false);
 
+  const [windowSize, setWindowSize] = useState(null);
+
   // this dynamically updates the date for the menu
   const date = new Date();
   const month = format(date, 'LLLL');
 
   const location = useLocation();
 
+  // keeping track with the up to date window size
+  useEffect(() => {
+    const handleResize = () => setWindowSize(window.innerWidth);
+
+    window.addEventListener('resize', handleResize);
+
+    // Set initial value immediately
+    handleResize();
+    
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <div
-      className={`bg-gray-100 flex flex-col justify-start items-center h-screen ${openBars && 'overflow-hidden'}`}
+      className={`bg-gray-100 flex flex-col justify-start items-center h-screen ${openBars && 'overflow-hidden'} relative`}
     >
       <globalContext.Provider
         value={{

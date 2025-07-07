@@ -144,7 +144,7 @@ function Topbar() {
           <a
             href='http://blackmagicbakehouse.cloveronline.com/'
             target='_blank'
-            className='hover:cursor-pointer text-gray-100 bg-gray-950 hover:bg-gray-100 hover:border-gray-950 hover:text-gray-950 border-2 border-transparent p-1 fontCinzel font-bold transition-colors duration-300 text-center'
+            className='hover:cursor-pointer text-gray-100 bg-gray-950 hover:bg-gray-100 hover:border-gray-950 hover:text-gray-950 border-2 border-transparent p-1 fontCinzel font-bold transition-colors duration-300 text-center rounded-md'
           >
             ORDER ONLINE
           </a>

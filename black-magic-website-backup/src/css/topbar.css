@@ -1,3 +1,7 @@
+.drawer-opened-tight {
+  left: -10%;
+}
+
 /* handling rezising for desktop */
 
 @media (max-width: 1400px) {

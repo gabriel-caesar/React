@@ -68,7 +68,7 @@ function General() {
           </h1>
           <span
             id='clock-icon'
-            className='absolute text-9xl opacity-20 right-3/8'
+            className='text-9xl opacity-20'
           >
             <GiClockwork />
           </span>
