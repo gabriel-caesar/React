@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+:root {
+  --jet-black: #121212;
+  --clean-white: #ffffff;
+  --energy-red: #E63946;
+  --accent-gray: #2E2E2E;
+}
+
+body {
+  background: var(--jet-black);
+  color: #fff;
+  font-family: 'Roboto', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+}
+
+.shadow-st {
+  box-shadow: 0 0 10px 2px var(--accent-gray);
+}
+
+.input-focus:focus-within {
+  box-shadow: inset 0 0 0px 2px var(--energy-red);
+  outline: none;
+}

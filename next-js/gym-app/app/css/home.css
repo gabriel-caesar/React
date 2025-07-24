@@ -1,0 +1,30 @@
+.diagonal::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -1%;
+  width: 100%;
+  height: 100%;
+  background: var(--jet-black);
+  clip-path: polygon(0 0, 100% 0%, 100% -10%, 0% 100%);
+  z-index: 1;
+}
+
+.shadow-custom-white {
+  box-shadow: 0 0 30px 1px #ffffff96;
+}
+
+#diversus-lettering {
+  font-family: 'Orbitron';
+  letter-spacing: 1rem;
+}
+
+#get-started-btn {
+  color: var(--jet-black)
+}
+
+@media (max-width: 1300px) {
+  #gym-wrapper {
+    opacity: 0.1;
+  }
+}
