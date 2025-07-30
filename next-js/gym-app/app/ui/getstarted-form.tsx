@@ -1,16 +1,19 @@
 'use client';
 
-import { Lock, LockKeyhole, Mail, UserCog, UserLock } from 'lucide-react';
+import {
+  Lock,
+  LockKeyhole,
+  Mail,
+  UserCog,
+  UserLock,
+} from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import { signup } from '../actions/auth';
+import { signup } from '../../auth';
 import { useActionState, useState } from 'react';
+import '../css/globals.css';
 
 export default function GetStartedForm() {
-  // state === error state
-  // action === signup
-  // pending === action being loaded after submitted
-  const [state, action, pending] = useActionState(signup, undefined);
-
+  
   // states to persist data if validation is refused
   const [fName, setFName] = useState('');
   const [lName, setLName] = useState('');
@@ -18,6 +21,10 @@ export default function GetStartedForm() {
   const [pass, setPass] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
 
+  // state === error/feedback state
+  // action === signup
+  // pending === action being loaded after submitted
+  const [state, action, pending] = useActionState(signup, undefined);
 
   return (
     <form
@@ -47,7 +54,7 @@ export default function GetStartedForm() {
               placeholder='Enter your first name'
               type='text'
               value={fName}
-              onChange={e => setFName(e.target.value)}
+              onChange={(e) => setFName(e.target.value)}
             />
           </div>
           <UserCog
@@ -80,7 +87,7 @@ export default function GetStartedForm() {
               placeholder='Enter your last name'
               type='text'
               value={lName}
-              onChange={e => setLName(e.target.value)}
+              onChange={(e) => setLName(e.target.value)}
             />
           </div>
           <UserLock
@@ -113,7 +120,7 @@ export default function GetStartedForm() {
             placeholder='Enter your email'
             className='bg-white rounded-sm w-full p-2 pr-12 text-xl text-neutral-800 input-focus transition-all duration-300'
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
 
           <Mail
@@ -121,6 +128,7 @@ export default function GetStartedForm() {
             size={32}
             strokeWidth={1}
           />
+
           {state?.errors?.email && (
             <p className='text-red-500'>* {state?.errors?.email}</p>
           )}
@@ -146,7 +154,7 @@ export default function GetStartedForm() {
             placeholder='Enter your password'
             className='bg-white rounded-sm w-full p-2 pr-12 text-xl text-neutral-800 input-focus transition-all duration-300'
             value={pass}
-            onChange={e => setPass(e.target.value)}
+            onChange={(e) => setPass(e.target.value)}
           />
 
           <Lock
@@ -185,7 +193,7 @@ export default function GetStartedForm() {
             placeholder='Confirm your password'
             className='bg-white rounded-sm w-full p-2 pr-12 text-xl text-neutral-800 input-focus transition-all duration-300'
             value={confirmPass}
-            onChange={e => setConfirmPass(e.target.value)}
+            onChange={(e) => setConfirmPass(e.target.value)}
           />
 
           <LockKeyhole

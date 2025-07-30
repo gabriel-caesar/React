@@ -10,21 +10,27 @@
   z-index: 1;
 }
 
-.shadow-custom-white {
+.shadow_custom_white {
   box-shadow: 0 0 30px 1px #ffffff96;
 }
 
-#diversus-lettering {
+.diversus_lettering {
   font-family: 'Orbitron';
   letter-spacing: 1rem;
 }
 
-#get-started-btn {
-  color: var(--jet-black)
+.get_started_colors {
+  color: var(--jet-black);
+  background-color: var(--clean-white);
+}
+
+.login_button_colors {
+  color: var(--clean-white);
+  background-color: var(--energy-red);
 }
 
 @media (max-width: 1300px) {
-  #gym-wrapper {
+  .gym_wrapper {
     opacity: 0.1;
   }
 }

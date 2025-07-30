@@ -1,6 +1,13 @@
-import './css/globals.css';
 import { Metadata } from 'next';
- 
+import { Roboto } from 'next/font/google';
+import './css/globals.css';
+
+// nextjs font implementation to remove external network requests
+const roboto = Roboto({
+  weight: '400',
+  subsets: ['latin'],
+})
+
 export const metadata: Metadata = {
   title: {
     template: '%s | Diversus',
@@ -16,15 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en'>
-      <head>
-        <link rel='preconnect' href='https://fonts.googleapis.com' />
-        <link rel='preconnect' href='https://fonts.gstatic.com' />
-        <link
-          href='https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap'
-          rel='stylesheet'
-        />
-      </head>
+    <html lang='en' className={roboto.className}>
       <body className='flex justify-center items-center h-auto antialiased'>
         {children}
       </body>

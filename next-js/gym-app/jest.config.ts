@@ -1,9 +1,17 @@
-const nextJest = require("next/jest");
-const createJestConfig = nextJest({
-  dir: "./",
-});
+const nextJest = require('next/jest');
+
+const createJestConfig = nextJest({ dir: './' });
+
 const customJestConfig = {
-  moduleDirectories: ["node_modules", "<rootDir>/"],
-  testEnvironment: "jest-environment-jsdom",
+  testEnvironment: 'jest-environment-jsdom',
+  moduleDirectories: ['node_modules', '<rootDir>/'],
+  transformIgnorePatterns: [
+    '/node_modules/(?!(next-auth|@auth/core)/)', // transform ESM packages
+  ],
+  moduleNameMapper: {
+    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+  },
+  testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
 };
+
 module.exports = createJestConfig(customJestConfig);

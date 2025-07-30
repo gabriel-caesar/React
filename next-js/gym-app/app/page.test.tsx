@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import Home from './page';
 import "@testing-library/jest-dom";
 
@@ -25,14 +25,20 @@ describe('Home', () => {
     expect(screen.getByText(`AI-Personalized Fitness & Nutrition Platform`)).toBeInTheDocument();
   });
 
-  it(`renders "Get Started" button and generates the right href`, () => {
+  it(`renders Login and Get Started buttons and checks the hrefs`, () => {
 
     const getStartedButton = screen.getByRole('link', { name: 'Get Started' });
 
+    const loginButton = screen.getByRole('link', { name: 'Log In' });
+    
     expect(getStartedButton).toBeInTheDocument();
+
+    expect(loginButton).toBeInTheDocument();
 
     // since it is a Link component, we just check if it passes the right href (unit test)
     expect(getStartedButton).toHaveAttribute('href', '/get-started');
+
+    expect(loginButton).toHaveAttribute('href', '/login');
   }); 
   
   
