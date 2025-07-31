@@ -43,6 +43,8 @@ describe('LoginForm', () => {
   it('renders an error feedback for wrong credentials', async () => {
     const loginButton = screen.getByRole('button', { name: 'Log In' });
 
+    expect(loginButton).toBeInTheDocument();
+
     await user.click(loginButton);
 
     const error = screen.getByTestId('errorElement')

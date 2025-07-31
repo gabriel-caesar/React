@@ -1,19 +1,12 @@
 'use client';
 
-import {
-  Lock,
-  LockKeyhole,
-  Mail,
-  UserCog,
-  UserLock,
-} from 'lucide-react';
+import { Lock, LockKeyhole, Mail, UserCog, UserLock } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { signup } from '../../auth';
 import { useActionState, useState } from 'react';
 import '../css/globals.css';
 
 export default function GetStartedForm() {
-  
   // states to persist data if validation is refused
   const [fName, setFName] = useState('');
   const [lName, setLName] = useState('');
@@ -46,24 +39,24 @@ export default function GetStartedForm() {
           <label className='font-light' htmlFor='firstName'>
             First name
           </label>
-          <div>
-            <input
-              className='bg-white rounded-sm w-full p-2 pr-12 text-xl text-neutral-800 input-focus transition-all duration-300'
-              id='firstName'
-              name='firstName'
-              placeholder='Enter your first name'
-              type='text'
-              value={fName}
-              onChange={(e) => setFName(e.target.value)}
-            />
-          </div>
+
+          <input
+            className='bg-white rounded-sm w-full p-2 pr-12 text-xl text-neutral-800 input-focus transition-all duration-300'
+            id='firstName'
+            name='firstName'
+            placeholder='Enter your first name'
+            type='text'
+            value={fName}
+            onChange={(e) => setFName(e.target.value)}
+          />
+
           <UserCog
             className='absolute right-2 top-7 text-neutral-600'
             size={32}
             strokeWidth={1}
           />
           {state?.errors?.firstName && (
-            <p className='text-red-500'>* {state?.errors?.firstName}</p>
+            <p className='text-red-500' data-testid='first-name-error'>* {state?.errors?.firstName}</p>
           )}
         </motion.div>
       </AnimatePresence>
@@ -79,24 +72,24 @@ export default function GetStartedForm() {
           <label className='font-light' htmlFor='lastName'>
             Last name
           </label>
-          <div>
-            <input
-              className='bg-white rounded-sm w-full p-2 pr-12 text-xl text-neutral-800 input-focus transition-all duration-300'
-              id='lastName'
-              name='lastName'
-              placeholder='Enter your last name'
-              type='text'
-              value={lName}
-              onChange={(e) => setLName(e.target.value)}
-            />
-          </div>
+
+          <input
+            className='bg-white rounded-sm w-full p-2 pr-12 text-xl text-neutral-800 input-focus transition-all duration-300'
+            id='lastName'
+            name='lastName'
+            placeholder='Enter your last name'
+            type='text'
+            value={lName}
+            onChange={(e) => setLName(e.target.value)}
+          />
+
           <UserLock
             className='absolute right-2 top-7 text-neutral-600'
             size={32}
             strokeWidth={1}
           />
           {state?.errors?.lastName && (
-            <p className='text-red-500'>* {state?.errors?.lastName}</p>
+            <p className='text-red-500' data-testid='last-name-error'>* {state?.errors?.lastName}</p>
           )}
         </motion.div>
       </AnimatePresence>
@@ -130,7 +123,7 @@ export default function GetStartedForm() {
           />
 
           {state?.errors?.email && (
-            <p className='text-red-500'>* {state?.errors?.email}</p>
+            <p className='text-red-500' data-testid='email-error'>* {state?.errors?.email}</p>
           )}
         </motion.div>
       </AnimatePresence>
@@ -165,7 +158,7 @@ export default function GetStartedForm() {
           {state?.errors?.password && (
             <div>
               {state?.errors?.password.map((x) => (
-                <p key={x} className='text-red-500'>
+                <p key={x} className='text-red-500' data-testid='pass-error'>
                   * {x}
                 </p>
               ))}
@@ -204,7 +197,7 @@ export default function GetStartedForm() {
           {state?.errors?.confirmPassword && (
             <div>
               {state?.errors?.confirmPassword.map((x) => (
-                <p key={x} className='text-red-500'>
+                <p key={x} className='text-red-500' data-testid='confirm-pass-error'>
                   * {x}
                 </p>
               ))}
