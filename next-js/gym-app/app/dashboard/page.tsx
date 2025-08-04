@@ -55,7 +55,7 @@ export default async function Page() {
         'use server'
         await signOut({ redirectTo: '/' })
       }}
-      className='hidden'
+      className=''
       >
 
         <button
