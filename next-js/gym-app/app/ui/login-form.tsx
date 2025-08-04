@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from 'motion/react';
 import { useActionState, useState } from 'react';
-import { authenticate } from '../../auth';
+import { authenticate } from '../actions/auth';
 import { useSearchParams } from 'next/navigation';
 import { Metadata } from 'next';
  

@@ -1,7 +1,7 @@
 'use server';
 
 import { AuthError } from 'next-auth';
-import { FormState, SignUpSchema, User } from './app/lib/definitions';
+import { FormState, SignUpSchema, User } from '../lib/definitions';
 import { signIn } from './credential-handler';
 import bcrypt from 'bcryptjs';
 import postgres from 'postgres';
@@ -46,16 +46,16 @@ export async function signup(state: FormState | undefined, formData: FormData) {
         INSERT INTO users (firstname, lastname, email, password) 
         VALUES (${firstName}, ${lastName}, ${email}, ${hashedPass});
       `;
-
-    // log user in
-    await authenticate(undefined, loginData);
-
-    redirect('/dashboard');
   } catch (error) {
+    console.log(`\n An error has ocurred. ${error}\n`)
     return {
       message: `${error} Database error, couldn't fetch db.`,
     };
-  }
+  } 
+
+  // log user in if try/catch was successful
+  await authenticate(undefined, loginData);
+  redirect('/dashboard');
 }
 
 // gets user from db
@@ -68,7 +68,10 @@ export async function getUser(email: string): Promise<User | undefined> {
 
     return user[0];
   } catch (error) {
-    throw new Error(`Couldn't fetch user from db`);
+    if (error instanceof Error) {
+      throw new Error(`Couldn't fetch user from db. ${error.message}.`);
+    }
+    throw new Error(`Couldn't fetch user from db. Unknown error.`);
   }
 }
 
@@ -79,7 +82,12 @@ export async function authenticate(
 ) {
   try {
     await signIn('credentials', formData);
-  } catch (error) {
+  } catch (error: any) {
+
+    // preventing this function to swallow NEXT_REDIRECT error and avoid redirecting the user
+    // that happens when the user signs up and then is automatically redirected to the dashboard
+    if (error.digest === 'NEXT_REDIRECT;push;http://localhost:3000/get-started;307;') return
+
     if (error instanceof AuthError) {
       switch (error.type) {
         case 'CredentialsSignin':

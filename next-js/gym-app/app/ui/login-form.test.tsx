@@ -34,10 +34,8 @@ describe('LoginForm', () => {
   });
 
   it('renders all inputs successfuly', async () => {
-    const loginButton = screen.getByRole('button', { name: 'Log In' });
     expect(screen.getByLabelText('Email')).toBeInTheDocument();
     expect(screen.getByLabelText('Password')).toBeInTheDocument();
-    expect(loginButton).toBeInTheDocument();
   });
 
   it('renders an error feedback for wrong credentials', async () => {

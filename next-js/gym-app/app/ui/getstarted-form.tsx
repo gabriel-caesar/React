@@ -2,7 +2,7 @@
 
 import { Lock, LockKeyhole, Mail, UserCog, UserLock } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import { signup } from '../../auth';
+import { signup } from '../actions/auth';
 import { useActionState, useState } from 'react';
 import '../css/globals.css';
 
@@ -41,6 +41,7 @@ export default function GetStartedForm() {
           </label>
 
           <input
+            aria-label='first-name'
             className='bg-white rounded-sm w-full p-2 pr-12 text-xl text-neutral-800 input-focus transition-all duration-300'
             id='firstName'
             name='firstName'
@@ -74,6 +75,7 @@ export default function GetStartedForm() {
           </label>
 
           <input
+          aria-label='last-name'
             className='bg-white rounded-sm w-full p-2 pr-12 text-xl text-neutral-800 input-focus transition-all duration-300'
             id='lastName'
             name='lastName'
@@ -107,6 +109,7 @@ export default function GetStartedForm() {
           </label>
 
           <input
+            aria-label='email-address'
             type='email'
             id='email'
             name='email'
@@ -141,6 +144,7 @@ export default function GetStartedForm() {
           </label>
 
           <input
+            aria-label='password'
             type='password'
             id='pass'
             name='pass'
@@ -180,6 +184,7 @@ export default function GetStartedForm() {
           </label>
 
           <input
+            aria-label='confirm-password'
             type='password'
             id='confirmPass'
             name='confirmPass'
@@ -216,8 +221,9 @@ export default function GetStartedForm() {
         }}
         whileTap={{ scale: 1.05 }}
         disabled={pending}
+        data-testid='next-btn'
       >
-        Next
+        Register
       </motion.button>
     </form>
   );

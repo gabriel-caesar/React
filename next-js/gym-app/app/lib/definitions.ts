@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { getUser } from '../../auth';
+import { getUser } from '../actions/auth';
 
 // zod schema to validade user input
 export const SignUpSchema = z

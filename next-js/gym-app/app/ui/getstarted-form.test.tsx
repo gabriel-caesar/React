@@ -1,6 +1,6 @@
 // mocking signup function
 jest.mock('../../auth', () => ({
-  signup: jest.fn(async (state: FormState | undefined, _formData: FormData) => {
+  signup: jest.fn(async (_state: FormState | undefined, _formData: FormData) => {
     // receiving empty fields on purpose
     const validatedFields = await SignUpSchema.safeParseAsync({
       firstName: '',
@@ -53,11 +53,11 @@ describe('Get Started Form', () => {
   });
 
   it('checks for invalid feedback', async () => {
-    const nextButton = screen.getByRole('button', { name: 'Next' });
+    const registerButton = screen.getByRole('button', { name: 'Register' });
 
-    expect(nextButton).toBeInTheDocument();
+    expect(registerButton).toBeInTheDocument();
 
-    await user.click(nextButton);
+    await user.click(registerButton);
 
     // notice how findBy awaits the change to happen
     const firstNameError = (await screen.findByTestId('first-name-error'));
@@ -73,6 +73,7 @@ describe('Get Started Form', () => {
     expect(lastNameError).toBeInTheDocument();
     expect(lastNameError).toHaveTextContent('* Last name must be at least 2 characters long');
 
+    // existent email check fails on the E2E test
     expect(emailError).toBeInTheDocument();
     expect(emailError).toHaveTextContent('* Please enter a valid email');
 

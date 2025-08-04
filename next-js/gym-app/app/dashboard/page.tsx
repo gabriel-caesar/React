@@ -1,7 +1,12 @@
-import { auth, signOut } from '@/credential-handler';
+import { auth, signOut } from '@/app/actions/credential-handler';
 import { Power } from 'lucide-react';
-import { getUser } from '@/auth';
+import { getUser } from '@/app/actions/auth';
 import styles from '../css/dashboard.module.css'
+import { Metadata } from 'next';
+ 
+export const metadata: Metadata = {
+  title: 'Dashboard',
+};
 
 export default async function Page() {
 
@@ -15,7 +20,9 @@ export default async function Page() {
 
   return (
     <div>
-      HELLO {user?.firstname} {user?.lastname}
+      <h1>
+        HELLO {user?.firstname} {user?.lastname}
+      </h1>
       <form action={async () => {
         'use server'
         await signOut({ redirectTo: '/' })

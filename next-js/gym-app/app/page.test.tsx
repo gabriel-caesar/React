@@ -41,5 +41,5 @@ describe('Home', () => {
     expect(loginButton).toHaveAttribute('href', '/login');
   }); 
   
-  
+  // url and title checks are done with Playwright
 })

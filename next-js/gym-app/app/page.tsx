@@ -34,7 +34,7 @@ export default function Home() {
           src='/home-page-gym-photo.jpg'
           alt='gym-photo'
           id='gym-photo'
-          priority={false}
+          priority={true}
           width={1100}
           height={1100}
         />
@@ -50,7 +50,7 @@ export default function Home() {
         <h1 className='text-3xl font-bold'>
           AI-Personalized Fitness & Nutrition Platform
         </h1>
-        <p className='text-red-400'>&quot;A brand new self, reborn&quot;</p>
+        <p className='text-red-400' data-testid='brandnewself'>&quot;A brand new self, reborn&quot;</p>
 
         <div className='flex w-115 justify-between items-center'>
           <MotionLink
@@ -82,7 +82,7 @@ export default function Home() {
         </div>
       </main>
 
-      <p id='copyright' className='absolute bottom-0 left-10'>
+      <p id='copyright' data-testid='copyright' className='absolute bottom-0 left-10'>
         © 2025 Gabriel Cezar — All rights reserved.
       </p>
     </div>
