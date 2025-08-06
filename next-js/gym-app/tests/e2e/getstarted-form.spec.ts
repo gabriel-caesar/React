@@ -22,6 +22,10 @@ test.describe('Get Started Form', () => {
       emailFilling += String.fromCharCode(Math.floor(Math.random() * 26) + 97);
     }
 
+    await expect(firstName).toBeVisible({ timeout: 1000 });
+
+    await page.waitForTimeout(5000);
+
     await firstName.fill('John');
     await lastName.fill('Doe');
     await email.fill(`${emailFilling}@email.com`);
@@ -42,6 +46,10 @@ test.describe('Get Started Form', () => {
 
   test(`user can't register with an existent email`, async ({page}) => {
     const email = page.getByPlaceholder('Enter your email');
+
+    await expect(email).toBeVisible({ timeout: 1000 });
+
+    await page.waitForTimeout(5000);
 
     await email.fill(`testing@email.com`);
 

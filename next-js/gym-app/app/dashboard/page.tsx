@@ -23,7 +23,7 @@ export default async function Page() {
 
       <div
         id='main-panel'
-        className='flex flex-col items-center justify-center h-screen w-screen'
+        className='flex flex-col items-center justify-center h-screen w-screen border-2 border-red-500'
       >
         <div id='chat-panel' className='w-1/2 mb-20'>
           <h1
