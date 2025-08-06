@@ -13,13 +13,8 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
-    - name: Set BASE_URL dynamically
-      run: |
-        if [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
-          echo "BASE_URL=https://prod.vercel.app" >> $GITHUB_ENV
-        else
-          echo "BASE_URL=https://preview.vercel.app" >> $GITHUB_ENV
-        fi
+      env:
+        BASE_URL: https://diversus-psi.vercel.app/
     - name: Install dependencies
       run: npm ci
     - name: Install Playwright Browsers
