@@ -53,9 +53,10 @@ export async function signup(state: FormState | undefined, formData: FormData) {
     };
   } 
 
-  // log user in if try/catch was successful
-  await authenticate(undefined, loginData);
-  redirect('/dashboard');
+  // using a query param to indicate that the user
+  // freshly registered and it's ready to log in
+  const user = await getUser(email);
+  if (user) return redirect('/login?registered=true');
 }
 
 // gets user from db

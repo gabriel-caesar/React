@@ -25,7 +25,7 @@ export default async function Page() {
         id='main-panel'
         className='flex flex-col items-center justify-center h-screen w-screen'
       >
-        <div id='chat-panel' className='border-2 border-red-500 w-1/2'>
+        <div id='chat-panel' className='w-1/2 mb-20'>
           <h1
             id='greetings-header'
             className='text-4xl text-center font-bold'
@@ -37,14 +37,14 @@ export default async function Page() {
           </div>
         </div>
 
-        <form action="" className='flex w-1/2'>
+        <form action="" className={`flex w-1/2 rounded-lg bg-neutral-600 relative ${styles.regular_shadow}`}>
           <textarea 
-            className='rounded-md bg-neutral-600 focus-within:outline-none w-full px-5'
+            className={`${styles.scrollbar} bg-transparent focus-within:outline-none p-5 w-15/17 resize-none transition-all duration-300`}
             placeholder='Enter your message...'
           >
           </textarea>
-          <button className='rounded-lg bg-neutral-600 w-15 flex items-center justify-center ml-10'>
-            <ArrowUp className='text-red-500'/>
+          <button className={`rounded-full bg-neutral-900 w-15 h-15 flex items-center justify-center ml-10 absolute right-4 top-4 hover:cursor-pointer hover:text-red-500 transition-all duration-300 ${styles.red_shadow}`}>
+            <ArrowUp />
           </button>
         </form>
 

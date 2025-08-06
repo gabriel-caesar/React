@@ -32,9 +32,12 @@ test.describe('Get Started Form', () => {
 
     await nextBtn.click();
 
-    await expect(page).toHaveURL('/dashboard');
+    await expect(page).toHaveURL('/login?registered=true');
 
-    await expect(page).toHaveTitle(/dashboard | diversus/i);
+    await expect(page).toHaveTitle(/login | diversus/i);
+
+    // green text box that tells the user to log in
+    await expect(page.getByTestId('login-feedback')).toBeVisible();
   });
 
   test(`user can't register with an existent email`, async ({page}) => {

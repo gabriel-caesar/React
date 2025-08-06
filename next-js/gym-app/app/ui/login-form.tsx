@@ -5,6 +5,7 @@ import { useActionState, useState } from 'react';
 import { authenticate } from '../actions/auth';
 import { useSearchParams } from 'next/navigation';
 import { Metadata } from 'next';
+import { X } from 'lucide-react';
  
 export const metadata: Metadata = {
   title: 'Login',
@@ -13,9 +14,15 @@ export const metadata: Metadata = {
 export default function LoginForm() {
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
+  const [closeDialog, setCloseDialog] = useState(false);
 
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
+
+  // shows the <div> that tells the user to log in after registring
+  const justRegistered = searchParams.get('registered');
+  const loginAfterRegister = justRegistered;
+
   const [errorMessage, formAction, isPending] = useActionState(
     authenticate,
     undefined
@@ -29,6 +36,29 @@ export default function LoginForm() {
       <h1 className='font-light text-2xl text-center mb-10 border-b-1 border-red-400'>
         Login to your account
       </h1>
+
+      {(loginAfterRegister && !closeDialog) && (
+        <AnimatePresence>
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            data-testid='login-feedback'
+            className='absolute text-neutral-900 text-2xl px-10 py-2 top-4 bg-green-400 text-center w-110 z-2 rounded-md shadow-st'
+          >
+            Welcome to Diversus! <br/>
+            You can now log in with your brand new account.
+            <button 
+              type='button'
+              onClick={() => setCloseDialog(true)}
+              className='absolute top-2 right-2 hover:cursor-pointer hover:text-white transition-all duration-250'>
+              <X />
+            </button>
+          </motion.div>
+        </AnimatePresence>
+      )}
+
 
       <AnimatePresence>
         <motion.div
@@ -92,6 +122,7 @@ export default function LoginForm() {
         }}
         whileTap={{ scale: 1.05 }}
         aria-disabled={isPending}
+        type='submit'
       >
         Log In
       </motion.button>
