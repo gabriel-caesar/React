@@ -2,7 +2,7 @@
 
 import { AuthError } from 'next-auth';
 import { FormState, SignUpSchema, User } from '../lib/definitions';
-import { signIn } from './credential-handler';
+import { signIn, signOut } from './credential-handler';
 import bcrypt from 'bcryptjs';
 import postgres from 'postgres';
 import { redirect } from 'next/navigation';
@@ -99,4 +99,8 @@ export async function authenticate(
     }
     throw error;
   }
+}
+
+export async function signUserOut() {
+  await signOut({ redirectTo: '/' });
 }
