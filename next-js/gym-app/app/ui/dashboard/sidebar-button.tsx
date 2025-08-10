@@ -12,26 +12,29 @@ export default function SideBarButton({ openSideBar, setOpenSideBarAction }: { o
     >
 
       <motion.div
-        className='w-8 h-[2px] bg-white mb-2 rounded-sm'
+        className='w-6 h-[2px] bg-white mb-1 rounded-sm'
         animate={{
           rotate: openSideBar ? 45 : 0,
-          y: openSideBar ? 13.5 : 0
+          y: openSideBar ? 6 : 0
         }}
         transition={{
           duration: 0.3
         }}
       />
       <motion.div
-        className='w-8 h-[2px] bg-white mb-2 rounded-sm'
+        className='w-6 h-[2px] bg-white mb-1 rounded-sm'
         animate={{
           opacity: openSideBar ? 0 : 100
         }}
+        transition={{
+          duration: 0.3
+        }}
       />
       <motion.div
-        className='w-8 h-[2px] bg-white rounded-sm'
+        className='w-6 h-[2px] bg-white rounded-sm'
         animate={{
           rotate: openSideBar ? -45 : 0,
-          y: openSideBar ? -7 : 0
+          y: openSideBar ? -6 : 0
         }}
         transition={{
           duration: 0.3

@@ -12,7 +12,7 @@ export const SignUpSchema = z
       .string()
       .min(2, 'Last name must be at least 2 characters long')
       .trim(),
-    email: z.email({ message: 'Please enter a valid email' }).trim(),
+    email: z.string().email({ message: 'Please enter a valid email' }).trim(),
     password: z
       .string()
       .min(8, { message: 'Be at least 8 characters long' })

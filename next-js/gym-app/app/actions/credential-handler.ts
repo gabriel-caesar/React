@@ -12,7 +12,7 @@ export const { auth, signIn, signOut } = NextAuth({
       async authorize(credentials) {
         // formData
         const parsedCredentials = z // parse with zod
-          .object({ email: z.email(), pass: z.string().min(6) })
+          .object({ email: z.string().email(), pass: z.string().min(6) })
           .safeParse(credentials);
 
         if (parsedCredentials.success) {

@@ -1,6 +1,5 @@
-import styles from '../css/dashboard.module.css';
 import { Power } from 'lucide-react';
-import { signUserOut } from '../actions/auth';
+import { signUserOut } from '../../actions/auth';
 import { AnimatePresence, motion } from 'motion/react';
 
 export default function SideBarNav({ openSideBar }: { openSideBar: boolean }) {

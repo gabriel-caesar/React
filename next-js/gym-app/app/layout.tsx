@@ -6,6 +6,7 @@ import './css/globals.css';
 const roboto = Roboto({
   weight: '400',
   subsets: ['latin'],
+  preload: false,
 })
 
 export const metadata: Metadata = {

@@ -1,7 +1,7 @@
 'use client';
 
-import SideBarNav from '../ui/sidebar-nav';
-import SideBarButton from '../ui/sidebar-button';
+import SideBarNav from './sidebar-nav';
+import SideBarButton from './sidebar-button';
 import { useState } from 'react';
 
 export default function SideBar() {
