@@ -8,6 +8,7 @@ import styles from '../../css/dashboard.module.css';
 export default function AIChat({ user }: { user: User | undefined }) {
   const [prompt, setPrompt] = useState<string>(''); // user's prompt
   const [response, setResponse] = useState<string>(`Hello ${user?.firstname}, how can I help you?`); // AI's response
+  const [chatPanelMargin, setChatPanelMargin] = useState<number>(0);
   const chatPanelRef = useRef<HTMLDivElement | null>(null); // ref variable for the chat panel div element
 
   // creates the user chat bubble dynamically
@@ -100,12 +101,33 @@ export default function AIChat({ user }: { user: User | undefined }) {
     };
   }, [response])
 
+  // when the component mounts, we attach handleResize() onto
+  // the window object so every resize interaction, the
+  // function will fire and recalculate the margin for the chat panel
+  useEffect(() => {
+    function handleResize() {
+      const chatHeight = (window.innerHeight * 0.75); // h-3/4
+      const factor = window.innerHeight <= 565 ? 0.15 : 0.01;
+      setChatPanelMargin(chatHeight * factor);
+    }
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <>
       <div
         ref={chatPanelRef}
         id='chat-panel'
-        className={`mb-6 w-3/4 h-3/4 p-10 rounded-md overflow-y-auto overflow-x-hidden ${styles.scrollbar_chat} ${styles.inset_shadow}`}
+        style={{
+          marginTop: chatPanelMargin + 'px'
+        }}
+        className={`
+            [@media(max-height:300px)]:border-t-0
+            max-[1024px]:w-full max-[1024px]:border-t-1 max-[1024px]:border-neutral-400
+            w-4/5 h-3/4 p-10 overflow-y-auto overflow-x-hidden ${styles.scrollbar_chat}
+          `}
       >
         <p className='text-md bg-neutral-600 rounded-md p-2 text-start w-fit max-w-full h-fit overflow-auto'>
           {`Hello ${user?.firstname}, how can I help you?`}
@@ -114,7 +136,11 @@ export default function AIChat({ user }: { user: User | undefined }) {
 
       <form
         onSubmit={handleSubmit}
-        className={`flex items-center justify-center w-3/4 rounded-lg bg-neutral-600 relative ${styles.regular_shadow}`}
+        className={`
+            max-[1024px]:w-11/12
+            flex items-center justify-center w-3/4 rounded-lg bg-neutral-600 relative 
+            ${styles.regular_shadow}
+          `}
       >
         <textarea
           className={`${styles.scrollbar_textarea} bg-transparent focus-within:outline-none p-5 w-11/12 resize-none transition-all duration-300`}

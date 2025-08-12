@@ -2,7 +2,7 @@
 
 import { ClipboardCheckIcon, UsersRound, House, Power } from 'lucide-react';
 import { signUserOut } from '../../actions/auth';
-import { AnimatePresence, motion } from 'motion/react';
+import { motion } from 'motion/react';
 import Link from 'next/link';
 
 export default function SideBarNav({ openSideBar }: { openSideBar: boolean }) {
@@ -12,7 +12,11 @@ export default function SideBarNav({ openSideBar }: { openSideBar: boolean }) {
   return (
     <nav
       id='sidebar'
-      className={`h-screen bg-neutral-600 ${openSideBar ? 'w-100' : 'w-0'} flex flex-col justify-start items-center relative transition-all`}
+      className={`
+          ${openSideBar ? 'max-[1024px]:w-80 max-[1024px]:border-neutral-400 w-100 border-r-2' : 'w-0'}
+          max-[1024px]:absolute max-[1024px]:z-2
+          h-screen border-transparent bg-neutral-600 flex flex-col justify-start items-center relative transition-all
+        `}
     >
       <MotionLink 
         initial={{ opacity: 0 }}
