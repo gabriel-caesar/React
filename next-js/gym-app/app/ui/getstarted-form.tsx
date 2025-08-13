@@ -21,7 +21,7 @@ export default function GetStartedForm() {
 
   return (
     <form
-      className='my-10 w-[462px] flex flex-col justify-center items-center rounded-md bg-neutral-800 p-6 border-red-400 border-1 shadow-st'
+      className='my-10 w-[462px] max-[500px]:w-11/12 flex flex-col justify-center items-center rounded-md bg-neutral-800 p-6 border-red-400 border-1 shadow-st'
       action={action}
     >
       <h1 className='font-light text-2xl text-center mb-10 border-b-1 border-red-400'>

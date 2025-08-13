@@ -29,7 +29,10 @@ export default function Home() {
         />
       </div>
 
-      <div className={`${styles.diagonal} ${styles.gym_wrapper} absolute right-0 w-260 -z-1`} id='gym-wrapper'>
+      <div 
+        className={`${styles.diagonal} ${styles.gym_wrapper} absolute right-0 w-260 -z-1 max-[530px]:top-45`} 
+        id='gym-wrapper'
+      >
         <Image
           src='/home-page-gym-photo.jpg'
           alt='gym-photo'
@@ -40,7 +43,7 @@ export default function Home() {
         />
       </div>
 
-      <main className='absolute flex flex-col left-10 mt-20'>
+      <main className='absolute [@media(max-height:668px)]:mt-40 max-[530px]:static max-[530px]:w-3/4 flex flex-col left-10 mt-20'>
         <h2
           id='diversus-lettering'
           className={`text-3xl border-b-2 text-center w-66 mb-15 ${orbitron.className} ${styles.diversus_lettering}`}
@@ -52,7 +55,7 @@ export default function Home() {
         </h1>
         <p className='text-red-400' data-testid='brandnewself'>&quot;A brand new self, reborn&quot;</p>
 
-        <div className='flex w-115 justify-between items-center'>
+        <div className='flex w-115 justify-between items-center max-[530px]:flex-col max-[530px]:items-start'>
           <MotionLink
             href='/get-started'
             className={`${styles.get_started_colors} text-center rounded-md text-2xl mt-10 w-50 p-2 hover:cursor-pointer`}

@@ -31,7 +31,7 @@ export default function LoginForm() {
   return (
     <form
       action={formAction}
-      className='my-10 w-[462px] flex flex-col justify-center items-center rounded-md bg-neutral-800 p-6 border-red-400 border-1 shadow-st'
+      className='my-10 w-[462px] max-[520px]:w-11/12 flex flex-col justify-center items-center rounded-md bg-neutral-800 p-6 border-red-400 border-1 shadow-st'
     >
       <h1 className='font-light text-2xl text-center mb-10 border-b-1 border-red-400'>
         Login to your account
@@ -45,7 +45,7 @@ export default function LoginForm() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
             data-testid='login-feedback'
-            className='absolute text-neutral-900 text-2xl px-10 py-2 top-4 bg-green-400 text-center w-110 z-2 rounded-md shadow-st'
+            className='absolute max-[500px]:w-11/12 text-neutral-900 text-2xl px-10 py-2 top-4 bg-green-400 text-center w-110 z-2 rounded-md shadow-st'
           >
             Welcome to Diversus! <br/>
             You can now log in with your brand new account.

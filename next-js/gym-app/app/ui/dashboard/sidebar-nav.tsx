@@ -13,7 +13,7 @@ export default function SideBarNav({ openSideBar }: { openSideBar: boolean }) {
     <nav
       id='sidebar'
       className={`
-          ${openSideBar ? 'max-[1024px]:w-80 max-[1024px]:border-neutral-400 w-100 border-r-2' : 'w-0'}
+          ${openSideBar ? 'max-[1024px]:w-80 max-[392px]:w-60 max-[1024px]:border-neutral-400 w-100 border-r-2' : 'w-0'}
           max-[1024px]:absolute max-[1024px]:z-2
           h-screen border-transparent bg-neutral-600 flex flex-col justify-start items-center relative transition-all
         `}
@@ -24,7 +24,7 @@ export default function SideBarNav({ openSideBar }: { openSideBar: boolean }) {
         exit={{ opacity: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
         href='/dashboard'
-        className={`${openSideBar ? 'flex' : 'hidden'} justify-between items-center mt-2 p-2 w-11/12 rounded-md transition-all duration-150 hover:cursor-pointer hover:bg-neutral-800`}
+        className={`${openSideBar ? 'flex' : 'hidden'} justify-between items-center mt-6 p-2 w-11/12 rounded-md transition-all duration-150 hover:cursor-pointer hover:bg-neutral-800`}
       >
         Dashboard
         <House strokeWidth={1.5} />
@@ -56,7 +56,7 @@ export default function SideBarNav({ openSideBar }: { openSideBar: boolean }) {
 
       <motion.form
         action={async () => await signUserOut()}
-        className='absolute bottom-2 w-full'
+        className='absolute bottom-6 w-full'
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
