@@ -1,12 +1,16 @@
 'use client';
 
-import { signUserOut } from '../../actions/auth';
+import { signUserOut } from '@/app/actions/auth';
 import { Power } from 'lucide-react';
 import React from 'react';
-import NavLinks from './nav-links';
 
-export default function SideBarNav({ openSideBar }: { openSideBar: boolean }) {
-
+export default function SideBarNav({
+  openSideBar,
+  children,
+}: {
+  openSideBar: boolean;
+  children: React.ReactNode;
+}) {
   return (
     <nav
       id='sidebar'
@@ -17,7 +21,7 @@ export default function SideBarNav({ openSideBar }: { openSideBar: boolean }) {
         `}
     >
       
-      <NavLinks openSideBar={openSideBar} />
+      {children}
 
       <form
         onSubmit={async (e: React.FormEvent<HTMLFormElement>) => {
@@ -26,12 +30,14 @@ export default function SideBarNav({ openSideBar }: { openSideBar: boolean }) {
         }}
         id='signOutForm'
         className={`
-          absolute bottom-6 w-full
-          ${openSideBar ? 'flex items-center justify-center' : 'hidden'}
+          absolute bottom-6 w-full transition-all ease-in
+          ${openSideBar ? 'flex items-center justify-center opacity-100' : 'opacity-0'}
         `}
       >
         <button
-          className={`${openSideBar ? 'opacity-100' : 'opacity-0'} flex items-center justify-between p-2 text-center text-lg w-11/12 rounded-md bg-transparent text-white hover:cursor-pointer hover:bg-neutral-800 transition-all duration-300 mt-2`}
+          className={`${openSideBar ? 'flex items-center justify-between' : 'hidden'} p-2 text-center text-lg w-11/12 rounded-md bg-transparent text-white hover:cursor-pointer hover:bg-neutral-800 transition-all duration-300 mt-2`}
+          aria-label='sign-out-button'
+          id='sign-out-button'
         >
           Sign Out
           <Power className='ml-5' size={20} />

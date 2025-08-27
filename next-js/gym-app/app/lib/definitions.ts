@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { getUser } from '../actions/auth';
+import { Dispatch, RefObject, SetStateAction } from 'react';
 
 // zod schema to validade user input
 export const SignUpSchema = z
@@ -30,8 +31,9 @@ export const SignUpSchema = z
     message: `Passwords don't match`, // error message
     path: ['confirmPassword'], // where the error message will appear one
   })
-  .refine( // checks if email is already in use
-    async (data) => !await getUser(data.email),
+  .refine(
+    // checks if email is already in use
+    async (data) => !(await getUser(data.email)),
     {
       message: 'Email already in use',
       path: ['email'],
@@ -52,9 +54,46 @@ export type FormState = {
 
 // user type
 export type User = {
-  id: string;
   firstname: string;
   lastname: string;
   email: string;
+  has_diet_plan: boolean;
+  has_workout_plan: boolean;
+  id: string;
   password: string;
 };
+
+// db message type
+export type Message = {
+  sent_date: string;
+  message_content: string;
+  conversation_id: string;
+  role: 'user' | 'ai';
+};
+
+// db conversation type
+export type Conversation = {
+  id: string;
+  title: string;
+  last_message_date: string;
+  created_date: string;
+  user_id: string;
+};
+
+// context API type created on chat-structure.tsx
+export type aiChatContextType = {
+  response: string;
+  setResponse: Dispatch<SetStateAction<string>>;
+  chatPanelRef: RefObject<HTMLDivElement | null>;
+  user: User | undefined;
+  conversation: Conversation | null;
+  messages: Message[] | [];
+};
+
+// this is used to tell the type of the objects
+// included in the conversation history array
+export type aiChatHistoryType = {
+  messageContent: string;
+  sentDate: string;
+  role: string;
+}[];

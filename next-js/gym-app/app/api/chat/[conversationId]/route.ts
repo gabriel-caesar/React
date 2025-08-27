@@ -9,7 +9,9 @@ const apiKey = process.env.OPENAI_API_KEY;
 // instantiating a new OpenAI Client
 const openai = new OpenAI({ apiKey: apiKey });
 
-export async function POST(req: Request) {
+export async function POST(req: Request, { params }: { params: Promise<{ conversationId: string }> }) {
   // handles the request for the conversation
-  return await handleRequest(req, openai, '');
+  const { conversationId } = await params;
+
+  return await handleRequest(req, openai, conversationId);
 }

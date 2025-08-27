@@ -63,8 +63,8 @@ export async function signup(state: FormState | undefined, formData: FormData) {
 export async function getUser(email: string): Promise<User | undefined> {
   try {
     const user = await sql<User[]>`
-    SELECT * FROM users
-    WHERE email=${email}
+    SELECT firstname, lastname, email, has_diet_plan, has_workout_plan, password, id FROM users
+    WHERE email=${email};
     `;
 
     return user[0];

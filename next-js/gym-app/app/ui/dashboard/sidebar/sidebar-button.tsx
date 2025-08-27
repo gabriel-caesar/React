@@ -15,9 +15,10 @@ export default function SideBarButton({
       id='three-bars-menu'
       onClick={() => setOpenSideBarAction(!openSideBar)}
       className={`
+        ${openSideBar ? 'max-[1024px]:bg-red-400 max-[1024px]:hover:bg-red-700 rounded-md px-2' : ''}
         ${openSideBar ? 'max-[1024px]:left-79 max-[392px]:left-58 max-[1024px]:-top-2.5' : 'max-[1024px]:left-1 max-[1024px]:-top-2.5'}
-        flex justify-center items-center flex-col ml-3 mt-3 w-8 h-10 hover:cursor-pointer hover:opacity-50 rounded-md transition-all duration-150
-        max-[1024px]:absolute 
+        flex justify-center items-center flex-col ml-3 mt-3 w-8 h-10 hover:cursor-pointer rounded-md transition-all duration-150 z-2
+        max-[1024px]:absolute min-[1024px]:hover:opacity-50
       `}
     >
       <motion.div
