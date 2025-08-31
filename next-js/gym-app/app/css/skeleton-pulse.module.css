@@ -1,0 +1,36 @@
+.shimmer_red {
+  animation: 2s infinite 0s pulse-red
+}
+.shimmer_black {
+  animation: 2s infinite 0s pulse-black
+}
+.shimmer_gray {
+  animation: 2s infinite 0s pulse-gray
+}
+.shimmer_gray_block {
+  animation: 2s infinite 0s pulse-gray-block
+}
+
+@keyframes pulse-red {
+  0% {background-color: var(--energy-red)}
+  50% {background-color: #ff6b77}
+  100% {background-color: var(--energy-red)}
+}
+
+@keyframes pulse-black {
+  0% {background-color: #3c3c3c}
+  50% {background-color: var(--jet-black)}
+  100% {background-color: #3c3c3c}
+}
+
+@keyframes pulse-gray {
+  0% {background-color: #525252}
+  50% {background-color: #7f7f7f}
+  100% {background-color: #525252}
+}
+
+@keyframes pulse-gray-block {
+  0% {background-color: #262626}
+  50% {background-color: #3c3c3c}
+  100% {background-color: #262626}
+}

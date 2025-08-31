@@ -41,6 +41,7 @@ export default async function Page({ params }: { params: Promise<{ conversationI
       className='flex flex-col items-center justify-center h-screen w-full overflow-hidden'
     >
       <ChatStructure user={user} conversation={conversation} messages={messages} />
+      {/* <ChatStructureSkeleton /> */}
     </div>
   );
 }

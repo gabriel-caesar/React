@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useState, useRef, useEffect } from 'react';
+import { createContext, useState, useRef } from 'react';
 import InputForm from './input-form';
 import Panel from './panel';
 import {

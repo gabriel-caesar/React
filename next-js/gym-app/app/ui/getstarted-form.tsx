@@ -1,19 +1,14 @@
 'use client';
 
 import { Lock, LockKeyhole, Mail, UserCog, UserLock } from 'lucide-react';
-import { AnimatePresence, motion } from 'motion/react';
-import { signup } from '../actions/auth';
 import { useActionState, useState } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
+import { FormState } from '../lib/definitions';
+import { signup } from '../actions/auth';
 import '../css/globals.css';
 
 export default function GetStartedForm() {
-  // states to persist data if validation is refused
-  const [fName, setFName] = useState('');
-  const [lName, setLName] = useState('');
-  const [email, setEmail] = useState('');
-  const [pass, setPass] = useState('');
-  const [confirmPass, setConfirmPass] = useState('');
-
+  
   // state === error/feedback state
   // action === signup
   // pending === action being loaded after submitted
@@ -21,6 +16,7 @@ export default function GetStartedForm() {
 
   return (
     <form
+      aria-label='register-form'
       className='my-10 w-[462px] max-[500px]:w-11/12 flex flex-col justify-center items-center rounded-md bg-neutral-800 p-6 border-red-400 border-1 shadow-st'
       action={action}
     >
@@ -28,12 +24,44 @@ export default function GetStartedForm() {
         A new self, reborn
       </h1>
 
+      <Inputs state={state!} />
+
+      <motion.button
+        aria-label='register-button'
+        className='text-center rounded-md text-2xl w-50 p-2 bg-white text-black hover:cursor-pointer'
+        id='next-btn'
+        whileHover={{
+          scale: 1.1,
+          color: '#E63946',
+          boxShadow: `0 0 20px 2px #E63946`,
+        }}
+        whileTap={{ scale: 1.05 }}
+        disabled={pending}
+        data-testid='next-btn'
+      >
+        Register
+      </motion.button>
+    </form>
+  );
+}
+
+function Inputs({ state }: { state: FormState }) {
+
+  // states to persist data if validation is refused
+  const [fName, setFName] = useState('');
+  const [lName, setLName] = useState('');
+  const [email, setEmail] = useState('');
+  const [pass, setPass] = useState('');
+  const [confirmPass, setConfirmPass] = useState('');
+
+  return (
+    <>
       <AnimatePresence>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          transition={{ duration: 0.5, delay: 0 }}
           className='flex flex-col justify-center relative w-full mb-5'
         >
           <label className='font-light' htmlFor='firstName'>
@@ -41,7 +69,7 @@ export default function GetStartedForm() {
           </label>
 
           <input
-            aria-label='first-name'
+            aria-label='first-name-input-field'
             className='bg-white rounded-sm w-full p-2 pr-12 text-xl text-neutral-800 input-focus transition-all duration-300'
             id='firstName'
             name='firstName'
@@ -57,7 +85,9 @@ export default function GetStartedForm() {
             strokeWidth={1}
           />
           {state?.errors?.firstName && (
-            <p className='text-red-500' data-testid='first-name-error'>* {state?.errors?.firstName}</p>
+            <p className='text-red-500' data-testid='first-name-error'>
+              * {state?.errors?.firstName}
+            </p>
           )}
         </motion.div>
       </AnimatePresence>
@@ -67,7 +97,7 @@ export default function GetStartedForm() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
           className='flex flex-col justify-center w-full relative mb-5'
         >
           <label className='font-light' htmlFor='lastName'>
@@ -75,7 +105,7 @@ export default function GetStartedForm() {
           </label>
 
           <input
-          aria-label='last-name'
+            aria-label='last-name-input-field'
             className='bg-white rounded-sm w-full p-2 pr-12 text-xl text-neutral-800 input-focus transition-all duration-300'
             id='lastName'
             name='lastName'
@@ -91,7 +121,9 @@ export default function GetStartedForm() {
             strokeWidth={1}
           />
           {state?.errors?.lastName && (
-            <p className='text-red-500' data-testid='last-name-error'>* {state?.errors?.lastName}</p>
+            <p className='text-red-500' data-testid='last-name-error'>
+              * {state?.errors?.lastName}
+            </p>
           )}
         </motion.div>
       </AnimatePresence>
@@ -101,7 +133,7 @@ export default function GetStartedForm() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
           className='flex flex-col justify-center w-full relative mb-5'
         >
           <label htmlFor='email' className='font-light'>
@@ -109,7 +141,7 @@ export default function GetStartedForm() {
           </label>
 
           <input
-            aria-label='email-address'
+            aria-label='email-address-input-field'
             type='email'
             id='email'
             name='email'
@@ -126,7 +158,9 @@ export default function GetStartedForm() {
           />
 
           {state?.errors?.email && (
-            <p className='text-red-500' data-testid='email-error'>* {state?.errors?.email}</p>
+            <p className='text-red-500' data-testid='email-error'>
+              * {state?.errors?.email}
+            </p>
           )}
         </motion.div>
       </AnimatePresence>
@@ -136,7 +170,7 @@ export default function GetStartedForm() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.5, delay: 0.8 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
           className='flex flex-col justify-center w-full relative mb-5'
         >
           <label htmlFor='pass' className='font-light'>
@@ -144,7 +178,7 @@ export default function GetStartedForm() {
           </label>
 
           <input
-            aria-label='password'
+            aria-label='password-input-field'
             type='password'
             id='pass'
             name='pass'
@@ -176,7 +210,7 @@ export default function GetStartedForm() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.5, delay: 1 }}
+          transition={{ duration: 0.5, delay: 0.8 }}
           className='flex flex-col justify-center w-full relative mb-10'
         >
           <label htmlFor='confirmPass' className='font-light'>
@@ -184,7 +218,7 @@ export default function GetStartedForm() {
           </label>
 
           <input
-            aria-label='confirm-password'
+            aria-label='confirm-password-input-field'
             type='password'
             id='confirmPass'
             name='confirmPass'
@@ -202,7 +236,11 @@ export default function GetStartedForm() {
           {state?.errors?.confirmPassword && (
             <div>
               {state?.errors?.confirmPassword.map((x) => (
-                <p key={x} className='text-red-500' data-testid='confirm-pass-error'>
+                <p
+                  key={x}
+                  className='text-red-500'
+                  data-testid='confirm-pass-error'
+                >
                   * {x}
                 </p>
               ))}
@@ -210,21 +248,6 @@ export default function GetStartedForm() {
           )}
         </motion.div>
       </AnimatePresence>
-
-      <motion.button
-        className='text-center rounded-md text-2xl w-50 p-2 bg-white text-black hover:cursor-pointer'
-        id='next-btn'
-        whileHover={{
-          scale: 1.1,
-          color: '#E63946',
-          boxShadow: `0 0 20px 2px #E63946`,
-        }}
-        whileTap={{ scale: 1.05 }}
-        disabled={pending}
-        data-testid='next-btn'
-      >
-        Register
-      </motion.button>
-    </form>
+    </>
   );
 }

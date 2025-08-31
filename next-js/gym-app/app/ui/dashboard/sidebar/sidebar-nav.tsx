@@ -15,12 +15,11 @@ export default function SideBarNav({
     <nav
       id='sidebar'
       className={`
-          ${openSideBar ? 'max-[1024px]:w-80 max-[392px]:w-60 max-[1024px]:border-neutral-400 w-100 border-r-2' : 'w-0'}
+          ${openSideBar ? 'max-[1024px]:w-80 max-[392px]:w-60 max-[1024px]:border-neutral-400 w-100 border-r-2' : 'w-0 -z-2'}
           max-[1024px]:absolute max-[1024px]:z-2
           h-screen border-transparent bg-neutral-600 flex flex-col justify-start items-center relative transition-all
         `}
     >
-      
       {children}
 
       <form
@@ -30,7 +29,7 @@ export default function SideBarNav({
         }}
         id='signOutForm'
         className={`
-          absolute bottom-6 w-full transition-all ease-in
+          absolute bottom-6 w-full transition-all duration-500 ease-in
           ${openSideBar ? 'flex items-center justify-center opacity-100' : 'opacity-0'}
         `}
       >
