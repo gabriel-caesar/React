@@ -1,0 +1,20 @@
+{
+	"nodes":[
+		{"id":"fb17c6002889e7a1","type":"text","text":"User/AI sends message","x":-140,"y":-740,"width":250,"height":60},
+		{"id":"d853e583ede189b4","type":"text","text":"localStorage() if not **Valuable**","x":-159,"y":-300,"width":288,"height":60},
+		{"id":"2c49bcbd1232f020","type":"text","text":"## **MESSAGES**","x":-115,"y":-460,"width":200,"height":58,"color":"3"},
+		{"id":"16cf89c03af8549e","type":"text","text":"if **Valuable Conversation**","x":-140,"y":-140,"width":250,"height":60,"color":"5"},
+		{"id":"ab21f79d429527fd","type":"text","text":"## **CONVERSATIONS**","x":-140,"y":280,"width":280,"height":57,"color":"5"},
+		{"id":"22f804648909d658","type":"text","text":"Creates an user_id for Conversation row","x":-520,"y":-140,"width":236,"height":60},
+		{"id":"374c34ebceab1a4a","type":"text","text":"Creates a conversation_id\nfor messages row","x":240,"y":-140,"width":250,"height":60}
+	],
+	"edges":[
+		{"id":"95c0f3fbdc8d853c","fromNode":"fb17c6002889e7a1","fromSide":"bottom","toNode":"2c49bcbd1232f020","toSide":"top"},
+		{"id":"fb98073ca90061b4","fromNode":"2c49bcbd1232f020","fromSide":"bottom","toNode":"d853e583ede189b4","toSide":"top"},
+		{"id":"2a9664ba3a0ca649","fromNode":"d853e583ede189b4","fromSide":"bottom","toNode":"16cf89c03af8549e","toSide":"top"},
+		{"id":"06dad46d2ca8a781","fromNode":"374c34ebceab1a4a","fromSide":"bottom","toNode":"ab21f79d429527fd","toSide":"top"},
+		{"id":"241e0101b09368ce","fromNode":"16cf89c03af8549e","fromSide":"right","toNode":"374c34ebceab1a4a","toSide":"left"},
+		{"id":"6f86732f5d8fb813","fromNode":"22f804648909d658","fromSide":"bottom","toNode":"ab21f79d429527fd","toSide":"top"},
+		{"id":"769c24a15343fadb","fromNode":"16cf89c03af8549e","fromSide":"left","toNode":"22f804648909d658","toSide":"right"}
+	]
+}
