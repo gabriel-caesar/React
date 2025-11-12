@@ -1,13 +1,13 @@
 .diagonal::before {
   content: "";
   position: absolute;
-  top: 0;
+  top: 0%;
   left: -1%;
   width: 100%;
   height: 100%;
   background: var(--jet-black);
   clip-path: polygon(0 0, 100% 0%, 100% -10%, 0% 100%);
-  z-index: 1;
+  z-index: -1;
 }
 
 .shadow_custom_white {
@@ -16,7 +16,7 @@
 
 .diversus_lettering {
   font-family: 'Orbitron';
-  letter-spacing: 1rem;
+  letter-spacing: 0.5rem
 }
 
 .get_started_colors {
@@ -27,10 +27,4 @@
 .login_button_colors {
   color: var(--clean-white);
   background-color: var(--energy-red);
-}
-
-@media (max-width: 1300px) {
-  .gym_wrapper {
-    opacity: 0.1;
-  }
 }

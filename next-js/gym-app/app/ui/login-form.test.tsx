@@ -1,9 +1,8 @@
 // replacing the auth import to avoid crashing
-// when Jest wants to pull data from 'node_modelus/next-auth'
-jest.mock('../../auth', () => ({
+// when Jest wants to pull data from 'node_modules/next-auth'
+jest.mock('../actions/auth', () => ({
   authenticate: jest.fn((prevState, _formData) => {
-    prevState = 'Invalid credentials.'; // to test invalid credentials
-    return prevState;
+    return 'Invalid credentials.'; // to test invalid credentials
   }),
 }));
 
@@ -53,4 +52,13 @@ describe('LoginForm', () => {
     // tests that return a successful authentication will be done with E2E testing
 
   });
+
+  it('renders the get started button and checks for the right href', async () => {
+    const getStartedButton = screen.getByRole('link', { name: 'Get Started' });
+    
+    expect(getStartedButton).toBeInTheDocument();
+
+    // since it is a Link component, we just check if it passes the right href (unit test)
+    expect(getStartedButton).toHaveAttribute('href', '/get-started');
+  })
 });

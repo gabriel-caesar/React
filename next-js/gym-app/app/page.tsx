@@ -17,48 +17,51 @@ export default function Home() {
   const MotionLink = motion.create(Link);
 
   return (
-    <div className='flex justify-center items-center h-screen antialiased'>
-      <div className={`absolute top-10 left-10 w-40 h-40 rounded-full ${styles.shadow_custom_white}`}>
-        <Image
-          src='/logo_clean_white.png'
-          alt='brand-logo'
-          id='logo-img'
-          className='w-full absolute -top-1.5'
-          width={500}
-          height={500}
-        />
-      </div>
+    <div className={`${styles.diagonal} w-full flex justify-start items-start h-screen relative antialiased overflow-hidden p-6`}>
 
       <div 
-        className={`${styles.diagonal} ${styles.gym_wrapper} absolute right-0 w-260 -z-1 max-[530px]:top-45`} 
-        id='gym-wrapper'
+        className={`${styles.gym_wrapper} absolute right-0 w-full h-screen opacity-50 -z-2`} 
+        id='gym-photo-wrapper'
       >
-        <Image
+        <img
           src='/home-page-gym-photo.jpg'
           alt='gym-photo'
           id='gym-photo'
-          priority={true}
-          width={1100}
-          height={1100}
+          className='object-cover w-full h-screen'
         />
       </div>
 
-      <main className='absolute [@media(max-height:668px)]:mt-40 max-[530px]:static max-[530px]:w-3/4 flex flex-col left-10 mt-20'>
+      <main className='w-full flex flex-col'>
+
+        <div className={`w-20 h-20 md:w-30 md:h-30 rounded-full relative mb-4 xl:mb-10 ${styles.shadow_custom_white}`} id='logo-image-wrapper'>
+          <Image
+            src='/logo_clean_white.png'
+            alt='brand-logo'
+            id='logo-img'
+            className='object-cover'
+            fill
+          />
+        </div>
+
         <h2
           id='diversus-lettering'
-          className={`text-3xl border-b-2 text-center w-66 mb-15 ${orbitron.className} ${styles.diversus_lettering}`}
+          className={`border-b-2 text-center w-fit mb-15 lg:text-xl xl:text-3xl ${orbitron.className} ${styles.diversus_lettering}`}
         >
           Diversus
         </h2>
-        <h1 className='text-3xl font-bold'>
-          AI-Personalized Fitness & Nutrition Platform
-        </h1>
-        <p className='text-red-400' data-testid='brandnewself'>&quot;A brand new self, reborn&quot;</p>
 
-        <div className='flex w-115 justify-between items-center max-[530px]:flex-col max-[530px]:items-start'>
+        <div className='border-1 border-neutral-300 lg:text-xl xl:text-3xl rounded-lg w-fit p-2 backdrop-blur-2xl flex items-center justify-center' id='desc-header-wrapper'>
+          <h1 className='text-md font-bold text-center' id='desc-header'>
+            AI-Personalized Fitness & Nutrition Platform
+          </h1>
+        </div>
+
+        <p className='text-red-400 xl:text-xl' data-testid='brandnewself'>&quot;A brand new self, reborn&quot;</p>
+
+        <div className='flex flex-col justify-between items-start'>
           <MotionLink
             href='/get-started'
-            className={`${styles.get_started_colors} text-center rounded-md text-2xl mt-10 w-50 p-2 hover:cursor-pointer`}
+            className={`${styles.get_started_colors} xl:w-70 text-center rounded-md text-2xl mt-10 w-50 p-2 hover:cursor-pointer`}
             id='get-started-btn'
             whileHover={{
               scale: 1.1,
@@ -71,7 +74,7 @@ export default function Home() {
           </MotionLink>
           <MotionLink
             href='/login'
-            className={`text-center rounded-md text-2xl mt-10 w-50 p-2 hover:cursor-pointer ${styles.login_button_colors}`}
+            className={`xl:w-70 text-center rounded-md text-2xl mt-10 w-50 p-2 hover:cursor-pointer ${styles.login_button_colors}`}
             id='login-btn'
             whileHover={{
               scale: 1.1,
@@ -83,11 +86,12 @@ export default function Home() {
             Log In
           </MotionLink>
         </div>
+
+        <p id='copyright' data-testid='copyright' className='absolute bottom-0 text-center'>
+          © 2025 Gabriel Cezar — All rights reserved.
+        </p>
       </main>
 
-      <p id='copyright' data-testid='copyright' className='absolute bottom-0 left-10'>
-        © 2025 Gabriel Cezar — All rights reserved.
-      </p>
     </div>
   );
 }

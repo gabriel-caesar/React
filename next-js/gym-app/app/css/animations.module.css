@@ -1,0 +1,28 @@
+/* loading spinner */
+.loading {
+  animation: loading 1s linear infinite;
+}
+
+/* when input validation didnt go through */
+.wiggle_input {
+  animation: wiggle 0.5s linear;
+}
+
+/* loading animation */
+@keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* when input validation didnt go through */
+@keyframes wiggle {
+  0%   { transform: translateX(0); }
+  25%  { transform: translateX(-1%); }
+  50%  { transform: translateX(1%); }
+  75%  { transform: translateX(-1%); }
+  100% { transform: translateX(0); }
+}

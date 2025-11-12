@@ -1,11 +1,13 @@
 'use client';
 
 import { AnimatePresence, motion } from 'motion/react';
-import { useActionState, useState } from 'react';
+import { useActionState, useEffect, useState } from 'react';
 import { authenticate } from '../actions/auth';
 import { useSearchParams } from 'next/navigation';
 import { Metadata } from 'next';
-import { X } from 'lucide-react';
+import { Loader2, X } from 'lucide-react';
+import Link from 'next/link';
+import styles from '../css/animations.module.css'
  
 export const metadata: Metadata = {
   title: 'Login',
@@ -23,10 +25,24 @@ export default function LoginForm() {
   const justRegistered = searchParams.get('registered');
   const loginAfterRegister = justRegistered;
 
+  // wiggle wrong input
+  const [wiggle, setWiggle] = useState(false);
+
   const [errorMessage, formAction, isPending] = useActionState(
     authenticate,
     undefined
   );
+
+  // wrapping motion with Link
+  const MotionLink = motion.create(Link);
+
+  // resets the wiggle animation for every wrong submission
+  useEffect(() => {
+    if (errorMessage) {
+      setWiggle(false);
+      requestAnimationFrame(() => setWiggle(true)); // restart animation
+    }
+  }, [errorMessage]);
 
   return (
     <form
@@ -103,7 +119,7 @@ export default function LoginForm() {
       </AnimatePresence>
 
       <div
-        className='flex h-8 items-end space-x-1 mb-10'
+        className={`${wiggle && styles.wiggle_input} flex h-8 items-end space-x-1 mb-10`}
         aria-live='polite'
         aria-atomic='true'
       >
@@ -113,7 +129,10 @@ export default function LoginForm() {
       <input type="hidden" name="redirectTo" value={callbackUrl} />
 
       <motion.button
-        className='text-center rounded-md text-2xl w-50 p-2 bg-white text-black hover:cursor-pointer'
+        className={`
+          ${isPending ? 'bg-neutral-600 text-white' : 'bg-white text-black'}
+          text-center flex items-center justify-center rounded-md text-2xl w-50 p-2 hover:cursor-pointer
+        `}
         id='login-button'
         whileHover={{
           scale: 1.1,
@@ -124,8 +143,24 @@ export default function LoginForm() {
         aria-disabled={isPending}
         type='submit'
       >
-        Log In
+        {isPending ? <><Loader2 className={`${styles.loading} mr-2`} /> Logging in...</> : 'Log In'}
       </motion.button>
+
+      <MotionLink
+        className={`${isPending && 'hidden'} text-center rounded-md text-2xl w-50 p-2 bg-red-500 text-white hover:cursor-pointer mt-6`}
+        id='get-started-button'
+        whileHover={{
+          scale: 1.1,
+          color: '#E63946',
+          boxShadow: `0 0 20px 2px #E63946`,
+        }}
+        whileTap={{ scale: 1.05 }}
+        aria-disabled={isPending}
+        type='button'
+        href={isPending ? '#' : '/get-started'}
+      >
+        Get Started
+      </MotionLink>
 
     </form>
   );
