@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function GetStarted() {
   return (
-    <div className='h-screen flex justify-center items-center w-full'>
+    <div className='flex justify-center items-start w-full'>
       <GetStartedForm />
     </div>
   )

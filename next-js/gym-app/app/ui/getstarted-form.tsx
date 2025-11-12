@@ -5,7 +5,6 @@ import { useActionState, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { FormState } from '../lib/definitions';
 import { signup } from '../actions/auth';
-import '../css/globals.css';
 
 export default function GetStartedForm() {
   
@@ -17,7 +16,7 @@ export default function GetStartedForm() {
   return (
     <form
       aria-label='register-form'
-      className='my-10 w-[462px] max-[500px]:w-11/12 flex flex-col justify-center items-center rounded-md bg-neutral-800 p-6 border-red-400 border-1 shadow-st'
+      className='my-10 lg:w-1/2 xl:w-1/4 w-11/12 flex flex-col justify-center items-center rounded-md bg-neutral-800 p-6 border-red-400 border-1 shadow-st'
       action={action}
     >
       <h1 className='font-light text-2xl text-center mb-10 border-b-1 border-red-400'>
@@ -28,11 +27,10 @@ export default function GetStartedForm() {
 
       <motion.button
         aria-label='register-button'
-        className='text-center rounded-md text-2xl w-50 p-2 bg-white text-black hover:cursor-pointer'
+        className='text-center rounded-md text-2xl w-50 p-2 bg-red-500 text-white hover:cursor-pointer active:brightness-50 transition-all'
         id='next-btn'
         whileHover={{
           scale: 1.1,
-          color: '#E63946',
           boxShadow: `0 0 20px 2px #E63946`,
         }}
         whileTap={{ scale: 1.05 }}
