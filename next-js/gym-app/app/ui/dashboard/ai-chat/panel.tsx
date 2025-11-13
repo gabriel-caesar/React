@@ -16,13 +16,7 @@ import {
 import { usePathname } from 'next/navigation';
 import { Button } from './button';
 
-export default function Panel({
-  hasDiet,
-  hasWorkout,
-}: {
-  hasDiet: boolean | undefined;
-  hasWorkout: boolean | undefined;
-}) {
+export default function Panel() {
   // safely checking if context is actually passed right
   function useAIChatContext() {
     const context = useContext(aiChatContext);
@@ -119,26 +113,8 @@ export default function Panel({
         id='greeting-ai-chat-bubble'
         ref={greetingParagrah}
       >
-        {!hasDiet && !hasWorkout
-          ? `Hello ${user?.firstname}, what plan are we working on today? Workout or Diet?`
-          : !hasDiet && hasWorkout
-            ? `Saw that you already created one wokout plan, congrats! Now let's create your diet plan.`
-            : hasDiet && !hasWorkout
-              ? `Saw that you already created one diet plan, congrats! Now let's move on to your workout plan!`
-              : `Hello ${user?.firstname}, what can I help you with today?`}
+        Hello {user?.firstname}, to get started you can tell me what are your fitness goals and I will help you achieve it, but that needs to be essentially something related to either workout or a diet.
       </p>
-      <div
-        aria-label='plans-selection-container'
-        className='bg-neutral-600 rounded-md p-2 w-fit mt-6'
-      >
-        <p className='mb-2'>Choose one of the following to get started:</p>
-        {!hasDiet && !hasWorkout && (
-          <div className='flex justify-center items-center'>
-            <Button text='Workout' className='mr-2' />
-            <Button text='Diet' className='' />
-          </div>
-        )}
-      </div>
     </div>
   );
 }

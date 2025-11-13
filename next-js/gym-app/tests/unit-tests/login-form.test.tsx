@@ -1,6 +1,6 @@
 // replacing the auth import to avoid crashing
 // when Jest wants to pull data from 'node_modules/next-auth'
-jest.mock('../actions/auth', () => ({
+jest.mock('../../app/actions/auth', () => ({
   authenticate: jest.fn((prevState, _formData) => {
     return 'Invalid credentials.'; // to test invalid credentials
   }),
@@ -15,7 +15,7 @@ jest.mock('next/navigation', () => ({
 
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import LoginForm from './login-form';
+import LoginForm from '../../app/ui/login-form';
 import '@testing-library/jest-dom';
 
 // testing the login form component

@@ -35,12 +35,6 @@ export default function ChatStructure({
     messages
   };
 
-   // user flags
-  const hasDiet = user?.has_diet_plan;
-  const hasWorkout = user?.has_workout_plan;
-
-
-
   return (
     <aiChatContext.Provider value={values}>
       <h1
@@ -54,7 +48,7 @@ export default function ChatStructure({
       >
         {conversation?.title ? conversation?.title : 'Welcome'}
       </h1>
-      <Panel hasDiet={hasDiet} hasWorkout={hasWorkout} />
+      <Panel />
       <InputForm />
     </aiChatContext.Provider>
   );

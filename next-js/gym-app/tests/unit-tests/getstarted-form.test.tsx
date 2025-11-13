@@ -1,5 +1,5 @@
 // mocking signup function
-jest.mock('../../auth', () => ({
+jest.mock('../../app/actions/auth', () => ({
   signup: jest.fn(async (_state: FormState | undefined, _formData: FormData) => {
     // receiving empty fields on purpose
     const validatedFields = await SignUpSchema.safeParseAsync({
@@ -23,11 +23,11 @@ jest.mock('../../auth', () => ({
   ),
 }));
 
+import { FormState, SignUpSchema, User } from '../../app/lib/definitions';
 import { render, screen } from '@testing-library/react';
+import GetStartedForm from '../../app/ui/getstarted-form';
 import userEvent from '@testing-library/user-event';
-import GetStartedForm from './getstarted-form';
 import '@testing-library/jest-dom';
-import { FormState, SignUpSchema, User } from '../lib/definitions';
 
 describe('Get Started Form', () => {
   const user = userEvent.setup();
@@ -53,7 +53,7 @@ describe('Get Started Form', () => {
   });
 
   it('checks for invalid feedback', async () => {
-    const registerButton = screen.getByRole('button', { name: 'Register' });
+    const registerButton = screen.getByRole('button', { name: 'register-button' });
 
     expect(registerButton).toBeInTheDocument();
 
