@@ -14,7 +14,6 @@ import {
   createUserChatBubble,
 } from '@/app/actions/frontend-ui/ai-chat';
 import { usePathname } from 'next/navigation';
-import { Button } from './button';
 
 export default function Panel() {
   // safely checking if context is actually passed right
@@ -97,6 +96,7 @@ export default function Panel() {
     <div
       ref={chatPanelRef}
       aria-label='chat-panel'
+      data-testid='chat-panel'
       id='chat-panel'
       style={{
         marginTop: chatPanelMargin + 'px',
@@ -111,6 +111,7 @@ export default function Panel() {
         aria-label='ai-chat-bubble'
         className='text-md bg-neutral-600 rounded-md p-2 text-start w-fit max-w-full h-fit overflow-auto'
         id='greeting-ai-chat-bubble'
+        data-testid='greeting-ai-chat-bubble'
         ref={greetingParagrah}
       >
         Hello {user?.firstname}, to get started you can tell me what are your fitness goals and I will help you achieve it, but that needs to be essentially something related to either workout or a diet.

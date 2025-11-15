@@ -1,8 +1,6 @@
 import { test, expect } from '@playwright/test';
 import postgres from 'postgres';
 
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
-
 test.describe('Get Started Form', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/get-started');

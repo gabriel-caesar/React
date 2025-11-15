@@ -61,15 +61,17 @@ export default function InputForm() {
         setEndpoint(url);
       }}
       className={`
-            max-[1024px]:w-11/12
-            flex items-center justify-center mb-2 w-3/4 rounded-lg bg-neutral-600 relative 
-            ${styles.regular_shadow}
-          `}
+        max-[1024px]:w-11/12
+        flex items-center justify-center mb-2 w-3/4 rounded-lg bg-neutral-600 relative 
+        ${styles.regular_shadow}
+      `}
+      data-testid='input-form-test-id'
     >
       <textarea
         className={`${styles.scrollbar_textarea} bg-transparent focus-within:outline-none p-5 w-11/12 resize-none transition-all duration-300`}
         placeholder='Enter your message...'
         aria-label='user-input-field'
+        data-testid='user-input-field'
         value={prompt}
         onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
           setPrompt(e.target.value)
@@ -105,12 +107,13 @@ export default function InputForm() {
       <span className='mx-3'>
         <button
           aria-label='send-message-button'
+          data-testid='send-message-button'
           className={`rounded-full w-15 h-15 flex items-center justify-center hover:cursor-pointer hover:text-red-500 transition-all duration-300 ${isAIWriting ? 'bg-white' : 'bg-neutral-900'} ${styles.red_shadow}`}
         >
           {isAIWriting ? (
-            <X className='text-neutral-900' strokeWidth={2} size={30} />
+            <X data-testid='sending-prompt-icon' className='text-neutral-900' strokeWidth={2} size={30} />
           ) : (
-            <ArrowUp size={28} />
+            <ArrowUp data-testid='send-prompt-icon' size={28} />
           )}
         </button>
       </span>
