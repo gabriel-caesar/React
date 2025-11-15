@@ -32,6 +32,7 @@ export default function GetStartedForm() {
         whileHover={{
           scale: 1.1,
           boxShadow: `0 0 20px 2px #E63946`,
+          transition: { duration: 0.1 },
         }}
         whileTap={{ scale: 1.05 }}
         disabled={pending}

@@ -151,7 +151,6 @@ export default function LoginForm() {
         id='get-started-button'
         whileHover={{
           scale: 1.1,
-          color: '#E63946',
           boxShadow: `0 0 20px 2px #E63946`,
         }}
         whileTap={{ scale: 1.05 }}
