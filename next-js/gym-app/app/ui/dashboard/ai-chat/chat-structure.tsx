@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useState, useRef } from 'react';
+import { createContext, useState, useRef, useEffect } from 'react';
 import InputForm from './input-form';
 import Panel from './panel';
 import {
@@ -25,15 +25,22 @@ export default function ChatStructure({
   const [response, setResponse] = useState<string>('');
   // ref variable for the chat panel div element
   const chatPanelRef = useRef<HTMLDivElement | null>(null);
+  // local messages copy
+  const [localMessages, setLocalMessages] = useState<Message[]>(messages)
   // values object for the chat context
   const values = {
     response,
     setResponse,
+    localMessages,
+    setLocalMessages,
     chatPanelRef,
     user,
     conversation,
     messages
   };
+
+  // updating the local messages array with the db array of messages
+  useEffect(() => setLocalMessages(messages), [messages])
 
   return (
     <aiChatContext.Provider value={values}>

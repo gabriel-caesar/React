@@ -19,7 +19,7 @@ export default function InputForm() {
   }
 
   // context from chat-structure.tsx
-  const { response, setResponse, chatPanelRef, user, conversation } =
+  const { response, setResponse, setLocalMessages, localMessages, user, conversation } =
     useAIChatContext();
   // user's prompt
   const [prompt, setPrompt] = useState<string>('');
@@ -49,14 +49,15 @@ export default function InputForm() {
       onSubmit={async (e) => {
         const url = await submitPrompt(
           e,
+          setLocalMessages,
           setIsAIWriting,
           setResponse,
-          response,
-          chatPanelRef,
-          prompt,
           setPrompt,
+          conversation,
+          localMessages,
+          response,
+          prompt,
           user,
-          conversation
         );
         setEndpoint(url);
       }}
@@ -90,14 +91,15 @@ export default function InputForm() {
           ) {
             const url = await submitPrompt(
               e,
+              setLocalMessages,
               setIsAIWriting,
               setResponse,
-              response,
-              chatPanelRef,
-              prompt,
               setPrompt,
+              conversation,
+              localMessages,
+              response,
+              prompt,
               user,
-              conversation
             );
 
             setEndpoint(url);

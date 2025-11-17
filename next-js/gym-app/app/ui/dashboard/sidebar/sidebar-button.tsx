@@ -6,14 +6,20 @@ import { SetStateAction, Dispatch } from 'react';
 export default function SideBarButton({
   openSideBar,
   setOpenSideBarAction,
+  sideBarButtonRef,
 }: {
   openSideBar: boolean;
   setOpenSideBarAction: Dispatch<SetStateAction<boolean>>;
+  sideBarButtonRef: React.RefObject<HTMLButtonElement | null>
 }) {
   return (
     <button
+      ref={sideBarButtonRef}
       id='three-bars-menu'
-      onClick={() => setOpenSideBarAction(!openSideBar)}
+      onClick={(e) => {
+        e.stopPropagation();
+        setOpenSideBarAction(!openSideBar);
+      }}
       className={`
         ${openSideBar ? 'max-[1024px]:bg-red-400 max-[1024px]:hover:bg-red-700 rounded-md px-2' : ''}
         ${openSideBar ? 'max-[1024px]:left-79 max-[392px]:left-58 max-[1024px]:-top-2.5' : 'max-[1024px]:left-1 max-[1024px]:-top-2.5'}

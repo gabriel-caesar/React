@@ -21,42 +21,54 @@ export async function handleRequest(req: Request, openai: OpenAI, conversationId
   // all messages from the current conversation history
   const allMessages: aiChatHistoryType = []
   // instructions for the AI for it to parse the current conversation history
-  let instructionsForConversationHistory: string = '';
+  let conversationHistory: string = '';
+  // conversation title
+  let conversationTitle: string = '';
+
+  const conversationRules = `
+    Rule 1: You are an AI-powered fitness and diet planner in a web app with an 
+    interactive assistant guiding users through customizable workout and diet plans, you are Diversus.
+    Rule 2: Use Markdown language.
+    Rule 3: Write new lines as \n tags.
+    Rule 4: Always refer to the conversation history if provided as ordinary human would.
+    Rule 5: Call the user by its name ${user.firstname}.
+    Rule 6: Never send images.
+  `
 
   try {
-    // create a conversation title if the prompt context
-    // is valid and there is no valid conversation
-    const conversationTitle = await getConversationContext(prompt, openai, conversation);
+    if (conversation) {
+      // if there is a valid conversation, save the user message into it
+      await saveConversationData(conversation, date, prompt);
+    } else {
+      // trying to get a new conversation title
+      conversationTitle = await getConversationContext(prompt, openai, conversation);
 
-    // create a brand new conversation if there is no conversation
-    // and conversationTitle returns a valid title
-    if (!conversation && conversationTitle !== 'false') {
-      await createNewConversation(
-        date,
-        conversationTitle,
-        user,
-        prompt
-      );
+      // create a brand new conversation and insert the first user message into it if there is no conversation
+      if (!conversationTitle.match(/false/i)) {
+        await createNewConversation(
+          date,
+          conversationTitle,
+          user,
+          prompt
+        );
+      }
     }
 
-    // if there is a valid conversation and title returned false
-    if (conversation && conversationTitle === 'false') await saveConversationData(conversation, date, prompt);
-
     if (conversationId !== '') {
-      const conversationHistory = await sql<Message[]>`
+      // getting all messages from the current conversation
+      const conversationHistoryQuery = await sql<Message[]>`
         SELECT * FROM messages
         WHERE conversation_id = ${conversationId}
       `
       // sanitizing the conversation
       // history to only have valuable data 
-      conversationHistory.forEach(msg => {
+      conversationHistoryQuery.forEach(msg => {
         allMessages.push({ messageContent: msg.message_content, sentDate: msg.sent_date, role: msg.role })
       })
 
       // updating the instructions
-      instructionsForConversationHistory = `
-        Here is all you need to know for the current conversation.
-        This is the conversation history for you to talk with the user: ${JSON.stringify(conversationHistory)}.
+      conversationHistory = `
+        This is the conversation history: ${JSON.stringify(allMessages)}
       `
     }
  
@@ -65,11 +77,15 @@ export async function handleRequest(req: Request, openai: OpenAI, conversationId
       messages: [
         {
           role: 'system',
-          content: `You are an AI-powered fitness and diet planner in a web app with an interactive assistant guiding users through customizable workout and diet plans, you are Diversus (different in latin). Here is the user first name ${user?.firstname}`,
+          content: conversationRules,
+        },
+        {
+          role: 'assistant',
+          content: conversationHistory,
         },
         {
           role: 'user',
-          content: instructionsForConversationHistory + prompt,
+          content: prompt,
         },
       ],
       model: 'gpt-3.5-turbo',
@@ -110,23 +126,15 @@ export async function handleRequest(req: Request, openai: OpenAI, conversationId
 
 async function getConversationContext(prompt: string, openai: OpenAI, conversation: Conversation | null) {
   const instructions = `
-      Check if the user asked a valuable question or order:
-      Is the user asking something about building a plan or ordering you
-      to give valuable information about health or fitness?
-      Is it a relevant topic for fitness or health eating?
-      Is the question big enough for you to give the user a reasonable answer?
+      Rule 1: For every user message, check whether the message asks for a workout plan, diet guidance, health advice, fitness information, or any substantial topic related to well-being.
 
-      If you think the question satisfies these basic checks, create a title for
-      the conversation in order for me to save it to the db. The response should
-      be only the title WITH NO QUOTES and the token limit is 30 characters!
-      Else just output the text: 'false'
+      Rule 2: If the message is too short or trivial (greetings, weather, unrelated topics), it does not qualify.
 
-      User interactions that are not worth saving as conversations:
-      User greeting you.
-      Asking how the weather is.
-      Asking about other topics other than fitness and well-being.
+      Rule 3: If the message does not qualify, respond only with the text: false
 
-      FOLLOW THE USER PROMPT:\n
+      Rule 4: If the message does qualify, output a short conversation title with a maximum of 30 characters, plain text, no quotes, no formatting, and no additional content.
+
+      Rule 5: Do not use markdown, headings, or line breaks. Output only what Rule 3 or Rule 4 requires.
     `;
 
   try {
@@ -226,7 +234,21 @@ async function createNewConversation(
   console.log(
     `\n3. Updated the last_message_date column from the current conversation "${brandNewConversation[0].title}".\n`
   );
+}
 
-  // returning the brand new conversation object
-  // return brandNewConversation[0];
+// used to get conversations for nav links
+export async function getLatestConversations(id: string) {
+  try {
+
+    // querying for user conversations in order to to display them in nav-links.tsx
+    const userConversations = await sql<Conversation[]>`
+      SELECT * FROM conversations
+      WHERE user_id = ${id}
+    `
+
+    return userConversations
+
+  } catch (error) {
+    throw new Error(`Couldn't get the latest conversations. ${error}`)
+  }
 }

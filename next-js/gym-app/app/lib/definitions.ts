@@ -69,6 +69,7 @@ export type Message = {
   message_content: string;
   conversation_id: string;
   role: 'user' | 'ai';
+  id: string;
 };
 
 // db conversation type
@@ -86,6 +87,8 @@ export type aiChatContextType = {
   setResponse: Dispatch<SetStateAction<string>>;
   chatPanelRef: RefObject<HTMLDivElement | null>;
   user: User | undefined;
+  setLocalMessages: Dispatch<SetStateAction<Message[]>>;
+  localMessages: Message[];
   conversation: Conversation | null;
   messages: Message[] | [];
 };

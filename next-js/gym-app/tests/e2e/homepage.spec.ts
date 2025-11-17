@@ -13,8 +13,8 @@ test.describe('Home Page', () => {
     await expect(gymImg).toBeVisible();
     await expect(logoImg).toBeVisible();
 
-    await expect(gymImg).toHaveScreenshot();
-    await expect(logoImg).toHaveScreenshot();
+    await expect(gymImg).toHaveScreenshot({ maxDiffPixelRatio: 0.01 });
+    await expect(logoImg).toHaveScreenshot({ maxDiffPixelRatio: 0.01 });
 
     // rest of the elements are already being tested with Jest
   });

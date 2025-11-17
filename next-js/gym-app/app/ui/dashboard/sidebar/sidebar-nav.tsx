@@ -1,32 +1,39 @@
 'use client';
 
+import React, { useActionState } from 'react';
 import { signUserOut } from '@/app/actions/auth';
-import { Power } from 'lucide-react';
-import React from 'react';
+import { Loader2, Power } from 'lucide-react';
+import styles from '../../../css/animations.module.css';
 
 export default function SideBarNav({
   openSideBar,
   children,
+  sideBarNavRef,
 }: {
   openSideBar: boolean;
   children: React.ReactNode;
+  sideBarNavRef: React.RefObject<HTMLElement | null>;
 }) {
+  const [errorMessage, formAction, isPending] = useActionState(
+    signUserOut,
+    undefined
+  );
+
   return (
     <nav
+      ref={sideBarNavRef}
       id='sidebar'
       className={`
-          ${openSideBar ? 'max-[1024px]:w-80 max-[392px]:w-60 max-[1024px]:border-neutral-400 w-100 border-r-2' : 'w-0 -z-2'}
-          max-[1024px]:absolute max-[1024px]:z-2
+          ${openSideBar ? 'max-[1024px]:w-80 max-[392px]:w-60 max-[1024px]:border-neutral-400 w-100 border-r-2' : 'w-0'}
+          max-[1024px]:absolute z-2
           h-screen border-transparent bg-neutral-600 flex flex-col justify-start items-center relative transition-all
         `}
+      onClick={e => e.stopPropagation()}
     >
       {children}
 
       <form
-        onSubmit={async (e: React.FormEvent<HTMLFormElement>) => {
-          e.preventDefault();
-          await signUserOut();
-        }}
+        action={formAction}
         id='signOutForm'
         className={`
           absolute bottom-6 w-full transition-all duration-500 ease-in
@@ -34,12 +41,24 @@ export default function SideBarNav({
         `}
       >
         <button
-          className={`${openSideBar ? 'flex items-center justify-between' : 'hidden'} p-2 text-center text-lg w-11/12 rounded-md bg-transparent text-white hover:cursor-pointer hover:bg-neutral-800 transition-all duration-300 mt-2`}
+          className={`  
+            ${isPending ? 'bg-neutral-800' : 'bg-transparent'}
+            ${openSideBar ? 'flex items-center justify-between' : 'hidden'}
+             p-2 text-center text-lg w-11/12 rounded-md  text-white mt-2
+             hover:cursor-pointer hover:bg-neutral-800 transition-all duration-300 
+          `}
           aria-label='sign-out-button'
           id='sign-out-button'
         >
-          Sign Out
-          <Power className='ml-5' size={20} />
+          {isPending ? (
+            <>
+              Signing out... <Loader2 className={`${styles.loading} ml-5`} />
+            </>
+          ) : (
+            <>
+              Sign Out <Power className='ml-5' size={20} />
+            </>
+          )}
         </button>
       </form>
     </nav>
