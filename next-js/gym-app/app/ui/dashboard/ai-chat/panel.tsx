@@ -22,7 +22,7 @@ export default function Panel() {
   }
 
   // context from chat-structure.tsx
-  const { response, localMessages, setLocalMessages, chatPanelRef, user, messages } = useAIChatContext();
+  const { response, localMessages, setLocalMessages, chatPanelRef, user } = useAIChatContext();
 
   // greeting paragraph ref to avoid clearing the chat bubble
   const greetingParagrah = useRef<HTMLParagraphElement | null>(null);
@@ -61,7 +61,6 @@ export default function Panel() {
   }, [response])
 
   useLayoutEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     if (chatPanelRef.current) {
       chatPanelRef.current!.scrollTop = chatPanelRef.current!.scrollHeight;
     }

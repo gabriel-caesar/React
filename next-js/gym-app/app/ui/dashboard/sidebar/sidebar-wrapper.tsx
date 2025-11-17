@@ -6,7 +6,6 @@ import NavLinks from './nav-links';
 import { useEffect, useRef, useState } from 'react';
 import { Conversation, User } from '@/app/lib/definitions';
 import { usePathname } from 'next/navigation';
-import { getLatestConversations } from '@/app/actions/chat';
 
 export default function SideBar({
   user,

@@ -9,7 +9,6 @@ export function createChatBubble (
   prompt: string | null,
   setPrompt: Dispatch<SetStateAction<string>> | null,
   setLocalMessages: Dispatch<SetStateAction<Message[]>>,
-  localMessages: Message[],
   conversationId: string,
   sentDate: string,
   isUser: boolean
@@ -17,9 +16,9 @@ export function createChatBubble (
   setPrompt?.('');
   const uuid = uuidv4();
 
-  const newMessageObj = {
+  const newMessageObj: Message = {
     message_content: prompt as string,
-    role: isUser ? ('user' as 'user') : ('ai' as 'ai'),
+    role: isUser ? 'user' : 'ai',
     sent_date: sentDate,
     id: uuid,
     conversation_id: conversationId,
@@ -60,7 +59,6 @@ export async function submitPrompt(
     prompt ? prompt : '',
     setPrompt,
     setLocalMessages,
-    localMessages,
     conversationId,
     date,
     true
@@ -70,7 +68,6 @@ export async function submitPrompt(
     '',
     setPrompt,
     setLocalMessages,
-    localMessages,
     conversationId,
     date,
     false
