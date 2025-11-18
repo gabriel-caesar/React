@@ -16,6 +16,7 @@ export default function SideBarButton({
     <button
       ref={sideBarButtonRef}
       id='three-bars-menu'
+      data-testid='three-bars-menu'
       onClick={(e) => {
         e.stopPropagation();
         setOpenSideBarAction(!openSideBar);

@@ -14,10 +14,6 @@ export async function POST(req: Request) {
   // request destructuring
   const { aiChatBubble, userChatBubble, existingConversation } = await req.json();
 
-  console.log(
-    `message_content: ${userChatBubble.message_content}\nsent_date: ${userChatBubble.sent_date}`
-  )
-
   // ai chat destructuring
   const { message_content, role, id, sent_date } = aiChatBubble;
 
@@ -37,13 +33,10 @@ export async function POST(req: Request) {
     conversation = brandNewConversationQuery[0];
   }
 
-  console.log(`conversation variable from API call: ${conversation.title}\nand its last_message_date: ${conversation.last_message_date}`)
-
   // saves the AI response in the db
   try {
     // if response is not empty and conversation exists
     if (message_content && conversation) {
-        console.log(`Executed try block and response was not null!\n`)
         // saving AI response on the bounce back after the
         // response stream is finished
 
@@ -54,17 +47,13 @@ export async function POST(req: Request) {
             VALUES (${id}, ${sent_date}, ${message_content}, ${conversation.id}, ${role})
             RETURNING *;
           `;
-          console.log(`\n----# From "save-ai-message" #-----\n`)
-          console.log(`\n1. Inserted message "${message_content}" from AI in conversation "${conversation.title}"\n`)
-      
+
           // update the last message sent from this conversation
           await sql`
             UPDATE conversations
             SET last_message_date = ${insertedResponse[0].sent_date}
             where id = ${conversation.id}
-          `;
-          console.log(`\n2. Updated the last_message_date column from the current conversation "${conversation.title}".\n`)
-  
+          `;  
         }
 
         // returning the redirect address to submitPrompt()

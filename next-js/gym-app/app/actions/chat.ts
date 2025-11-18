@@ -140,7 +140,6 @@ async function getConversationContext(prompt: string, openai: OpenAI, conversati
   try {
 
     if (conversation) {
-      console.log(`There is already a valid conversation, terminating getConversationContext()...`)
       return 'false'
     }
 
@@ -151,10 +150,6 @@ async function getConversationContext(prompt: string, openai: OpenAI, conversati
 
     // also cleaning the quotes off the string
     const conversationTitle = response.output_text.replace(/[\"\']/g, '');  
-
-    console.log(
-      `\nChecking if it's worth to create a conversation: ${conversationTitle}\n`
-    );
 
     return conversationTitle;
   } catch (error) {
@@ -168,8 +163,6 @@ async function saveConversationData(
   prompt: string
 ) {
 
-  console.log(`\nEntered saveConversationData(), saving data to an existing conversation...\n`)
-
   // if there is an existing conversation
   // insert the received message into the respective conversation
   const sentMessage = await sql<Message[]>`
@@ -179,19 +172,12 @@ async function saveConversationData(
         RETURNING *;
       `;
 
-  console.log(
-    `\n1. Saved message "${sentMessage[0].message_content}" in conversation "${conversation!.title}"\n`
-  );
-
   // update the last message sent from this conversation
   await sql`
         UPDATE conversations
         SET last_message_date = ${sentMessage[0].sent_date}
         where id = ${conversation!.id}
       `;
-  console.log(
-    `\n3. Updated the last_message_date column from the current conversation "${conversation!.title}".\n`
-  );
 }
 
 async function createNewConversation(
@@ -201,8 +187,6 @@ async function createNewConversation(
   prompt: string
 ) {
 
-  console.log(`\nEntered createNewConversation(), creating a new conversation...\n`) 
-
   const brandNewConversation = await sql<Conversation[]>`
         INSERT INTO conversations
         (created_date, title, user_id)
@@ -210,9 +194,6 @@ async function createNewConversation(
         RETURNING *;
       `;
 
-  console.log(
-    `\n1. Saved brand new conversation into DB: ${brandNewConversation[0].title}\n`
-  );
   // insert the first user message
   const firstMessage = await sql<Message[]>`
         INSERT INTO messages
@@ -221,19 +202,12 @@ async function createNewConversation(
         RETURNING *;
       `;
 
-  console.log(
-    `\n2. Inserted first message into ${brandNewConversation[0].title}, with the content "${firstMessage[0].message_content}"\n`
-  );
-
   // update the last message sent column from the brand new conversation
   await sql`
         UPDATE conversations
         SET last_message_date = ${firstMessage[0].sent_date}
         WHERE id = ${brandNewConversation[0].id}
       `;
-  console.log(
-    `\n3. Updated the last_message_date column from the current conversation "${brandNewConversation[0].title}".\n`
-  );
 }
 
 // used to get conversations for nav links

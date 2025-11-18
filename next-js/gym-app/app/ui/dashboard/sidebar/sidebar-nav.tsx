@@ -23,6 +23,7 @@ export default function SideBarNav({
     <nav
       ref={sideBarNavRef}
       id='sidebar'
+      data-testid='sidebar-panel'
       className={`
           ${openSideBar ? 'max-[1024px]:w-80 max-[392px]:w-60 max-[1024px]:border-neutral-400 w-100 border-r-2' : 'w-0'}
           max-[1024px]:absolute z-2

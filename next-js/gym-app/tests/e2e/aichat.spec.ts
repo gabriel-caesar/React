@@ -1,22 +1,21 @@
 import test, { expect } from '@playwright/test';
 
+// log in into an account before every test
 test.beforeEach(async ({ page }) => {
   await page.goto('/login')
   const emailInput = page.getByPlaceholder('Enter your email');
   const passInput = page.getByPlaceholder('Enter your password');
   const loginBtn = page.getByRole('button', { name: 'Log In' });
   
-  await expect(emailInput).toBeVisible({ timeout: 5000 });
-  await expect(passInput).toBeVisible({ timeout: 5000 });
-
-  await page.waitForTimeout(1000);
+  await expect(emailInput).toBeVisible({ timeout: 15000 });
+  await expect(passInput).toBeVisible({ timeout: 15000 });
 
   await emailInput.fill('testing@email.com');
   await passInput.fill('testing123456#');
   await loginBtn.click();
 
-  await expect(page).toHaveURL('/dashboard');
-  await expect(page).toHaveTitle(/dashboard | diversus/i);
+  await expect(page).toHaveURL('/dashboard', { timeout: 15000 });
+  await expect(page).toHaveTitle(/dashboard | diversus/i, { timeout: 15000 });
 })
 
 test.describe('Chat input form', () => {

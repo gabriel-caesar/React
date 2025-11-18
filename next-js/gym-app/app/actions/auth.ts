@@ -47,7 +47,6 @@ export async function signup(state: FormState | undefined, formData: FormData) {
         VALUES (${firstName}, ${lastName}, ${email}, ${hashedPass});
       `;
   } catch (error) {
-    console.log(`\n An error has ocurred. ${error}\n`)
     return {
       message: `${error} Database error, couldn't fetch db.`,
     };

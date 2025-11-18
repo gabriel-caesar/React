@@ -46,6 +46,7 @@ export default function ChatStructure({
     <aiChatContext.Provider value={values}>
       <h1
         aria-label='conversation-title'
+        data-testid='conversation-title'
         id='conversation-title'
         className='
         min-[1024px]:border-b-2 min-[1024px]:border-white

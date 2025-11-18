@@ -67,6 +67,7 @@ export default function NavLinks({
             <Link
               href={link.href}
               onClick={() => setTab(link.name)}
+              data-testid={`${link.name.toLowerCase()}-tablink`}
               className={`
                 ${tab === link.name && 'bg-neutral-900'}
                 ${openSideBar ? 'flex' : 'hidden'} 
@@ -89,6 +90,7 @@ export default function NavLinks({
                     return (
                       <Link
                         key={index} // find out another way to assign a key
+                        data-testid={`${conversation.title.split(' ').join('-').toLowerCase()}-title`}
                         className={`
                         ${conversationId === conversation.id && 'bg-red-500'}
                         [&:not(:last-child)]:mb-2 hover:cursor-pointer hover:bg-red-400 text-start px-2 rounded-sm transition-all

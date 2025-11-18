@@ -113,6 +113,7 @@ export default function Panel() {
                 flex items-center w-full my-6
               `}
               aria-label={bubble.role === 'ai' ? 'ai-chat-bubble' : 'user-chat-bubble'}
+              data-testid={bubble.role === 'ai' ? 'ai-chat-bubble' : 'user-chat-bubble'}
               id={bubble.role === 'ai' ? 'ai-chat-bubble' : 'user-chat-bubble'}
               key={bubble.id}
             >
