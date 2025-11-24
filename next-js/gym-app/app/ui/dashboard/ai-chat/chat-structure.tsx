@@ -1,7 +1,6 @@
 'use client';
 
 import { createContext, useState, useRef, useEffect } from 'react';
-import InputForm from './input-form';
 import Panel from './panel';
 import {
   aiChatContextType,
@@ -9,6 +8,7 @@ import {
   Message,
   User,
 } from '@/app/lib/definitions';
+import TopBar from './top-bar';
 
 export const aiChatContext = createContext<aiChatContextType | null>(null);
 
@@ -26,7 +26,7 @@ export default function ChatStructure({
   // ref variable for the chat panel div element
   const chatPanelRef = useRef<HTMLDivElement | null>(null);
   // local messages copy
-  const [localMessages, setLocalMessages] = useState<Message[]>(messages)
+  const [localMessages, setLocalMessages] = useState<Message[]>(messages);
   // values object for the chat context
   const values = {
     response,
@@ -36,28 +36,18 @@ export default function ChatStructure({
     chatPanelRef,
     user,
     conversation,
-    messages
+    messages,
   };
 
   // updating the local messages array with the db array of messages
-  useEffect(() => setLocalMessages(messages), [messages])
+  useEffect(() => setLocalMessages(messages), [messages]);
 
   return (
     <aiChatContext.Provider value={values}>
-      <h1
-        aria-label='conversation-title'
-        data-testid='conversation-title'
-        id='conversation-title'
-        className='
-        min-[1024px]:border-b-2 min-[1024px]:border-white
-        max-[1024px]:text-lg max-[1024px]:top-2.5 
-        absolute right-3 top-3 text-2xl p-1 rounded-md
-        '
-      >
-        {conversation?.title ? conversation?.title : 'Welcome'}
-      </h1>
-      <Panel />
-      <InputForm />
+      <div className='flex flex-col justify-center items-center'>
+        <TopBar />
+        <Panel />
+      </div>
     </aiChatContext.Provider>
   );
 }

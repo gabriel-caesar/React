@@ -57,8 +57,6 @@ export type User = {
   firstname: string;
   lastname: string;
   email: string;
-  has_diet_plan: boolean;
-  has_workout_plan: boolean;
   id: string;
   password: string;
 };

@@ -1,18 +1,23 @@
 'use client';
 
-import React, { useActionState } from 'react';
+import React, { SetStateAction, useActionState } from 'react';
 import { signUserOut } from '@/app/actions/auth';
 import { Loader2, Power } from 'lucide-react';
 import styles from '../../../css/animations.module.css';
+import SideBarButton from './sidebar-button';
 
 export default function SideBarNav({
   openSideBar,
+  setOpenSideBar,
   children,
   sideBarNavRef,
+  sideBarButtonRef
 }: {
   openSideBar: boolean;
+  setOpenSideBar: React.Dispatch<SetStateAction<boolean>>
   children: React.ReactNode;
   sideBarNavRef: React.RefObject<HTMLElement | null>;
+  sideBarButtonRef: React.RefObject<HTMLButtonElement | null>;
 }) {
   const [errorMessage, formAction, isPending] = useActionState(
     signUserOut,
@@ -25,12 +30,18 @@ export default function SideBarNav({
       id='sidebar'
       data-testid='sidebar-panel'
       className={`
-          ${openSideBar ? 'max-[1024px]:w-80 max-[392px]:w-60 max-[1024px]:border-neutral-400 w-100 border-r-2' : 'w-0'}
-          max-[1024px]:absolute z-2
-          h-screen border-transparent bg-neutral-600 flex flex-col justify-start items-center relative transition-all
-        `}
+        ${openSideBar ? 'w-60 lg:w-80 border-neutral-400 border-r-2' : 'w-0 border-transparent'}
+        fixed h-screen top-0 left-0
+      bg-neutral-600 flex flex-col justify-start items-center transition-all
+      `}
       onClick={e => e.stopPropagation()}
     >
+      <SideBarButton
+        openSideBar={openSideBar}
+        setOpenSideBarAction={setOpenSideBar}
+        sideBarButtonRef={sideBarButtonRef}
+      />
+
       {children}
 
       <form

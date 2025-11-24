@@ -1,8 +1,11 @@
-'use server'
-
+import ChatStructure from '../ui/dashboard/ai-chat/chat-structure';
 import { auth } from '@/app/actions/credential-handler';
 import { getUser } from '@/app/actions/auth';
-import ChatStructure from '../ui/dashboard/ai-chat/chat-structure';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Dashboard',
+};
 
 export default async function Page() {
   const session = await auth();
@@ -14,7 +17,7 @@ export default async function Page() {
   // server side user fetch
   const user = await getUser(email);
 
-  // conversation and messages reveice no data, because
+  // conversation and messages receive no data, because
   // this route doesn't depend on an existing conversations
   return (
     <div

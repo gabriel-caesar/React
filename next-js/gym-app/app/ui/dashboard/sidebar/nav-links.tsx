@@ -14,7 +14,7 @@ export default function NavLinks({
   userConversations: Conversation[];
 }) {
   // identify what tab is selected
-  const [tab, setTab] = useState<string>('Dashboard'); 
+  const [tab, setTab] = useState<string>(''); 
   // UI-helper to highlight what conversation the user is on
   const [conversationId, setConversationId] = useState<string>(''); // what
   // UI-helper to prevent a blank div to appear under 
@@ -55,6 +55,15 @@ export default function NavLinks({
     const endpoint = split[split.length - 1];
     if (endpoint !== '') setConversationId(endpoint);
   }, [pathname]);
+
+  // dynamically select the right tab based on the URL if the page is refreshed
+  useEffect(() => {
+    const url = pathname.split('/');
+    const endpoint = url[url.length - 1];
+    // capitalizing the first word
+    const tabName = endpoint.split('').map((word, i) => i === 0 ? word.toUpperCase() : word).join('') ;
+    setTab(tabName);
+  }, [])
 
   return (
     <div className='mt-6 w-11/12'>

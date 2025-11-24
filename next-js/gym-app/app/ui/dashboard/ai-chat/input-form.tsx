@@ -62,8 +62,8 @@ export default function InputForm() {
         setEndpoint(url);
       }}
       className={`
-        max-[1024px]:w-11/12
-        flex items-center justify-center mb-2 w-3/4 rounded-lg bg-neutral-600 relative 
+        flex items-center justify-center w-full rounded-lg bg-transparent backdrop-blur-2xl relative 
+        border-1 border-neutral-400
         ${styles.regular_shadow}
       `}
       data-testid='input-form-test-id'
@@ -110,7 +110,11 @@ export default function InputForm() {
         <button
           aria-label='send-message-button'
           data-testid='send-message-button'
-          className={`rounded-full w-15 h-15 flex items-center justify-center hover:cursor-pointer hover:text-red-500 transition-all duration-300 ${isAIWriting ? 'bg-white' : 'bg-neutral-900'} ${styles.red_shadow}`}
+          className={`
+            ${styles.red_shadow}
+            ${isAIWriting ? 'bg-white' : 'bg-[linear-gradient(45deg,#000_50%,#606060)] border-neutral-500'}
+            rounded-full w-15 h-15 border-1 flex items-center justify-center hover:cursor-pointer hover:text-red-500 transition-all duration-300
+          `}
         >
           {isAIWriting ? (
             <X data-testid='sending-prompt-icon' className='text-neutral-900' strokeWidth={2} size={30} />

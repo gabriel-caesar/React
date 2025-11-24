@@ -1,19 +1,16 @@
 'use client';
 
 import SideBarNav from './sidebar-nav';
-import SideBarButton from './sidebar-button';
 import NavLinks from './nav-links';
 import { useEffect, useRef, useState } from 'react';
 import { Conversation, User } from '@/app/lib/definitions';
 import { usePathname } from 'next/navigation';
 
-export default function SideBar({
-  user,
-}: {
-  user: User | undefined;
-}) {
+export default function SideBar({ user }: { user: User | undefined }) {
   const [openSideBar, setOpenSideBar] = useState(false);
-  const [userConversations, setUserConversations] = useState<Conversation[]>([]);
+  const [userConversations, setUserConversations] = useState<Conversation[]>(
+    []
+  );
   const sideBarNavRef = useRef<HTMLElement | null>(null);
   const sideBarButtonRef = useRef<HTMLButtonElement | null>(null);
 
@@ -47,8 +44,8 @@ export default function SideBar({
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            user: user
-          })
+            user: user,
+          }),
         });
         const data = await res.json();
         setUserConversations(data.conversations);
@@ -56,22 +53,21 @@ export default function SideBar({
     }
 
     fetchLatestConversations();
-  }, [pathname])
+  }, [pathname]);
 
   return (
-    <>
-      <SideBarNav openSideBar={openSideBar} sideBarNavRef={sideBarNavRef}>
+    <div className='z-3 flex'>
+      <SideBarNav
+        openSideBar={openSideBar}
+        sideBarNavRef={sideBarNavRef}
+        setOpenSideBar={setOpenSideBar}
+        sideBarButtonRef={sideBarButtonRef}
+      >
         <NavLinks
           openSideBar={openSideBar}
           userConversations={userConversations}
         />
       </SideBarNav>
-
-      <SideBarButton
-        openSideBar={openSideBar}
-        setOpenSideBarAction={setOpenSideBar}
-        sideBarButtonRef={sideBarButtonRef}
-      />
-    </>
+    </div>
   );
 }

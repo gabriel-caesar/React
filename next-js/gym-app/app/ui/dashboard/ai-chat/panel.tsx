@@ -2,7 +2,6 @@
 
 import {
   useEffect,
-  useState,
   useRef,
   useContext,
   useLayoutEffect,
@@ -11,6 +10,7 @@ import { aiChatContext } from './chat-structure';
 import { usePathname } from 'next/navigation';
 import styles from '@/app/css/dashboard.module.css';
 import Markdown from 'react-markdown'
+import InputForm from './input-form';
 
 export default function Panel() {
   // safely checking if context is actually passed right
@@ -26,20 +26,18 @@ export default function Panel() {
 
   // greeting paragraph ref to avoid clearing the chat bubble
   const greetingParagrah = useRef<HTMLParagraphElement | null>(null);
-  // chat panel margin state to add responsiveness when the height changes
-  const [chatPanelMargin, setChatPanelMargin] = useState<number>(50);
   // used to know where the URL current is point to
   const pathname = usePathname();
 
   // markdown styles
   const proseStlyes = `
-    prose prose-p:text-white prose-headings:text-red-400 
-    prose-li:text-white prose-strong:text-blue-400 
+    prose prose-p:text-white prose-headings:text-red-500 
+    prose-li:text-white prose-strong:text-red-500 
     prose-code:text-blue-400  prose-a:text-blue-400
     prose-blockquote:bg-slate-700 prose-blockquote:w-fit
     prose-blockquote:rounded-tr-md prose-blockquote:pr-6
     prose-blockquote:text-neutral-400 prose-blockquote:rounded-br-md
-    marker:text-blue-400
+    marker:text-blue-500
   `
 
   // feeding the last text bubble with the most up to date response
@@ -66,38 +64,27 @@ export default function Panel() {
     }
   }, [pathname]);
 
-  // when the component mounts, we attach handleResize() onto
-  // the window object so every resize interaction, the
-  // function will fire and recalculate the margin for the chat panel
-  useEffect(() => {
-    function handleResize() {
-      const chatHeight = window.innerHeight * 0.75; // h-3/4
-      const factor = window.innerHeight <= 565 ? 0.15 : 0.1;
-      setChatPanelMargin(chatHeight * factor);
-    }
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   return (
     <div
       ref={chatPanelRef}
       aria-label='chat-panel'
       data-testid='chat-panel'
       id='chat-panel'
-      style={{
-        marginTop: chatPanelMargin + 'px',
-      }}
       className={`
-            [@media(max-height:300px)]:border-t-0
-            max-[1024px]:h-screen max-[1024px]:w-full max-[1024px]:border-t-1 max-[1024px]:border-neutral-400
-            w-4/5 h-3/4 p-10 overflow-y-auto overflow-x-hidden ${styles.scrollbar_chat} z-1
-          `}
+        ${styles.scrollbar_chat} 
+        pb-20 pt-20 md:w-11/12 z-1 mb-4 relative
+        w-full px-2 h-screen overflow-y-auto overflow-x-hidden
+      `}
     >
+      <div 
+        id='input-form-wrapper' 
+        className='fixed w-11/12 md:w-11/13 bottom-2 left-1/2 -translate-x-1/2 z-2'
+      >
+        <InputForm />
+      </div>
       <p
         aria-label='ai-chat-bubble'
-        className='text-md bg-neutral-600 rounded-md p-2 text-start w-fit max-w-full h-fit overflow-auto'
+        className='text-md bg-[linear-gradient(45deg,#525252_50%,#656565)] border-1 border-neutral-400 rounded-md p-2 text-start w-fit max-w-full h-fit overflow-auto'
         id='greeting-ai-chat-bubble'
         data-testid='greeting-ai-chat-bubble'
         ref={greetingParagrah}
@@ -119,7 +106,7 @@ export default function Panel() {
             >
               <div className={`
                 ${proseStlyes}
-                ${bubble.role === 'ai' ? 'bg-neutral-600' : 'bg-red-400'}
+                ${bubble.role === 'ai' ? 'bg-[linear-gradient(45deg,#525252_50%,#737373)] border-1 border-neutral-400' : 'bg-[linear-gradient(45deg,#E63946_50%,#f06e78)] border-1 border-red-300'}
                 rounded-md p-2 text-md text-start w-fit max-w-full 
                 md:max-w-3/4 h-fit overflow-auto break-normal
               `}>
