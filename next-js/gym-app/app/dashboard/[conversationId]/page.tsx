@@ -1,12 +1,15 @@
-'use server'
-
-import { auth } from '@/app/actions/credential-handler';
-import { getUser } from '@/app/actions/auth';
 import { Conversation, Message } from '@/app/lib/definitions';
+import { Metadata } from 'next';
+import { getUser } from '@/app/actions/auth';
+import { auth } from '@/app/actions/credential-handler';
 import ChatStructure from '@/app/ui/dashboard/ai-chat/chat-structure';
 import postgres from 'postgres';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
+
+export const metadata: Metadata = {
+  title: 'Conversation',
+};
 
 export default async function Page({ params }: { params: Promise<{ conversationId: string }> }) {
   const session = await auth();

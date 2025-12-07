@@ -1,15 +1,17 @@
 'use client';
 
-import { ArrowUp, X } from 'lucide-react';
+import { LucideLoaderPinwheel } from 'lucide-react';
 import { useContext, useEffect, useState } from 'react';
 import { submitPrompt } from '@/app/actions/frontend-ui/ai-chat';
 import { aiChatContext } from './chat-structure';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { FaArrowUp, FaClipboardList } from 'react-icons/fa';
+import animations from '../../../css/animations.module.css';
 import styles from '@/app/css/dashboard.module.css';
+import { dietFormDataType, dietFormRawData } from '@/public/plan_metadata/diet-formdata';
+import { workoutFormDataType } from '@/public/plan_metadata/workout-formdata';
 
 export default function InputForm() {
-  const [endpoint, setEndpoint] = useState<string>('');
-
   // safely checking if context is actually passed right
   function useAIChatContext() {
     const context = useContext(aiChatContext);
@@ -19,61 +21,145 @@ export default function InputForm() {
   }
 
   // context from chat-structure.tsx
-  const { response, setResponse, setLocalMessages, localMessages, user, conversation } =
-    useAIChatContext();
-  // user's prompt
+  const {
+    setResponse,
+    setLocalMessages,
+    localMessages,
+    user,
+    conversation,
+    isSuggest,
+    setIsSuggest,
+    dietFormData,
+    generatingPlan,
+    isAIWriting,
+    setIsAIWriting,
+    setDietFormData,
+    planType,
+    setWorkoutFormData,
+    workoutFormData
+  } = useAIChatContext();
+  const [submitPromptData, setSubmitPromptData] = useState<{
+    url: string;
+    suggest: boolean;
+  }>({ url: '', suggest: false });
+  // user prompt tracked every keystroke
   const [prompt, setPrompt] = useState<string>('');
-  // checking if AI is still writing text
-  const [isAIWriting, setIsAIWriting] = useState<boolean>(false);
   // router to redirect user
   const router = useRouter();
+  // params getter
+  const searchParams = useSearchParams();
   // to read the current URL
   const pathname = usePathname();
 
   // redirect the user to the conversation if its not there already
   useEffect(() => {
-    // ensures the endpoint is not empty before redirecting the user
-    if (!endpoint) return
+    // ensures the submitPromptData is not empty before redirecting the user
+    const { url, suggest } = submitPromptData;
+    if (!url) return;
     const urlArray = pathname.split('/');
 
-    // if at the current moment the endpoint is not
+    // if at the current moment the submitPromptData is not
     // equal than the conversation id, redirect the user
-    if (urlArray[urlArray.length - 1] !== endpoint) {
-      router.push(`/dashboard/${endpoint}`);
+    if (!urlArray.find((el) => el === url)) {
+      router.push(`/dashboard/${url}/${suggest ? '?suggest=true' : ''}`);
     }
-    
-  }, [endpoint, pathname, router]);
+  }, [submitPromptData]);
+
+  // executes as soon as dietFormData becomes a plain stringified JSON version of the plan
+  useEffect(() => {
+    async function executeSubmission(formData: dietFormDataType | workoutFormDataType) {
+      const data = await submitPrompt(
+        localMessages,
+        setLocalMessages,
+        setIsAIWriting,
+        setResponse,
+        setPrompt,
+        setIsSuggest,
+        conversation,
+        'Generate the plan.',
+        user,
+        formData
+      );
+      setSubmitPromptData(data ? data : '');
+    }
+    // assigning the submission condition accordingly
+    // if one of these two keys are different than an empty string, it means the AI filled the form
+    const submissionCondition = planType === 'diet' 
+    ? (dietFormData as dietFormDataType).meals[0].meal_name !== ''
+    : (workoutFormData as workoutFormDataType).daily_workouts[0].workout_name !== ''
+    if (!generatingPlan && submissionCondition) { 
+      executeSubmission(planType === 'diet' ? dietFormData as dietFormDataType : workoutFormData as workoutFormDataType);
+    }
+  }, [generatingPlan])
+
+  useEffect(() => { // when AI stops writing, check if the dietFormData state is filled, if so "clear it"
+    const form = dietFormData as dietFormDataType;
+    if (!isAIWriting && form.meals[0].meal_name !== '') setDietFormData(dietFormRawData);
+  }, [isAIWriting])
+
+  useEffect(() => {
+    // getting the suggest flag when moving to a brand new conversation page
+    const suggestParams = searchParams.get('suggest');
+    if (suggestParams) setIsSuggest(true);
+    // since isSuggest initial value is false, this line will remove the params but at the same time pop the form up
+    if (!isSuggest) router.replace(`/dashboard/${conversation ? conversation.id : ''}`)
+  }, [searchParams]);
 
   return (
     <form
       onSubmit={async (e) => {
-        const url = await submitPrompt(
-          e,
+        e.preventDefault();
+        const data = await submitPrompt(
+          localMessages,
           setLocalMessages,
           setIsAIWriting,
           setResponse,
           setPrompt,
+          setIsSuggest,
           conversation,
-          localMessages,
-          response,
           prompt,
-          user,
+          user
         );
-        setEndpoint(url);
+
+        setSubmitPromptData(data ? data : '');
       }}
       className={`
-        flex items-center justify-center w-full rounded-lg bg-transparent backdrop-blur-2xl relative 
-        border-1 border-neutral-400
+        flex items-center justify-center w-full rounded-lg backdrop-blur-2xl relative transition-all duration-300
+        border-1 border-neutral-400 ${isSuggest ? 'bg-[linear-gradient(45deg,#8a8888_50%,#e8e8e8)]' : 'bg-transparent'}
         ${styles.regular_shadow}
       `}
       data-testid='input-form-test-id'
     >
+      <span className='mx-2 md:mx-4'>
+        <button
+          disabled={generatingPlan}
+          id='form-button'
+          aria-label='form-button'
+          type='button'
+          className={`
+            ${styles.red_shadow}
+            hover:cursor-pointer hover:text-red-500
+            p-3 text-lg text-center flex justify-center items-center
+            rounded-full transition-all duration-300 border-1 
+            ${
+              isSuggest
+                ? 'bg-[linear-gradient(45deg,#000_50%,#606060)] border-neutral-500 text-neutral-200'
+                : 'bg-[linear-gradient(45deg,#c9c9c9_50%,#e8e8e8)] border-neutral-100 text-black'
+            }
+          `}
+          onClick={() => !generatingPlan ? setIsSuggest(!isSuggest) : {}}
+        >
+          <FaClipboardList />
+        </button>
+      </span>
       <textarea
         className={`${styles.scrollbar_textarea} bg-transparent focus-within:outline-none p-5 w-11/12 resize-none transition-all duration-300`}
         placeholder='Enter your message...'
         aria-label='user-input-field'
         data-testid='user-input-field'
         value={prompt}
+        disabled={generatingPlan}
+        onClick={() => isSuggest && setIsSuggest(false)}
         onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
           setPrompt(e.target.value)
         }
@@ -89,37 +175,39 @@ export default function InputForm() {
             !isAIWriting &&
             !isInputEmpty
           ) {
-            const url = await submitPrompt(
-              e,
+            const data = await submitPrompt(
+              localMessages,
               setLocalMessages,
               setIsAIWriting,
               setResponse,
               setPrompt,
+              setIsSuggest,
               conversation,
-              localMessages,
-              response,
               prompt,
-              user,
+              user
             );
 
-            setEndpoint(url);
+            setSubmitPromptData(data ? data : '');
           }
         }}
       ></textarea>
-      <span className='mx-3'>
+      <span className='mx-2 md:mx-4'>
         <button
           aria-label='send-message-button'
           data-testid='send-message-button'
+          disabled={generatingPlan}
           className={`
             ${styles.red_shadow}
-            ${isAIWriting ? 'bg-white' : 'bg-[linear-gradient(45deg,#000_50%,#606060)] border-neutral-500'}
-            rounded-full w-15 h-15 border-1 flex items-center justify-center hover:cursor-pointer hover:text-red-500 transition-all duration-300
+            ${isAIWriting
+             ? `bg-white ${animations.loading} text-black p-2` 
+             : 'bg-[linear-gradient(45deg,#000_50%,#606060)] border-neutral-500 p-3'}
+            rounded-full text-lg border-1 flex items-center justify-center hover:cursor-pointer hover:text-red-500 transition-all duration-300
           `}
         >
           {isAIWriting ? (
-            <X data-testid='sending-prompt-icon' className='text-neutral-900' strokeWidth={2} size={30} />
+            <LucideLoaderPinwheel data-testid='sending-prompt-icon' />
           ) : (
-            <ArrowUp data-testid='send-prompt-icon' size={28} />
+            <FaArrowUp data-testid='send-prompt-icon' />
           )}
         </button>
       </span>

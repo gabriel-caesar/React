@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import { getUser } from '../actions/auth';
-import { Dispatch, RefObject, SetStateAction } from 'react';
+import React, { Dispatch, JSX, RefObject, SetStateAction } from 'react';
+import { dietFormDataType } from '@/public/plan_metadata/diet-formdata';
+import { workoutFormDataType } from '@/public/plan_metadata/workout-formdata';
 
 // zod schema to validade user input
 export const SignUpSchema = z
@@ -66,8 +68,10 @@ export type Message = {
   sent_date: string;
   message_content: string;
   conversation_id: string;
-  role: 'user' | 'ai';
+  role: 'user' | 'assistant';
   id: string;
+  form_data?: dietFormDataType | workoutFormDataType | null;
+  plan_saved: boolean;
 };
 
 // db conversation type
@@ -89,12 +93,69 @@ export type aiChatContextType = {
   localMessages: Message[];
   conversation: Conversation | null;
   messages: Message[] | [];
+  isSuggest: boolean;
+  setIsSuggest: React.Dispatch<SetStateAction<boolean>>;
+  planType: 'diet' | 'workout' | '';
+  setPlanType: React.Dispatch<SetStateAction<'diet' | 'workout' | ''>>;
+  dietFormData: dietFormDataType | { interpretation: string };
+  setDietFormData: React.Dispatch<SetStateAction<dietFormDataType | { interpretation: string }>>;
+  workoutFormData: workoutFormDataType | { interpretation: string };
+  setWorkoutFormData: React.Dispatch<SetStateAction<workoutFormDataType | { interpretation: string }>>;
+  missingValues: string[];
+  setMissingValues: React.Dispatch<SetStateAction<string[]>>;
+  generatingPlan: boolean;
+  setGeneratingPlan: React.Dispatch<SetStateAction<boolean>>;
+  isAIWriting: boolean;
+  setIsAIWriting: React.Dispatch<SetStateAction<boolean>>;
+  savingPlan: boolean;
+  setSavingPlan: React.Dispatch<SetStateAction<boolean>>;
 };
 
 // this is used to tell the type of the objects
 // included in the conversation history array
 export type aiChatHistoryType = {
-  messageContent: string;
-  sentDate: string;
-  role: string;
-}[];
+  content: string;
+  role: 'user' | 'assistant' | 'system';
+};
+
+// what's being rendered in the diet plan form
+export type sectionType = {
+  prop: string;
+  title: string;
+  desc?: string;
+  buttons?: {
+    id: string;
+    name: string;
+    icon?: JSX.Element;
+  }[];
+  inputs?: {
+    regex?: RegExp;
+    style?: string;
+    label?: string;
+    id: string;
+    placeholder: string;
+    error?: string;
+  }[];
+  textareas?: {
+    label?: string;
+    style?: string;
+    id: string,
+    placeholder: string;
+  }[]
+};
+
+export type dietPlanType = dietFormDataType & {
+  id: string,
+  created_date: string | Date,
+  last_edit_date: string | Date,
+  user_id: string,
+  default_plan: boolean,
+}
+
+export type workoutPlanType = workoutFormDataType & {
+  id: string,
+  created_date: string | Date,
+  last_edit_date: string | Date,
+  user_id: string,
+  default_plan: boolean,
+}

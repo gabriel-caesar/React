@@ -13,6 +13,7 @@ export default function SideBar({ user }: { user: User | undefined }) {
   );
   const sideBarNavRef = useRef<HTMLElement | null>(null);
   const sideBarButtonRef = useRef<HTMLButtonElement | null>(null);
+  const [loadingNavLinks, setLoadingNavLinks] = useState<boolean>(false);
 
   const pathname = usePathname();
 
@@ -37,23 +38,36 @@ export default function SideBar({ user }: { user: User | undefined }) {
   }, []);
 
   // get the brand new conversation dynamically when it is created
+  // but also only fetch for conversations if the user is currently in the dashboard or in a conversation
   useEffect(() => {
+    const url = pathname.split('/');
     async function fetchLatestConversations() {
-      if (user) {
-        const res = await fetch('/api/chat/get-latest-conversations', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            user: user,
-          }),
-        });
-        const data = await res.json();
-        setUserConversations(data.conversations);
+      setLoadingNavLinks(true);
+      try {
+        if (user) {
+          const res = await fetch('/api/chat/get-latest-conversations', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              user: user,
+            }),
+          });
+          const data = await res.json();
+          setUserConversations(data.conversations);
+        }
+      } catch (error) {
+        throw new Error(
+          `Couldn't fetch latest conversations from front-end. ${error}`
+        );
+      } finally {
+        setLoadingNavLinks(false);
       }
     }
-
-    fetchLatestConversations();
-  }, [pathname]);
+    if (openSideBar) { // only try to fetch if the side bar is opened
+      if (url.some((x) => x === 'plans' || x === 'profile') === false)
+        fetchLatestConversations();
+    }
+  }, [pathname, openSideBar]);
 
   return (
     <div className='z-3 flex'>
@@ -66,6 +80,7 @@ export default function SideBar({ user }: { user: User | undefined }) {
         <NavLinks
           openSideBar={openSideBar}
           userConversations={userConversations}
+          loadingNavLinks={loadingNavLinks}
         />
       </SideBarNav>
     </div>

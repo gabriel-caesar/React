@@ -1,6 +1,7 @@
 'use server'
 
 import { Conversation, Message } from '@/app/lib/definitions';
+import { dietFormDataType } from '@/public/plan_metadata/diet-formdata';
 import { NextResponse } from 'next/server';
 import postgres from 'postgres';
 
@@ -15,7 +16,7 @@ export async function POST(req: Request) {
   const { aiChatBubble, userChatBubble, existingConversation } = await req.json();
 
   // ai chat destructuring
-  const { message_content, role, id, sent_date } = aiChatBubble;
+  const { message_content, role, id, sent_date, form_data } = aiChatBubble;
 
   // if this API is called over an existing conversation
   if (existingConversation) {
@@ -43,8 +44,16 @@ export async function POST(req: Request) {
         if (conversation) {
           const insertedResponse = await sql<Message[]>`
             INSERT INTO messages
-            (id, sent_date, message_content, conversation_id, role)
-            VALUES (${id}, ${sent_date}, ${message_content}, ${conversation.id}, ${role})
+            (id, sent_date, message_content, conversation_id, role, form_data, plan_saved)
+            VALUES (
+              ${id},
+              ${sent_date},
+              ${message_content},
+              ${conversation.id},
+              ${role},
+              ${form_data ? sql.json(form_data as dietFormDataType) : null},
+              ${false}
+            )
             RETURNING *;
           `;
 
@@ -57,7 +66,7 @@ export async function POST(req: Request) {
         }
 
         // returning the redirect address to submitPrompt()
-        return NextResponse.json({ redirectTo: `${conversation.id}` });
+        return NextResponse.json({ url: conversation.id, suggest: true });
       }
 
       return NextResponse.json({ message: 'No conversation created' });

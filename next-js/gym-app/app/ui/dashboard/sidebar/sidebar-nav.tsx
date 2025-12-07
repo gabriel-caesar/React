@@ -30,9 +30,9 @@ export default function SideBarNav({
       id='sidebar'
       data-testid='sidebar-panel'
       className={`
-        ${openSideBar ? 'w-60 lg:w-80 border-neutral-400 border-r-2' : 'w-0 border-transparent'}
-        fixed h-screen top-0 left-0
-      bg-neutral-600 flex flex-col justify-start items-center transition-all
+        ${openSideBar ? 'w-60 lg:w-80 border-neutral-600 border-r-1' : 'w-0 border-transparent'}
+        fixed h-screen top-0 left-0 justify-start items-center transition-all
+        bg-[linear-gradient(-45deg,#303030_50%,#656565)] shadow-2xl flex flex-col 
       `}
       onClick={e => e.stopPropagation()}
     >

@@ -1,77 +1,79 @@
 import OpenAI from 'openai';
-import { aiChatHistoryType, Conversation, Message, User } from '@/app/lib/definitions';
+import {
+  aiChatHistoryType,
+  Conversation,
+  Message,
+  User,
+} from '@/app/lib/definitions';
 import postgres from 'postgres';
+import { headers } from 'next/headers';
+import { dietFormDataType } from '@/public/plan_metadata/diet-formdata';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
 // handles user request upon sending a message to the AI
-export async function handleRequest(req: Request, openai: OpenAI, conversationId: string) {
+export async function handleRequest(
+  req: Request,
+  openai: OpenAI,
+  conversationId: string
+) {
   const {
     prompt,
     user,
-    conversation,
     date,
+    localMessages,
+    signal,
   }: {
     prompt: string;
     user: User;
-    conversation: Conversation | null;
     date: string;
+    localMessages: Message[];
+    signal: string;
   } = await req.json();
 
-  // all messages from the current conversation history
-  const allMessages: aiChatHistoryType = []
-  // instructions for the AI for it to parse the current conversation history
-  let conversationHistory: string = '';
   // conversation title
   let conversationTitle: string = '';
 
   const conversationRules = `
-    Rule 1: You are an AI-powered fitness and diet planner in a web app with an 
-    interactive assistant guiding users through customizable workout and diet plans, you are Diversus.
-    Rule 2: Use Markdown language.
-    Rule 3: Write new lines as \n tags.
-    Rule 4: Always refer to the conversation history if provided as ordinary human would.
-    Rule 5: Call the user by its name ${user.firstname}.
+    Rule 1: You are Diversus, an AI assistant in a fitness and diet planning web app. You talk with the user, guide them, and collect the information required to complete a workout or diet plan.
+    Rule 2: Use Markdown language for your messages.
+    Rule 3: Use "\n" for new lines.
+    Rule 4: Refer naturally to the conversation history when relevant.
+    Rule 5: Call the user by their first name: ${user.firstname}.
     Rule 6: Never send images.
-  `
+    Rule 7: If the signal is "suggest" it means the application was suggested to initiate the plan form filling and a plan creation will be put on to work. Your response should be aligned with that.
+    Rule 8: If the signal is a JSON formatted form data, you shall translate it into markdown and send it to the user.
+    Rule 9: The markdown translation should include all data from the JSON form data without exception.
+    Rule 10: You will include every single detail provided from the JSON plan in the markdown text you generate.
+    Rule 11: You should include the user metadata in the markdown translation as well.
+      Diet Metadata: (plan_type, goal, gender, current_weight, height, weight, activity_level, number_of_meals, meal_timing, duration_weeks, want_supplements, daily_caloric_intake, dietary_restrictions and user_notes).
+      Workout Metadata: (plan_type, goal, gender, current_weight, height, weight, experience_level, duration_weeks, number_of_workout_days and user_notes).
+    Rule 12: The user may ask you to open the plan form and you shall answer that you will.
+    Rule 13: You may help the user with any doubts about the form filling, but you can't fill it for them, just direct them how to do so. The form has as many question as the diet or workout metadata options.
+    Signal: ${signal}.
+  `;
 
   try {
-    if (conversation) {
+    // all messages from the current conversation history
+    const allMessages = await getConversationHistory(localMessages);
+
+    if (conversationId) {
       // if there is a valid conversation, save the user message into it
-      await saveConversationData(conversation, date, prompt);
+      await saveConversationData(conversationId, date, prompt);
     } else {
       // trying to get a new conversation title
-      conversationTitle = await getConversationContext(prompt, openai, conversation);
-
+      conversationTitle = await getConversationContext(
+        prompt,
+        openai,
+        signal
+      );
+      console.log(`\nconversationTitle: ${conversationTitle}\n`)
       // create a brand new conversation and insert the first user message into it if there is no conversation
       if (!conversationTitle.match(/false/i)) {
-        await createNewConversation(
-          date,
-          conversationTitle,
-          user,
-          prompt
-        );
+        await createNewConversation(localMessages, date, conversationTitle, user);
       }
     }
 
-    if (conversationId !== '') {
-      // getting all messages from the current conversation
-      const conversationHistoryQuery = await sql<Message[]>`
-        SELECT * FROM messages
-        WHERE conversation_id = ${conversationId}
-      `
-      // sanitizing the conversation
-      // history to only have valuable data 
-      conversationHistoryQuery.forEach(msg => {
-        allMessages.push({ messageContent: msg.message_content, sentDate: msg.sent_date, role: msg.role })
-      })
-
-      // updating the instructions
-      conversationHistory = `
-        This is the conversation history: ${JSON.stringify(allMessages)}
-      `
-    }
- 
     // getting the response from the AI
     const response = await openai.chat.completions.create({
       messages: [
@@ -79,18 +81,14 @@ export async function handleRequest(req: Request, openai: OpenAI, conversationId
           role: 'system',
           content: conversationRules,
         },
-        {
-          role: 'assistant',
-          content: conversationHistory,
-        },
+        ...allMessages,
         {
           role: 'user',
           content: prompt,
         },
       ],
-      model: 'gpt-3.5-turbo',
+      model: 'gpt-4.1',
       stream: true,
-      max_tokens: 300,
     });
 
     // creating a brand new readable stream
@@ -121,36 +119,42 @@ export async function handleRequest(req: Request, openai: OpenAI, conversationId
   } catch (error) {
     throw new Error(`Couldn't handle request. ${error}`);
   }
-  
 }
 
-async function getConversationContext(prompt: string, openai: OpenAI, conversation: Conversation | null) {
+async function getConversationContext(
+  prompt: string,
+  openai: OpenAI,
+  signal: string,
+) {
   const instructions = `
-      Rule 1: For every user message, check whether the message asks for a workout plan, diet guidance, health advice, fitness information, or any substantial topic related to well-being.
-
+      Rule 1: For every user message, check whether the message asks for a plan, routine, diet guidance, health advice, fitness information, or any substantial topic related to well-being.
       Rule 2: If the message is too short or trivial (greetings, weather, unrelated topics), it does not qualify.
-
       Rule 3: If the message does not qualify, respond only with the text: false
-
       Rule 4: If the message does qualify, output a short conversation title with a maximum of 30 characters, plain text, no quotes, no formatting, and no additional content.
-
       Rule 5: Do not use markdown, headings, or line breaks. Output only what Rule 3 or Rule 4 requires.
+      Rule 6: If the signal is a JSON form data, you will create a conversation title out of it.
+      Rule 7: If the signal is "suggest" or "null", respond only with the text: false.
+      Signal: ${signal}
     `;
 
   try {
-
-    if (conversation) {
-      return 'false'
-    }
-
     const response = await openai.responses.create({
-      model: 'gpt-3.5-turbo',
-      input: instructions + prompt,
+      model: 'gpt-5.1',
+      input: [
+        {
+          role: 'system',
+          content: instructions,
+        },
+        {
+          role: 'user',
+          content: prompt,
+        },
+      ],
     });
 
     // also cleaning the quotes off the string
-    const conversationTitle = response.output_text.replace(/[\"\']/g, '');  
-
+    const conversationTitle = response.output_text.replace(/[\"\']/g, '');
+    
     return conversationTitle;
   } catch (error) {
     throw new Error(`Couldn't get conversation context. ${error}`);
@@ -158,17 +162,16 @@ async function getConversationContext(prompt: string, openai: OpenAI, conversati
 }
 
 async function saveConversationData(
-  conversation: Conversation | null,
+  conversationId: string,
   date: string,
   prompt: string
 ) {
-
   // if there is an existing conversation
   // insert the received message into the respective conversation
   const sentMessage = await sql<Message[]>`
         INSERT INTO messages
-        (sent_date, message_content, conversation_id, role)
-        VALUES (${date}, ${prompt}, ${conversation!.id}, 'user')
+        (sent_date, message_content, conversation_id, role, plan_saved)
+        VALUES (${date}, ${prompt}, ${conversationId}, 'user', ${false})
         RETURNING *;
       `;
 
@@ -176,17 +179,17 @@ async function saveConversationData(
   await sql`
         UPDATE conversations
         SET last_message_date = ${sentMessage[0].sent_date}
-        where id = ${conversation!.id}
+        where id = ${conversationId}
       `;
 }
 
 async function createNewConversation(
+  localMessages: Message[],
   date: string,
   conversationTitle: string,
   user: User,
-  prompt: string
 ) {
-
+  console.log(`\nCREATING NEW CONVERSATION INITIATED!\n`)
   const brandNewConversation = await sql<Conversation[]>`
         INSERT INTO conversations
         (created_date, title, user_id)
@@ -194,18 +197,29 @@ async function createNewConversation(
         RETURNING *;
       `;
 
-  // insert the first user message
-  const firstMessage = await sql<Message[]>`
+  // inserting all messages before the conversation creation trigger
+  for (let i = 0; i < localMessages.length; i++) {
+    if (localMessages[i].message_content) {
+      const {sent_date, message_content, role, form_data} = localMessages[i]; // destructuring of the a message
+      await sql<Message[]>`
         INSERT INTO messages
-        (sent_date, message_content, conversation_id, role)
-        VALUES (${date}, ${prompt}, ${brandNewConversation[0].id}, 'user')
-        RETURNING *;
+        (sent_date, message_content, conversation_id, role, form_data, plan_saved)
+        VALUES (
+          ${sent_date},
+          ${message_content},
+          ${brandNewConversation[0].id},
+          ${role},
+          ${form_data ? sql.json(form_data as dietFormDataType) : null},
+          ${false}
+        );
       `;
+    }
+  }
 
   // update the last message sent column from the brand new conversation
   await sql`
         UPDATE conversations
-        SET last_message_date = ${firstMessage[0].sent_date}
+        SET last_message_date = ${localMessages[localMessages.length - 1].sent_date}
         WHERE id = ${brandNewConversation[0].id}
       `;
 }
@@ -213,16 +227,56 @@ async function createNewConversation(
 // used to get conversations for nav links
 export async function getLatestConversations(id: string) {
   try {
-
     // querying for user conversations in order to to display them in nav-links.tsx
     const userConversations = await sql<Conversation[]>`
       SELECT * FROM conversations
       WHERE user_id = ${id}
-    `
+    `;
 
-    return userConversations
-
+    return userConversations;
   } catch (error) {
-    throw new Error(`Couldn't get the latest conversations. ${error}`)
+    throw new Error(`Couldn't get the latest conversations. ${error}`);
   }
+}
+
+export async function getConversationHistory(localMessages: Message[]) {
+  const allMessages: aiChatHistoryType[] = [];
+  // sanitizing the conversation
+  // history to only have valuable data
+  localMessages.forEach((msg) => {
+    allMessages.push({
+      content: `Sent date: ${msg.sent_date}\n${msg.message_content}`,
+      role: msg.role,
+    });
+  });
+  
+  return allMessages;
+}
+
+// fetching a plan template to feed the AI
+export async function fetchTemplate(type: 'workout' | 'diet') {
+  const baseURL = await getBaseUrl();
+
+  try {
+    const res = await fetch(`${baseURL}/plan_templates/${type}.json`);
+    const data = res.json();
+    return data;
+  } catch (error) {
+    throw new Error(`Couldn't fetch templates. ${error}`);
+  }
+}
+
+// gets base url dynamically
+export async function getBaseUrl() {
+  if (typeof window !== 'undefined') {
+    // Browser runtime → relative works
+    return '';
+  }
+
+  // Some runtimes give Promise<ReadonlyHeaders>
+  const h = await headers();
+  const host = h.get('host');
+  const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
+
+  return `${protocol}://${host}`;
 }

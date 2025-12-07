@@ -14,7 +14,7 @@ export default async function Page() {
   const user = await getUser(email); // server side user fetch
 
   return (
-    <div className='flex justify-center items-center w-screen px-4 py-20 '>
+    <div className='flex justify-center items-center w-screen px-4 py-20'>
       <ProfileCard user={user} />
     </div>
   )

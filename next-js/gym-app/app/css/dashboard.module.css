@@ -35,6 +35,35 @@
   cursor: grabbing;
 }
 
+/* SCROLLBAR FOR THE MISSING VALUES ERROR CONTAINER */
+
+.missing_values_scrollbar::-webkit-scrollbar {
+  width: 6px;
+  transition: all 0.15s ease;
+}
+
+.missing_values_scrollbar::-webkit-scrollbar-track {
+  background-color: var(--accent-gray);
+  border-radius: 4px;
+  margin-block: 2px;
+  transition: all 0.15s ease;
+}
+
+.missing_values_scrollbar::-webkit-scrollbar-thumb {
+  background-color: #cecece;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+}
+
+.missing_values_scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #de6767;
+  cursor: grab;
+}
+
+.missing_values_scrollbar::-webkit-scrollbar-thumb:active {
+  cursor: grabbing;
+}
+
 /* SCROLLBAR FOR THE CHAT PANEL */
 
 .scrollbar_chat::-webkit-scrollbar {
