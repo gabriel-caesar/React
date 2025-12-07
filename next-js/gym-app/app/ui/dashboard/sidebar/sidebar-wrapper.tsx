@@ -1,10 +1,10 @@
 'use client';
 
-import SideBarNav from './sidebar-nav';
-import NavLinks from './nav-links';
 import { useEffect, useRef, useState } from 'react';
 import { Conversation, User } from '@/app/lib/definitions';
 import { usePathname } from 'next/navigation';
+import SideBarNav from './sidebar-nav';
+import NavLinks from './nav-links';
 
 export default function SideBar({ user }: { user: User | undefined }) {
   const [openSideBar, setOpenSideBar] = useState(false);

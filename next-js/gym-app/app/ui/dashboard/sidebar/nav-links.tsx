@@ -5,9 +5,9 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useEffect, useState } from 'react';
 import { Conversation } from '@/app/lib/definitions';
 import { usePathname } from 'next/navigation';
+import { FaCog } from 'react-icons/fa';
 import animations from '../../../css/animations.module.css';
 import Link from 'next/link';
-import { FaCog } from 'react-icons/fa';
 
 export default function NavLinks({
   openSideBar,

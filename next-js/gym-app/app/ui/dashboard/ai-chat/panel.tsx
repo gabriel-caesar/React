@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useRef, useContext, useLayoutEffect } from 'react';
-import { CiSaveDown2, CiFileOn, CiCircleCheck } from 'react-icons/ci';
+import { CiSaveDown2, CiCircleCheck } from 'react-icons/ci';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { workoutFormDataType } from '@/public/plan_metadata/workout-formdata';
 import { dietFormDataType } from '@/public/plan_metadata/diet-formdata';
 import { aiChatContext } from './chat-structure';
 import { usePathname } from 'next/navigation';
@@ -11,7 +12,6 @@ import InputForm from './input-form';
 import Markdown from 'react-markdown';
 import animations from '@/app/css/animations.module.css';
 import styles from '@/app/css/dashboard.module.css';
-import { workoutFormDataType } from '@/public/plan_metadata/workout-formdata';
 
 export default function Panel() {
   // safely checking if context is actually passed right
