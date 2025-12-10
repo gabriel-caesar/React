@@ -1,13 +1,15 @@
 'use client'
 
-import { Conversation } from '@/app/lib/definitions';
-import { Orbitron } from 'next/font/google';
-import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { AnimatePresence, motion } from 'framer-motion';
+import { BiConversation } from "react-icons/bi";
+import { Conversation } from '@/app/lib/definitions';
+import { useRouter } from 'next/navigation';
+import { Orbitron } from 'next/font/google';
 import { FaCog } from 'react-icons/fa';
 import animations from '../../../css/animations.module.css'
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 // nextjs font implementation to remove external network requests
 const orbitron = Orbitron({
@@ -232,6 +234,37 @@ export default function ManagePanel({ conversations } : { conversations: Convers
           )}
         </tbody>
       </table>
+
+      <AnimatePresence>
+        {conversations.length <= 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            id='empty-conversations-container'
+            className='flex flex-col w-full justify-center items-center'
+          >
+            <h3
+              id='empty-conversations-header'
+              className='text-center text-xl mt-4'
+            >
+              No conversation has been created yet
+            </h3>
+            <BiConversation  className='my-6 text-6xl'/>
+            <p className='text-neutral-400 text-center'>
+              To add a conversation go to the{' '}
+              <a
+                href='/dashboard'
+                className='underline text-red-400/70 hover:text-red-400 hover:cursor-pointer transition-all'
+              >
+                dashboard
+              </a>{' '}
+              and talk with Diversus about your diet or workout goals
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
     </div>
   )

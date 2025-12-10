@@ -133,7 +133,11 @@ export default function Panel() {
   useEffect(() => setRandomIntroIndex(Math.floor(Math.random() * 4)), [])
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 1.5 }}
       ref={chatPanelRef}
       aria-label='chat-panel'
       data-testid='chat-panel'
@@ -144,22 +148,13 @@ export default function Panel() {
         w-full lg:w-[900px] lg:px-10 px-2 h-screen overflow-y-auto overflow-x-hidden
       `}
     >
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 1.5 }}
-        id='input-form-wrapper'
+      <div
         className='fixed w-13/14 lg:w-[865px] bottom-2 left-1/2 -translate-x-1/2 z-2'
       >
         <InputForm />
-      </motion.div>
+      </div>
       
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 1.5 }}
+      <p
         aria-label='ai-chat-bubble-intro'
         className={`${orbitron.className} text-center text-lg p-2 pb-4 border-b-1 text-neutral-300 w-fit max-w-full h-fit overflow-auto`}
         style={{ letterSpacing: '0.1rem' }}
@@ -168,15 +163,11 @@ export default function Panel() {
         ref={greetingParagrah}
       >
         {diversusIntro}
-      </motion.p>
+      </p>
       {localMessages.length > 0 &&
         localMessages.map((bubble) => {
           return (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1.5 }}
+            <div
               className={`
                 ${bubble.role === 'assistant' ? 'justify-start items-start' : 'justify-end items-end'}
                 flex flex-col w-full my-6
@@ -281,9 +272,9 @@ export default function Panel() {
                   </button>
                 </div>
               )}
-            </motion.div>
+            </div>
           );
         })}
-    </div>
+    </motion.div>
   );
 }

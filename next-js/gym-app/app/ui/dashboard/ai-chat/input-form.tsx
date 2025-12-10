@@ -46,8 +46,7 @@ export default function InputForm() {
   } = useAIChatContext();
   const [submitPromptData, setSubmitPromptData] = useState<{
     url: string;
-    suggest: boolean;
-  }>({ url: '', suggest: false });
+  }>({ url: '' });
   // user prompt tracked every keystroke
   const [prompt, setPrompt] = useState<string>('');
   // router to redirect user
@@ -60,14 +59,17 @@ export default function InputForm() {
   // redirect the user to the conversation if its not there already
   useEffect(() => {
     // ensures the submitPromptData is not empty before redirecting the user
-    const { url, suggest } = submitPromptData;
-    if (!url) return;
+    const { url } = submitPromptData;
     const urlArray = pathname.split('/');
+    const conversationId = urlArray[urlArray.length - 1];
+    // if url is not existent
+    // or the existent conversation id equals the url being sent, return
+    if (!url || url === conversationId) return; 
 
     // if at the current moment the submitPromptData is not
     // equal than the conversation id, redirect the user
     if (!urlArray.find((el) => el === url)) {
-      router.push(`/dashboard/${url}/${suggest ? '?suggest=true' : ''}`);
+      router.push(`/dashboard/${url}?suggest=true`);
     }
   }, [submitPromptData]);
 

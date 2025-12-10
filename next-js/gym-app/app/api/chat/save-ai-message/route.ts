@@ -65,7 +65,7 @@ export async function POST(req: Request) {
         }
 
         // returning the redirect address to submitPrompt()
-        return NextResponse.json({ url: conversation.id, suggest: true });
+        return NextResponse.json({ url: conversation.id });
       }
 
       return NextResponse.json({ message: 'No conversation created' });

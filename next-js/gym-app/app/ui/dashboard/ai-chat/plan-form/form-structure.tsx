@@ -23,7 +23,6 @@ export default function PlanFormStructure() {
     planType, 
     dietFormData, 
     workoutFormData,
-    missingValues,
     setDietFormData, 
     setWorkoutFormData,
     setMissingValues, 

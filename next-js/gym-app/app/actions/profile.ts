@@ -80,8 +80,6 @@ export async function editUserProfile(prevState: any, formData: FormData) {
         `;
       }
     }
-
-    console.log(`aaaaaaaaaaaaaaaaaa`)
     await sql`
       UPDATE users
       SET

@@ -424,7 +424,7 @@ export default function PlansCard({
               href='/dashboard'
               className='underline text-red-400/70 hover:text-red-400 hover:cursor-pointer transition-all'
             >
-              dashboard,
+              dashboard
             </a>{' '}
             talk with Diversus and fill the plan form
           </p>
