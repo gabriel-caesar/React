@@ -1,18 +1,19 @@
 'use client';
 
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { dietPlanType, workoutPlanType } from '@/app/lib/definitions';
 import { useEffect, useRef, useState } from 'react';
+import { IoMdCheckmarkCircleOutline } from 'react-icons/io';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { WorkoutDetailsInfo } from './workout/details-info';
 import { BsThreeDots } from 'react-icons/bs';
 import SectionTogglerButton from './section-toggler-button';
+import WorkoutGeneralInfo from './workout/general-info';
 import DietGeneralInfo from './diet/general-info';
 import DietDetailsInfo from './diet/details-info';
-import MealsInfo from './diet/meals-info';
-import WorkoutGeneralInfo from './workout/general-info';
-import { WorkoutDetailsInfo } from './workout/details-info';
 import ExercisesInfo from './workout/exercises-info';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import animations from '../../../css/animations.module.css';
-import { useRouter } from 'next/navigation';
+import MealsInfo from './diet/meals-info';
 
 export default function PlanStructure({
   dietPlan,
@@ -28,6 +29,9 @@ export default function PlanStructure({
   const [areYouSure, setAreYouSure] = useState<boolean>(false);
   const editButtonRef = useRef<HTMLButtonElement | null>(null);
   const areYouSureRef = useRef<HTMLDivElement | null>(null);
+  const [editSuccessDialog, setEditSuccessDialog] = useState<boolean>(false);
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
   const router = useRouter();
 
   const planBeingDisplayed = dietPlan ? dietPlan : workoutPlan; // figuring out which plan is being asked for
@@ -65,7 +69,7 @@ export default function PlanStructure({
     const planTable =
       planBeingDisplayed === dietPlan ? 'diet_plans' : 'workout_plans';
     try {
-      await fetch(`/api/plans/set-default`, {
+      const call = await fetch(`/api/plans/set-default`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -73,6 +77,8 @@ export default function PlanStructure({
           type: planTable,
         }),
       });
+      const response = await call.json();
+      if (response.success) router.push(`/dashboard/plans/${response.id}`);
     } catch (error) {
       throw new Error(
         `Couldn't set plan as default through front-end. ${error}`
@@ -81,6 +87,12 @@ export default function PlanStructure({
       setUtilityLoader(false);
     }
   }
+
+  // hook to watch for success edits
+  useEffect(() => {
+    const editSuccess = searchParams.get('edit_success');
+    if (editSuccess) setEditSuccessDialog(true);
+  }, [])
 
   // if the user clicks out of the three dots button, close it
   useEffect(() => {
@@ -108,6 +120,7 @@ export default function PlanStructure({
         !areYouSureRef.current.contains(e.target as Node)
       ) {
         setAreYouSure(false);
+        
       }
     };
 
@@ -127,7 +140,7 @@ export default function PlanStructure({
       '
       id='plan-structure-wrapper'
     >
-      {areYouSure && (
+      {(areYouSure || editSuccessDialog) && (
         <div
           id='dimmed-screen'
           className='fixed inset-0 w-screen h-screen z-9 bg-black/70'
@@ -137,7 +150,7 @@ export default function PlanStructure({
         <div
           ref={areYouSureRef}
           id='are-you-sure-delete-container'
-          className='border border-neutral-500 fixed top-1/4 z-10 left-1/2 -translate-x-1/2 p-6 rounded-lg bg-neutral-800 shadow-lg text-[16px] flex flex-col justify-center items-center'
+          className='border border-neutral-500 fixed top-1/4 z-10 left-1/2 -translate-x-1/2 p-6 rounded-lg bg-neutral-800 shadow-lg text-[16px] flex flex-col justify-center items-center w-11/12 md:w-[550px]'
         >
           {utilityLoader ? (
             <div className='py-2 flex flex-col w-full h-full justify-center items-center'>
@@ -191,6 +204,36 @@ export default function PlanStructure({
         </div>
       )}
 
+      {editSuccessDialog && (
+        <div
+          id='edit-success-container'
+          className='border border-neutral-500 fixed top-1/4 z-10 left-1/2 -translate-x-1/2 p-6 rounded-lg bg-neutral-800 shadow-lg text-[16px] flex flex-col justify-center items-center w-11/12 md:w-[550px]'
+        >
+          <h1
+            id='edit-success-container'
+            aria-label='edit-success-container'
+            className='text-center mb-4'
+          >
+            Edited successfully
+          </h1>
+          <button
+            id='dismiss-button'
+            aria-label='dismiss-button'
+            className='flex items-center justify-center text-lg text-neutral-200
+              shadow-md bg-[linear-gradient(45deg,#525252_50%,#737373)] 
+              rounded-lg px-2 border-1 border-neutral-500 w-3/4 md:w-1/2 transition-all duration-200  
+              hover:cursor-pointer hover:scale-105 hover:text-red-500 hover:border-red-500'
+            onClick={() => {
+              setEditSuccessDialog(false);
+              const url = pathname.split('?');
+              router.replace(url[0]);
+            }}
+          >
+            Dismiss
+          </button>
+        </div>
+      )}
+
       <div id='three-dots-menu-container' className='absolute top-2 right-2'>
         <button
           ref={editButtonRef}
@@ -226,21 +269,23 @@ export default function PlanStructure({
             </div>
           ) : (
             <>
-              <button
-                id='edit-button'
-                aria-label='edit-button'
-                className={`
-              transition-all active:scale-95 hover:bg-neutral-600 rounded-lg p-1 mb-1
-              text-center hover:text-red-400 hover:cursor-pointer hover:scale-105
-            ${openThreeDotsMenu ? 'opacity-100' : 'opacity-0 pointer-events-none'}  
-          `}
-                onClick={() => {
-                  setEditing(!editing);
-                  setOpenThreeDotsMenu(false);
-                }}
-              >
-                Edit
-              </button>
+              {toggler === 'general' && (
+                <button
+                  id='edit-button'
+                  aria-label='edit-button'
+                  className={`
+                    transition-all active:scale-95 hover:bg-neutral-600 rounded-lg p-1 mb-1
+                    text-center hover:text-red-400 hover:cursor-pointer hover:scale-105
+                    ${openThreeDotsMenu ? 'opacity-100' : 'opacity-0 pointer-events-none'}  
+                  `}
+                  onClick={() => {
+                    setEditing(!editing);
+                    setOpenThreeDotsMenu(false);
+                  }}
+                >
+                  Edit
+                </button>
+              )}
               <button
                 id='delete-button'
                 aria-label='delete-button'
@@ -285,6 +330,21 @@ export default function PlanStructure({
           className='w-40 h-40 object-cover border-3 shadow-2xl rounded-full'
         />
       </div>
+
+      {planBeingDisplayed.default_plan && (
+        <div
+          id='default-plan-container'
+          className='flex justify-center items-center w-full mt-4 text-[16px] text-neutral-300'
+        >
+          <IoMdCheckmarkCircleOutline className='text-green-500 mr-2' />
+          <p
+            id='default-plan-text'
+            aria-label='default-plan-text'
+          >
+            This is your default plan
+          </p>
+        </div>
+      )}
 
       <div
         id='info-toggler-container'

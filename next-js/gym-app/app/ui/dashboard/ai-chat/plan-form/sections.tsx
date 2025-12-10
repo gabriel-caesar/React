@@ -22,6 +22,7 @@ import { uniqueId } from '@/app/actions/utils';
 import styles from '../../../../css/animations.module.css';
 import scrollbars from '../../../../css/dashboard.module.css';
 import animations from '../../../../css/animations.module.css';
+import { v4 } from 'uuid';
 
 // nextjs font implementation to remove external network requests
 const orbitron = Orbitron({
@@ -76,6 +77,9 @@ export default function Sections() {
           if (!generatingPlan) {
             // resets the form and the plan form data states
             setPlanType('');
+            // making sure we change the id as well
+            dietFormRawData.id = v4();
+            workoutFormRawData.id = v4();
             setDietFormData(dietFormRawData);
             setWorkoutFormData(workoutFormRawData);
           }

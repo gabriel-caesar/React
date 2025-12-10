@@ -1,8 +1,6 @@
 'use server';
 
-import { getBaseUrl } from '@/app/actions/chat';
 import { deletePlan } from '@/app/actions/plans';
-import { redirect } from 'next/navigation';
 import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
@@ -13,8 +11,6 @@ export async function POST(req: Request) {
     id: string,
     type: 'diet_plans' | 'workout_plans'
   } = await req.json();
-
-  const baseURL = await getBaseUrl();
 
   try {
     await deletePlan(id, type);

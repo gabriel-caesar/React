@@ -12,7 +12,7 @@ export function createChatBubble(
   conversationId: string,
   sentDate: string,
   isUser: boolean,
-  formData?: dietFormDataType | workoutFormDataType | null,
+  formData?: dietFormDataType | workoutFormDataType | null
 ): Message {
   setPrompt?.('');
   const uuid = uuidv4();
@@ -42,9 +42,8 @@ export async function submitPrompt(
   conversation: Conversation | null,
   prompt: string,
   user: User | undefined,
-  formData?: dietFormDataType | workoutFormDataType,
+  formData?: dietFormDataType | workoutFormDataType
 ) {
-
   // don't submit if input is empty
   if (prompt.length === 0) return;
 
@@ -78,10 +77,9 @@ export async function submitPrompt(
   ); // creates the ai bubble chat
 
   // most up to date local messages array, so backend doesn't receive outdated messages
-  const updatedLocalMessages = [ ...localMessages, aiChatBubble, userChatBubble ]
+  const updatedLocalMessages = [...localMessages, aiChatBubble, userChatBubble];
 
   try {
-
     // placeholders
     let interpreterResponse: Response;
     let interpreterData = { interpretation: '' };
@@ -98,7 +96,7 @@ export async function submitPrompt(
       });
       interpreterData = await interpreterResponse.json();
     }
-  
+
     // save messages on DB
     // fetch the conversation data and send to the api call
     // fetching the chat API to return the AI response
@@ -110,7 +108,9 @@ export async function submitPrompt(
         user: user,
         date: date,
         localMessages: updatedLocalMessages,
-        signal: formData ? JSON.stringify(formData) : interpreterData.interpretation
+        signal: formData
+          ? JSON.stringify(formData)
+          : interpreterData.interpretation,
       }),
     });
 
@@ -140,7 +140,9 @@ export async function submitPrompt(
       fullResponse += text; // response to be bounced back to the API call
     }
 
-    setIsSuggest(interpreterData.interpretation === 'suggest' && !formData ? true : false);
+    setIsSuggest(
+      interpreterData.interpretation === 'suggest' && !formData ? true : false
+    );
 
     // this call will bounce back the AI response to be saved on the DB
     // since we can't save the streaming state of the AI response
@@ -171,34 +173,57 @@ export async function submitPrompt(
   }
 }
 
-export async function generatePlan(formData: dietFormDataType | workoutFormDataType, isDiet: boolean) {
-  
+export async function generatePlan(
+  formData: dietFormDataType | workoutFormDataType,
+  isDiet: boolean
+) {
   // base check for missing fields
-  const missingFields = []
+  const missingFields = [];
   for (const prop in formData) {
-    const data = formData[prop as keyof (dietFormDataType | workoutFormDataType)];
+    const data =
+      formData[prop as keyof (dietFormDataType | workoutFormDataType)];
     if (prop === 'dietary_restrictions') break; // finish loop in this prop if is a diet form
     if (prop === 'user_notes') break;
     if (!data) {
-      console.log('data:', data);
-      missingFields.push(prop)
-    };
+      missingFields.push(prop);
+    }
   }
   if (missingFields.length > 0) return missingFields;
 
   // converting the data types accordingly
   if (isDiet) {
-    const { age, number_of_meals, meal_timing_hours, duration_weeks, want_supplements, daily_caloric_intake } = formData as dietFormDataType;
-    (formData as dietFormDataType).want_supplements = want_supplements === 'yes' ? true : false;
-    (formData as dietFormDataType).daily_caloric_intake = parseInt(daily_caloric_intake as string);
-    (formData as dietFormDataType).meal_timing_hours = parseInt(meal_timing_hours as string);
-    (formData as dietFormDataType).number_of_meals = parseInt(number_of_meals as string);
-    (formData as dietFormDataType).duration_weeks = parseInt(duration_weeks as string);
+    const {
+      age,
+      number_of_meals,
+      meal_timing_hours,
+      duration_weeks,
+      want_supplements,
+      daily_caloric_intake,
+    } = formData as dietFormDataType;
+    (formData as dietFormDataType).want_supplements =
+      want_supplements === 'yes' ? true : false;
+    (formData as dietFormDataType).daily_caloric_intake = parseInt(
+      daily_caloric_intake as string
+    );
+    (formData as dietFormDataType).meal_timing_hours = parseInt(
+      meal_timing_hours as string
+    );
+    (formData as dietFormDataType).number_of_meals = parseInt(
+      number_of_meals as string
+    );
+    (formData as dietFormDataType).duration_weeks = parseInt(
+      duration_weeks as string
+    );
     (formData as dietFormDataType).age = parseInt(age as string);
   } else {
-    const { age, duration_weeks, number_of_workout_days } = formData as workoutFormDataType;
-    (formData as workoutFormDataType).number_of_workout_days = parseInt(number_of_workout_days as string);
-    (formData as workoutFormDataType).duration_weeks = parseInt(duration_weeks as string);
+    const { age, duration_weeks, number_of_workout_days } =
+      formData as workoutFormDataType;
+    (formData as workoutFormDataType).number_of_workout_days = parseInt(
+      number_of_workout_days as string
+    );
+    (formData as workoutFormDataType).duration_weeks = parseInt(
+      duration_weeks as string
+    );
     (formData as workoutFormDataType).age = parseInt(age as string);
   }
 

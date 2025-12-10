@@ -12,7 +12,7 @@ import PlanTypeToggler from './plan-type-toggler';
 import { useEffect, useRef, useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import animations from '../../../css/animations.module.css';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { FaBowlFood } from 'react-icons/fa6';
 
 const orbitron = Orbitron({
@@ -35,6 +35,7 @@ export default function PlansCard({
     id: string;
     type: string;
   }>({ id: '', type: '' });
+  
   const [utilityLoader, setUtilityLoader] = useState<boolean>(false);
   const router = useRouter();
 
@@ -100,7 +101,7 @@ export default function PlansCard({
         <div
           ref={areYouSureRef}
           id='are-you-sure-delete-container'
-          className='border border-neutral-500 fixed top-1/4 z-10 left-1/2 -translate-x-1/2 p-6 rounded-lg bg-neutral-800 shadow-lg text-[16px] flex flex-col justify-center items-center'
+          className='border border-neutral-500 fixed top-1/4 z-10 left-1/2 -translate-x-1/2 p-6 rounded-lg bg-neutral-800 shadow-lg text-[16px] flex flex-col justify-center items-center w-11/12 md:w-[550px]'
         >
           {utilityLoader ? (
             <div className='py-2 flex flex-col w-full h-full justify-center items-center'>
@@ -153,6 +154,7 @@ export default function PlansCard({
           )}
         </div>
       )}
+
       <h1
         id='plans-header'
         aria-label='plans-header'
@@ -219,12 +221,12 @@ export default function PlansCard({
             <th
               className={`${dietPlans.length > 0 && 'border-b-1'} text-center px-2 border-r-1 border-neutral-500 hidden md:table-cell`}
             >
-              Created At
+              Created on
             </th>
             <th
               className={`${dietPlans.length > 0 && 'border-b-1'} text-center px-2 border-r-1 border-neutral-500 hidden md:table-cell`}
             >
-              Last Edited At
+              Last Edited
             </th>
             <th
               className={`${dietPlans.length > 0 && 'border-b-1'} text-center px-2 border-r-1 border-neutral-500 sm`}
@@ -243,8 +245,25 @@ export default function PlansCard({
         <tbody>
           {dietPlans.length > 0 && planToggler === 'diet'
             ? dietPlans.map((plan) => {
+                const lastEditDate = new Date(plan.last_edit_date + ' UTC');
+                const lastEditDateFiltered = lastEditDate.toLocaleString(undefined, {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                }).split(',').join(' at');
+
+                const createdDate = new Date(plan.created_date + ' UTC');
+                const createdDateFiltered = createdDate.toLocaleString(undefined, {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                }).split(',').join(' at');
                 return (
-                  <tr key={plan.id} className=''>
+                  <tr key={plan.id}>
                     <td className='text-center border-r-1 border-neutral-500 p-2'>
                       {plan.goal
                         .split('')
@@ -258,10 +277,10 @@ export default function PlansCard({
                       {plan.number_of_meals}
                     </td>
                     <td className='text-center border-r-1 border-neutral-500 hidden md:table-cell p-2'>
-                      {plan.created_date as string}
+                      {createdDateFiltered}
                     </td>
                     <td className='text-center border-r-1 border-neutral-500 hidden md:table-cell p-2'>
-                      {plan.last_edit_date as string}
+                      {lastEditDateFiltered}
                     </td>
                     <td className='text-center align-middle text-xl p-2'>
                       <div className='flex justify-center items-center w-full h-full'>
@@ -306,6 +325,25 @@ export default function PlansCard({
               })
             : workoutPlans.length > 0 &&
               workoutPlans.map((plan) => {
+
+                const lastEditDate = new Date(plan.last_edit_date + ' UTC');
+                const lastEditDateFiltered = lastEditDate.toLocaleString(undefined, {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                }).split(',').join(' at');
+
+                const createdDate = new Date(plan.created_date + ' UTC');
+                const createdDateFiltered = createdDate.toLocaleString(undefined, {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                }).split(',').join(' at');
+
                 return (
                   <tr key={plan.id} className=''>
                     <td className='text-center border-r-1 border-neutral-500 p-2'>
@@ -321,10 +359,10 @@ export default function PlansCard({
                       {plan.weekly_totals.total_exercises}
                     </td>
                     <td className='text-center border-r-1 border-neutral-500 hidden md:table-cell p-2'>
-                      {plan.created_date as string}
+                      {createdDateFiltered}
                     </td>
                     <td className='text-center border-r-1 border-neutral-500 hidden md:table-cell p-2'>
-                      {plan.last_edit_date as string}
+                      {lastEditDateFiltered}
                     </td>
                     <td className='text-center align-middle text-xl p-2'>
                       <div className='flex justify-center items-center w-full h-full'>

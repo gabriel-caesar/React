@@ -9,11 +9,13 @@ test.describe('Side Bar Menu', () => {
     const passInput = page.getByPlaceholder('Enter your password');
     const loginBtn = page.getByRole('button', { name: 'Log In' });
     
+    await emailInput.waitFor();
+    await passInput.waitFor();
     await expect(emailInput).toBeVisible({ timeout: 15000 });
     await expect(passInput).toBeVisible({ timeout: 15000 });
-  
-    await page.waitForTimeout(1000);
-  
+    
+    await emailInput.clear();
+    await passInput.clear();
     await emailInput.fill('testing@email.com');
     await passInput.fill('testing123456#');
     await loginBtn.click();
@@ -33,6 +35,7 @@ test.describe('Side Bar Menu', () => {
     const chatPanel = page.getByTestId('chat-panel');
 
     // getting visibility feedback
+    await chatPanel.waitFor();
     await expect(chatPanel).toBeVisible();
     await expect(inputField).toBeVisible();
     await expect(threeBarsMenu).toBeVisible();
@@ -45,6 +48,7 @@ test.describe('Side Bar Menu', () => {
 
     // checking if an user chat bubble was created
     const userChatBubble = page.getByTestId('user-chat-bubble');
+    await userChatBubble.waitFor();
     await expect(userChatBubble).toBeVisible();
     await expect(userChatBubble).toHaveText('Give me a full diet plan for a serious hiker');
 
@@ -52,6 +56,7 @@ test.describe('Side Bar Menu', () => {
     await threeBarsMenu.click();
 
     // check if the side bar is opened and if conversation title changed
+    await sideBarPanel.waitFor();
     await expect(sideBarPanel).toBeVisible();
     await expect(sideBarPanel).not.toHaveClass('w-0');
     await expect(conversationTitle).not.toHaveText('Welcome', { timeout: 15000 });
@@ -62,6 +67,7 @@ test.describe('Side Bar Menu', () => {
     const conversationLink = page.getByTestId(`${title.split(' ').join('-').toLowerCase()}-title`);
 
     // expecting that the conversation link is selected
+    await conversationLink.waitFor();
     await expect(conversationLink).toBeVisible();
     await expect(conversationLink).toHaveClass(/bg-red-500/);
 

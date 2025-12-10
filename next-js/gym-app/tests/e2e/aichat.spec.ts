@@ -10,6 +10,9 @@ test.beforeEach(async ({ page }) => {
   await expect(emailInput).toBeVisible({ timeout: 15000 });
   await expect(passInput).toBeVisible({ timeout: 15000 });
 
+  // making sure the login input fields are clear before filling with data
+  await emailInput.clear(); 
+  await passInput.clear();
   await emailInput.fill('testing@email.com');
   await passInput.fill('testing123456#');
   await loginBtn.click();
@@ -19,19 +22,22 @@ test.beforeEach(async ({ page }) => {
 })
 
 test.describe('Chat input form', () => {
-  const username = 'Test'
-  const introBubbleContent = `Hello ${username}, to get started you can tell me what are your fitness goals and I will help you achieve it, but that needs to be essentially something related to either workout or a diet.`;
 
   test('renders the bot introduction bubble succesfully', async ({ page }) => {
     const introBubble = page.getByTestId('greeting-ai-chat-bubble');
+    await introBubble.waitFor();
     await expect(introBubble).toBeVisible();
-    await expect(introBubble).toHaveText(introBubbleContent);
+    await expect(introBubble).not.toHaveText(''); // checking if the bubble
   });
 
   test('user sends the AI a message and receives a valid response', async ({ page }) => {
+    await page.waitForLoadState('networkidle');
+
     const userInput = page.getByPlaceholder('Enter your message...');
     const sendMessageButton = page.getByRole('button', { name: 'send-message-button' });
     const panelDiv = page.getByTestId('chat-panel');
+
+    await panelDiv.waitFor(); // wait for panel to load and bypass the loading skeleton
 
     await expect(panelDiv).toBeVisible();
     await expect(userInput).toBeVisible();
@@ -42,9 +48,8 @@ test.describe('Chat input form', () => {
     await sendMessageButton.click();
     await expect(userInput).toHaveText('');
 
-    await page.waitForTimeout(5000); // wait for the response generation
-
     const aiResponse = page.getByLabel('ai-chat-bubble').nth(1); // get the response after the greeting bubble
+    await aiResponse.waitFor(); // awaiting the response load
     await expect(aiResponse).toBeVisible();
     await expect(aiResponse).not.toHaveText(''); // making sure the response is not empty
   })

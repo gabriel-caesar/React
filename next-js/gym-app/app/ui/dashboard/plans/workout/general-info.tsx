@@ -1,8 +1,18 @@
+import {
+  SetStateAction,
+  useActionState,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { editWorkoutGeneralInfo } from '@/app/actions/plans';
+import { capitalizeInitial } from '@/app/actions/utils';
 import { workoutPlanType } from '@/app/lib/definitions';
-import { SetStateAction, useState } from 'react';
-import { motion } from 'framer-motion';
-import Dropdown from '@/app/ui/dropdown';
 import { Orbitron } from 'next/font/google';
+import { motion } from 'framer-motion';
+import animations from '../../../../css/animations.module.css';
+import Dropdown from '@/app/ui/dropdown';
 
 // nextjs font implementation to remove external network requests
 const orbitron = Orbitron({
@@ -20,15 +30,39 @@ export default function WorkoutGeneralInfo({
   setEditing: React.Dispatch<SetStateAction<boolean>>;
 }) {
   const [experienceLevel, setExperienceLevel] = useState<string>(
-    workoutPlan.experience_level.split('')
-      .map((l, i) => (i === 0 ? l.toUpperCase() : l))
-      .join('')
+    capitalizeInitial(workoutPlan.experience_level)
   );
-  const [planGoal, setPlanGoal] = useState<string>('');
+  const [state, editGeneralInfoAction, isPending] = useActionState(
+    editWorkoutGeneralInfo,
+    undefined
+  ); // form action
+  // input states for editing
+  const [planGoal, setPlanGoal] = useState<string>(
+    capitalizeInitial(workoutPlan.goal)
+  );
+  const [gender, setGender] = useState<string>(
+    capitalizeInitial(workoutPlan.gender)
+  );
+  const [currentWeight, setCurrentWeight] = useState<string>(
+    capitalizeInitial(workoutPlan.current_weight)
+  );
+  const [height, setHeight] = useState<string>(
+    capitalizeInitial(workoutPlan.height)
+  );
+  const [age, setAge] = useState<string>(workoutPlan.age as string);
+  const [numberOfWorkoutDays, setNumberOfWorkoutDays] = useState<string>(
+    workoutPlan.number_of_workout_days as string
+  );
+  const [duration, setDuration] = useState<string>(
+    workoutPlan.duration_weeks as string
+  );
+
+  const [wiggle, setWiggle] = useState<boolean>(false); // used to persist the wiggle animation across consecutive wrong submissions
+  const errorRef = useRef<HTMLParagraphElement | null>(null);
 
   const generalInfoData = [
     'goal',
-    'gender',
+    'gender', // dropdown
     'current_weight',
     'height',
     'age',
@@ -37,8 +71,23 @@ export default function WorkoutGeneralInfo({
     'duration_weeks',
   ];
 
+  useEffect(() => {
+    if (!errorRef.current) return;
+    const el = errorRef.current;
+    // remove animation class
+    el.classList.remove(animations.wiggle_input);
+    void el.offsetWidth; // force reflow
+    // add animation class again
+    el.classList.add(animations.wiggle_input);
+  }, [wiggle]);
+
+  useEffect(() => {
+    if (!state?.errors) return;
+    setWiggle(!wiggle);
+  }, [isPending]);
+
   return (
-    <div id='general-info-container'>
+    <form id='general-info-container' action={editGeneralInfoAction}>
       <h1
         id='general-info-header'
         aria-label='general-info-header'
@@ -114,6 +163,27 @@ export default function WorkoutGeneralInfo({
                     style='w-full'
                   />
                 )
+              ) : data === 'gender' ? (
+                !editing ? (
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                    id={`${data}-text`}
+                    aria-label={`${data}-text`}
+                    className={`border-b-1 border-neutral-500 text-[16px] mt-2 w-full flex flex-col items-start justify-start ${i % 2 !== 0 ? 'md:items-end md:justify-end' : 'md:items-start md:justify-start'}`}
+                  >
+                    {capitalizeInitial(gender)}
+                  </motion.p>
+                ) : (
+                  <Dropdown
+                    options={['Male', 'Female']}
+                    selector={gender}
+                    setSelector={setGender}
+                    style='w-full'
+                  />
+                )
               ) : !editing ? (
                 <motion.p
                   initial={{ opacity: 0 }}
@@ -124,36 +194,151 @@ export default function WorkoutGeneralInfo({
                   aria-label={`${data}-text`}
                   className={`border-b-1 border-neutral-500 text-[16px] mt-2 w-full flex flex-col items-start justify-start ${i % 2 !== 0 ? 'md:items-end md:justify-end' : 'md:items-start md:justify-start'}`}
                 >
-                  {String(workoutPlan[data as keyof unknown])
-                    .split('')
-                    .map((l, i) => (i === 0 ? l.toUpperCase() : l))
-                    .join('')}
+                  {capitalizeInitial(
+                    String(workoutPlan[data as keyof unknown])
+                  )}
                 </motion.p>
               ) : (
-                <motion.input
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                  type='text'
-                  id={`edit-${data}-input`}
-                  placeholder={
-                    data.includes('_')
-                      ? placeholder
-                      : data
-                          .split('')
-                          .map((l, i) => (i === 0 ? l.toUpperCase() : l))
-                          .join('') + '...'
-                  }
-                  value={planGoal}
-                  onChange={(e) => setPlanGoal(e.target.value)}
-                  className='focus-within:outline-none p-1 rounded-md border-1 border-neutral-400 bg-neutral-800 text-[16px] w-full'
-                />
+                <>
+                  <motion.input
+                    disabled={isPending}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                    type='text'
+                    id={`edit-${data}-input`}
+                    name={data}
+                    placeholder={
+                      data.includes('_')
+                        ? placeholder
+                        : data
+                            .split('')
+                            .map((l, i) => (i === 0 ? l.toUpperCase() : l))
+                            .join('') + '...'
+                    }
+                    value={
+                      data === 'goal'
+                        ? planGoal
+                        : data === 'current_weight'
+                          ? currentWeight
+                          : data === 'height'
+                            ? height
+                            : data === 'age'
+                              ? age
+                              : data === 'number_of_workout_days'
+                                ? numberOfWorkoutDays
+                                : duration
+                    }
+                    onChange={(e) =>
+                      data === 'goal'
+                        ? setPlanGoal(e.target.value)
+                        : data === 'current_weight'
+                          ? setCurrentWeight(e.target.value)
+                          : data === 'height'
+                            ? setHeight(e.target.value)
+                            : data === 'age'
+                              ? setAge(e.target.value)
+                              : data === 'number_of_workout_days'
+                                ? setNumberOfWorkoutDays(e.target.value)
+                                : setDuration(e.target.value)
+                    }
+                    className='focus-within:outline-none p-1 rounded-md border-1 border-neutral-400 bg-neutral-800 text-[16px] w-full'
+                  />
+                  {state?.errors?.[data as keyof typeof state.errors] && (
+                    <p
+                      className={`text-[16px] bg-[linear-gradient(45deg,#E63946_50%,#f06e78)] border-1 border-red-300 rounded-lg w-full text-center px-2 py-1 text-white mt-2 ${
+                        wiggle && animations.wiggle_input
+                      }`}
+                      id='name-error-text'
+                      aria-label='name-error-text'
+                    >
+                      {state.errors[data as keyof typeof state.errors]}
+                    </p>
+                  )}
+                </>
               )}
             </motion.section>
           );
         })}
       </div>
-    </div>
+      {editing && (
+        <div
+          id='buttons-container'
+          className='mt-8 flex flex-col md:flex-row w-full justify-center items-center'
+        >
+          <button
+            type='button'
+            id='cancel-edit-button'
+            aria-label='cancel-edit-button'
+            onClick={() => setEditing(false)}
+            className={`
+              ${isPending && 'hidden'}
+              md:bg-[linear-gradient(-45deg,#101010_50%,#606060)] md:w-1/4 md:mr-2 bg-[linear-gradient(45deg,#101010_50%,#606060)]
+              border-neutral-500 border text-[16px] w-full p-2 rounded-lg mb-2 md:mb-0 hover:cursor-pointer hover:text-red-400 
+              hover:scale-105 active:scale-95 transition-all
+            `}
+          >
+            Cancel
+          </button>
+          <button
+            type='submit'
+            disabled={isPending}
+            id='edit-button'
+            aria-label='edit-button'
+            className={`
+              md:w-1/4 w-full p-2 rounded-lg transition-all flex items-center justify-center border text-[16px]
+              ${
+                isPending
+                  ? 'bg-[linear-gradient(45deg,#202020_50%,#656565)] text-neutral-500 hover:cursor-not-allowed'
+                  : 'bg-[linear-gradient(45deg,#101010_50%,#606060)] border-neutral-500 hover:text-red-400 hover:scale-105 active:scale-95 hover:cursor-pointer'
+              }
+            `}
+          >
+            {isPending ? (
+              <>
+                Editing{' '}
+                <AiOutlineLoading3Quarters
+                  strokeWidth={1.5}
+                  className={`${animations.loading} ml-2`}
+                />
+              </>
+            ) : (
+              'Edit'
+            )}
+          </button>
+        </div>
+      )}
+      {editing && (
+        <input
+          type='text'
+          className='hidden'
+          name='experience_level'
+          id='experience-level-hidden-input'
+          value={experienceLevel.toLowerCase()}
+          readOnly
+        />
+      )}
+      {editing && (
+        <input
+          type='text'
+          className='hidden'
+          name='gender'
+          id='gender-hidden-input'
+          value={gender.toLowerCase()}
+          readOnly
+        />
+      )}
+      {editing && (
+        <input
+          type='text'
+          className='hidden'
+          name='plan_id'
+          id='plan-id-input'
+          value={workoutPlan.id}
+          readOnly
+        />
+      )}
+    </form>
   );
 }

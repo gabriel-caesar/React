@@ -13,8 +13,8 @@ export async function POST(req: Request) {
   } = await req.json();
 
   try {
-    await setPlanAsDefault(id, type);
-    return NextResponse.json({ success: true })
+    const planId = await setPlanAsDefault(id, type);
+    return NextResponse.json({ success: true, id: planId })
   } catch (error) {
     throw new Error(`Couldn't set plan as default from API call. ${error}`)
   }

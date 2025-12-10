@@ -28,7 +28,6 @@ export default function TopBar() {
     >
       <h1
         aria-label='conversation-title'
-        data-testid='conversation-title'
         id='conversation-title'
         style={{ letterSpacing: '0.1rem' }}
         className={`
@@ -45,7 +44,7 @@ export default function TopBar() {
             : 'Welcome'}
         </p>
 
-        <p className='hidden md:block'>
+        <p className='hidden md:block' data-testid='conversation-title'>
           {conversation?.title ? conversation?.title : 'Welcome'}
         </p>
       </h1>

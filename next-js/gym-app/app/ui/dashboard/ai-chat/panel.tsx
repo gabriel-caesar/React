@@ -1,17 +1,25 @@
 'use client';
 
-import { useEffect, useRef, useContext, useLayoutEffect } from 'react';
-import { CiSaveDown2, CiCircleCheck } from 'react-icons/ci';
+import { useEffect, useRef, useContext, useLayoutEffect, useState } from 'react';
+import { CiSaveDown2, CiCircleCheck, CiFileOn } from 'react-icons/ci';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { workoutFormDataType } from '@/public/plan_metadata/workout-formdata';
-import { dietFormDataType } from '@/public/plan_metadata/diet-formdata';
+import { workoutFormDataType, workoutFormRawData } from '@/public/plan_metadata/workout-formdata';
+import { dietFormDataType, dietFormRawData } from '@/public/plan_metadata/diet-formdata';
 import { aiChatContext } from './chat-structure';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import remarkGfm from 'remark-gfm';
 import InputForm from './input-form';
 import Markdown from 'react-markdown';
 import animations from '@/app/css/animations.module.css';
 import styles from '@/app/css/dashboard.module.css';
+import { Orbitron } from 'next/font/google';
+import { motion } from 'framer-motion';
+import { v4 } from 'uuid';
+
+const orbitron = Orbitron({
+  weight: '400',
+  subsets: ['latin'],
+});
 
 export default function Panel() {
   // safely checking if context is actually passed right
@@ -32,13 +40,23 @@ export default function Panel() {
     isAIWriting,
     setSavingPlan,
     savingPlan,
-    planType
+    setDietFormData,
+    setWorkoutFormData
   } = useAIChatContext();
 
+  const diversusIntroTexts = [
+    `Welcome to Diversus, ${user?.firstname}. I await your command. Tell me what you seek, and I will shape the path to reach it.`,
+    `You've entered Diversus, where your goals become my directives. Speak your intent, ${user?.firstname}, and I will craft the way forward.`,
+    `This is Diversus, ${user?.firstname} built to serve your ambition. State your purpose, and I will assemble the routine to match it.`,
+    `At Diversus, your will is the blueprint. Declare your objective, ${user?.firstname}, and I will forge the plan that fulfills it.`
+  ]
+  const [randomIntroIndex, setRandomIntroIndex] = useState<number>(0);
+  const [diversusIntro] = useState<string>(diversusIntroTexts[randomIntroIndex]);
   // greeting paragraph ref to avoid clearing the chat bubble
   const greetingParagrah = useRef<HTMLParagraphElement | null>(null);
   // used to know where the URL current is point to
   const pathname = usePathname();
+  const router = useRouter();
 
   // markdown styles
   const proseStyles = `
@@ -61,7 +79,7 @@ export default function Panel() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           formData: formData,
-          isDiet: planType === 'diet' ? true : false,
+          isDiet: formData.plan_type === 'diet' ? true : false,
           userId: userId,
           messageId: messageId,
         }),
@@ -75,7 +93,16 @@ export default function Panel() {
       throw new Error(`Couldn't save plan from front-end. ${error}`);
     } finally {
       setSavingPlan(false);
+      // reseting the form datas prevent duplicate ids if creating plans in a row
+      dietFormRawData.id = v4();
+      workoutFormRawData.id = v4();
+      setDietFormData(dietFormRawData);
+      setWorkoutFormData(workoutFormRawData);
     }
+  }
+
+  function handleViewPlan(id: string) {
+    router.replace(`/dashboard/plans/${id}`);
   }
 
   // feeding the last text bubble with the most up to date response
@@ -102,6 +129,9 @@ export default function Panel() {
     }
   }, [pathname]);
 
+  // generates a random intro index every mount
+  useEffect(() => setRandomIntroIndex(Math.floor(Math.random() * 4)), [])
+
   return (
     <div
       ref={chatPanelRef}
@@ -114,29 +144,39 @@ export default function Panel() {
         w-full lg:w-[900px] lg:px-10 px-2 h-screen overflow-y-auto overflow-x-hidden
       `}
     >
-      <div
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 1.5 }}
         id='input-form-wrapper'
         className='fixed w-13/14 lg:w-[865px] bottom-2 left-1/2 -translate-x-1/2 z-2'
       >
         <InputForm />
-      </div>
-
-      <p
-        aria-label='ai-chat-bubble'
-        className='text-md bg-[linear-gradient(45deg,#525252_50%,#656565)] border-1 border-neutral-400 rounded-md p-2 text-start w-fit max-w-full h-fit overflow-auto'
+      </motion.div>
+      
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 1.5 }}
+        aria-label='ai-chat-bubble-intro'
+        className={`${orbitron.className} text-center text-lg p-2 pb-4 border-b-1 text-neutral-300 w-fit max-w-full h-fit overflow-auto`}
+        style={{ letterSpacing: '0.1rem' }}
         id='greeting-ai-chat-bubble'
         data-testid='greeting-ai-chat-bubble'
         ref={greetingParagrah}
       >
-        Hello <strong className='text-red-400'>{user?.firstname}</strong>, to
-        get started you can tell me what are your fitness goals and I will help
-        you achieve it, but that needs to be essentially something related to
-        either workout or a diet.
-      </p>
+        {diversusIntro}
+      </motion.p>
       {localMessages.length > 0 &&
         localMessages.map((bubble) => {
           return (
-            <div
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.5 }}
               className={`
                 ${bubble.role === 'assistant' ? 'justify-start items-start' : 'justify-end items-end'}
                 flex flex-col w-full my-6
@@ -175,6 +215,31 @@ export default function Panel() {
                   id='tool-bar-container'
                   className='w-full md:max-w-3/4 flex items-end justify-end mt-2'
                 >
+                  {bubble.plan_saved && (
+                    <button
+                      id='view-plan-button'
+                      aria-label='view-plan-button'
+                      type='button'
+                      className={`
+                        text-4xl text-red-400 rounded-lg p-1 bg-transparent hover:bg-neutral-700 
+                        hover:scale-105 active:scale-95 hover:cursor-pointer transition-all duration-300 group mr-2
+                        ${!bubble.plan_saved && 'active:scale-95'}
+                      `}
+                      onClick={() => {
+                        if (bubble.plan_saved && !savingPlan)
+                          handleViewPlan(bubble.form_data ? bubble.form_data.id : '')
+                      }}
+                    >
+                      <CiFileOn />
+                      <div
+                        id='view-plan-info'
+                        aria-label='view-plan-info'
+                        className='absolute text-white whitespace-nowrap -left-1 -bottom-6 bg-neutral-700 rounded-lg px-2 w-fit text-center text-sm hover:cursor-default pointer-events-none group-hover:pointer-events-auto group-hover:opacity-100 opacity-0 transition-all duration-300'
+                      >
+                        View plan
+                      </div>
+                    </button>
+                  )}
                   <button
                     id='save-plan-button'
                     aria-label='save-plan-button'
@@ -216,7 +281,7 @@ export default function Panel() {
                   </button>
                 </div>
               )}
-            </div>
+            </motion.div>
           );
         })}
     </div>

@@ -63,9 +63,9 @@ export default function WorkoutAccordion({
           </h2>
           <TbSeparator className='mx-2 text-red-400' />
           <h1 id='day-name-header' aria-label='day-name-header' className='text-xl'>
-            <p className='hidden min-[535px]:block'>{data.workout_name}</p>
+            <p className='hidden min-[535px]:block'>{data.workout_name.length >= 35 ? data.workout_name.slice(0, 35) + '...' : data.workout_name}</p>
             <p className='min-[535px]:hidden'>
-              {data.workout_name.slice(0, 10) + '...'}
+              {data.workout_name.length >= 10 ? data.workout_name.slice(0, 10) + '...' : data.workout_name}
             </p>
           </h1>
         </div>

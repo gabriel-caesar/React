@@ -75,7 +75,7 @@ export default function NavLinks({
     // capitalizing the first word
     const tabName = (endpoint as string).split('').map((word, i) => i === 0 ? word.toUpperCase() : word).join('') ;
     setTab(tabName);
-  }, [])
+  }, [pathname])
 
   return (
     <div className='mt-6 w-11/12'>

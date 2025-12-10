@@ -42,6 +42,7 @@ const instructions = `
 
   DAILY WORKOUT CREATION:
   - The "day" key should only numbers.
+  - Keep workout_name short.
   - Generate 4-5 exercises a day if user is seeking weight and muscle gain.
   - Generate 3-4 exercises a day if user is seeking maintaining or reducing muscle or weight.
   - Daily workouts must use day numbers starting at 1, not 0.
@@ -75,9 +76,21 @@ const instructions = `
   - weekly_sets = sum of all sets across all exercises across all days.
 
   DIET MEAL CREATION:
+  - For weight-loss or similar goals, generate:
+      Men: 1900-2300 kcal/day
+      Women: 1600-2000 kcal/day
+  - For hypertrophy or similar goals, generate:
+      Men: 2400-2800 kcal/day
+      Women: 2000-2400 kcal/day
+  - For bulking or similar goals, generate:
+      Men: 2900-3300 kcal/day
+      Women: 2300-2700 kcal/day
+  - After determining the daily caloric intake, divide this value equally by number_of_meals.
+    Each meal's total calories must sum exactly to this per-meal target.
   - Create exactly number_of_meals meals.
   - Use the first meal object as the template.
   - You may choose the first meal start time.
+  - Format all times using the standard US style (12-hour clock with AM/PM).
   - Each meal time must respect meal_timing (time between meals).
   - All foods must respect dietary_restrictions and align with the plan goal.
   - Populate meals with realistic foods and macros following the FORM-FILLING RULES' rule 5.
@@ -121,7 +134,7 @@ export async function POST(req: Request) {
   try {
     // getting the response from the AI
     const response = await openai.responses.create({
-      model: 'gpt-4.1',
+      model: 'gpt-5.1',
       input: [
         { role: 'system', content: instructions },
         ...allMessages,

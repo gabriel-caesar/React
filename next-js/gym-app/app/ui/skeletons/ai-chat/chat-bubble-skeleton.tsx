@@ -10,7 +10,7 @@ export default function ChatBubbleSkeleton({ role, width } : { role: string, wid
       <p
         aria-label='message-bubble-skeleton'
         id='message-bubble-skeleton'
-        className={`${role === 'ai' ? `bg-neutral-700 ${animation.shimmer_gray}` : `bg-red-400 ${animation.shimmer_red}`} flex p-2 rounded-md w-${width} h-10 max-w-3/4 break-normal`}
+        className={`border ${role === 'ai' ? `border-neutral-500 bg-neutral-700 ${animation.shimmer_gray}` : `border-red-300 bg-red-400 ${animation.shimmer_red}`} flex p-2 rounded-md w-${width} h-10 max-w-3/4 break-normal`}
       ></p>
     </div>
   );

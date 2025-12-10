@@ -42,7 +42,7 @@ export async function POST(req: Request) {
         // response stream is finished
 
         if (conversation) {
-          const insertedResponse = await sql<Message[]>`
+          await sql`
             INSERT INTO messages
             (id, sent_date, message_content, conversation_id, role, form_data, plan_saved)
             VALUES (
@@ -53,14 +53,13 @@ export async function POST(req: Request) {
               ${role},
               ${form_data ? sql.json(form_data as dietFormDataType) : null},
               ${false}
-            )
-            RETURNING *;
+            );
           `;
 
           // update the last message sent from this conversation
           await sql`
             UPDATE conversations
-            SET last_message_date = ${insertedResponse[0].sent_date}
+            SET last_message_date = ${sent_date}
             where id = ${conversation.id}
           `;  
         }

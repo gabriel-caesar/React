@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { IoChevronDown } from 'react-icons/io5';
+import { capitalizeInitial } from '../actions/utils';
 
 export default function Dropdown({
   options,
@@ -33,7 +34,7 @@ export default function Dropdown({
         `}
         onClick={() => setOpenDropdown(!openDropdown)}
       >
-        {selector ? selector : 'Choose one option'}
+        {selector ? capitalizeInitial(selector) : 'Choose one option'}
         <IoChevronDown
           className={`${openDropdown && '-rotate-180'} transition-all duration-300`}
         />

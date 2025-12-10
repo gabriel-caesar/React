@@ -1,4 +1,9 @@
+import { v4 as uuidv4 } from 'uuid';
+
+const uuid = uuidv4();
+
 export const workoutFormRawData = {
+  id: uuid,
   plan_type: '',
   goal: '',
   gender: '',
@@ -43,6 +48,7 @@ export const workoutFormRawData = {
 };
 
 export type workoutFormDataType = {
+  id: string,
   plan_type: string,
   goal: string,
   gender: string,

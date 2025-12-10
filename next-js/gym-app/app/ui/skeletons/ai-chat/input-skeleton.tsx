@@ -5,8 +5,8 @@ export default function InputSkeleton() {
     <div
       aria-label='input-skeleton'
       className={`
-            max-[1024px]:w-11/12 max-[1024px]:h-[117.5px]
-            flex items-center justify-center mb-2 w-3/4 h-[88px] rounded-lg bg-neutral-600 relative 
+            border border-neutral-500
+            flex items-center justify-center mb-2 w-full h-[88px] rounded-lg bg-neutral-600 relative 
             ${animation.shimmer_gray}
           `}
     >
@@ -14,7 +14,15 @@ export default function InputSkeleton() {
         aria-label='send-message-button-skeleton'
         className={`
           ${animation.shimmer_black} 
-          absolute top-3.5 right-3 rounded-full w-15 h-15 flex items-center justify-center bg-neutral-900`}
+          absolute top-1/2 -translate-y-1/2 right-3 rounded-full w-11 h-11 border border-neutral-500 flex items-center justify-center bg-neutral-900`}
+      >
+      </button>
+
+      <button
+        aria-label='send-message-button-skeleton'
+        className={`
+          ${animation.shimmer_black} 
+          absolute top-1/2 -translate-y-1/2 left-3 rounded-full w-11 h-11 border border-neutral-500 flex items-center justify-center`}
       >
       </button>
     </div>

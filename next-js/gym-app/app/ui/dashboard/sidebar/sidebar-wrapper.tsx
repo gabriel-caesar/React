@@ -70,7 +70,7 @@ export default function SideBar({ user }: { user: User | undefined }) {
   }, [pathname, openSideBar]);
 
   return (
-    <div className='z-3 flex'>
+    <div className='z-5 flex'>
       <SideBarNav
         openSideBar={openSideBar}
         sideBarNavRef={sideBarNavRef}

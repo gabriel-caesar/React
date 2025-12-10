@@ -8,8 +8,14 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { FaArrowUp, FaClipboardList } from 'react-icons/fa';
 import animations from '../../../css/animations.module.css';
 import styles from '@/app/css/dashboard.module.css';
-import { dietFormDataType, dietFormRawData } from '@/public/plan_metadata/diet-formdata';
-import { workoutFormDataType } from '@/public/plan_metadata/workout-formdata';
+import {
+  dietFormDataType,
+  dietFormRawData,
+} from '@/public/plan_metadata/diet-formdata';
+import {
+  workoutFormDataType,
+  workoutFormRawData,
+} from '@/public/plan_metadata/workout-formdata';
 
 export default function InputForm() {
   // safely checking if context is actually passed right
@@ -36,7 +42,7 @@ export default function InputForm() {
     setDietFormData,
     planType,
     setWorkoutFormData,
-    workoutFormData
+    workoutFormData,
   } = useAIChatContext();
   const [submitPromptData, setSubmitPromptData] = useState<{
     url: string;
@@ -67,7 +73,9 @@ export default function InputForm() {
 
   // executes as soon as dietFormData becomes a plain stringified JSON version of the plan
   useEffect(() => {
-    async function executeSubmission(formData: dietFormDataType | workoutFormDataType) {
+    async function executeSubmission(
+      formData: dietFormDataType | workoutFormDataType
+    ) {
       const data = await submitPrompt(
         localMessages,
         setLocalMessages,
@@ -84,26 +92,41 @@ export default function InputForm() {
     }
     // assigning the submission condition accordingly
     // if one of these two keys are different than an empty string, it means the AI filled the form
-    const submissionCondition = planType === 'diet' 
-    ? (dietFormData as dietFormDataType).meals[0].meal_name !== ''
-    : (workoutFormData as workoutFormDataType).daily_workouts[0].workout_name !== ''
-    if (!generatingPlan && submissionCondition) { 
-      executeSubmission(planType === 'diet' ? dietFormData as dietFormDataType : workoutFormData as workoutFormDataType);
+    const submissionCondition =
+      planType === 'diet'
+        ? (dietFormData as dietFormDataType).meals[0].meal_name !== ''
+        : (workoutFormData as workoutFormDataType).daily_workouts[0]
+            .workout_name !== '';
+    if (!generatingPlan && submissionCondition) {
+      executeSubmission(
+        planType === 'diet'
+          ? (dietFormData as dietFormDataType)
+          : (workoutFormData as workoutFormDataType)
+      );
     }
-  }, [generatingPlan])
+  }, [generatingPlan]);
 
-  useEffect(() => { // when AI stops writing, check if the dietFormData state is filled, if so "clear it"
-    const form = dietFormData as dietFormDataType;
-    if (!isAIWriting && form.meals[0].meal_name !== '') setDietFormData(dietFormRawData);
-  }, [isAIWriting])
+  useEffect(() => {
+    // when AI stops writing, check if the dietFormData/workoutFormData state is filled, if so "clear it"
+    if (
+      !isAIWriting &&
+      ((dietFormData as dietFormDataType).meals[0].meal_name !== '' ||
+        (workoutFormData as workoutFormDataType).daily_workouts[0].exercises[0]
+          .exercise_name !== '')
+    ) {
+      setDietFormData(dietFormRawData);
+      setWorkoutFormData(workoutFormRawData);
+    }
+  }, [isAIWriting]);
 
   useEffect(() => {
     // getting the suggest flag when moving to a brand new conversation page
     const suggestParams = searchParams.get('suggest');
     if (suggestParams) setIsSuggest(true);
     // since isSuggest initial value is false, this line will remove the params but at the same time pop the form up
-    if (!isSuggest) router.replace(`/dashboard/${conversation ? conversation.id : ''}`)
-  }, [searchParams]);
+    if (!isSuggest)
+      router.replace(`/dashboard/${conversation ? conversation.id : ''}`);
+  }, []);
 
   return (
     <form
@@ -147,7 +170,7 @@ export default function InputForm() {
                 : 'bg-[linear-gradient(45deg,#c9c9c9_50%,#e8e8e8)] border-neutral-100 text-black'
             }
           `}
-          onClick={() => !generatingPlan ? setIsSuggest(!isSuggest) : {}}
+          onClick={() => (!generatingPlan ? setIsSuggest(!isSuggest) : {})}
         >
           <FaClipboardList />
         </button>
@@ -198,9 +221,11 @@ export default function InputForm() {
           disabled={generatingPlan}
           className={`
             ${styles.red_shadow}
-            ${isAIWriting
-             ? `bg-white ${animations.loading} text-black p-2` 
-             : 'bg-[linear-gradient(45deg,#000_50%,#606060)] border-neutral-500 p-3'}
+            ${
+              isAIWriting
+                ? `bg-white ${animations.loading} text-black p-2`
+                : 'bg-[linear-gradient(45deg,#000_50%,#606060)] border-neutral-500 p-3'
+            }
             rounded-full text-lg border-1 flex items-center justify-center hover:cursor-pointer hover:text-red-500 transition-all duration-300
           `}
         >

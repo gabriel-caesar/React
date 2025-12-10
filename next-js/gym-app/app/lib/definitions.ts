@@ -145,7 +145,6 @@ export type sectionType = {
 };
 
 export type dietPlanType = dietFormDataType & {
-  id: string,
   created_date: string | Date,
   last_edit_date: string | Date,
   user_id: string,
@@ -153,7 +152,6 @@ export type dietPlanType = dietFormDataType & {
 }
 
 export type workoutPlanType = workoutFormDataType & {
-  id: string,
   created_date: string | Date,
   last_edit_date: string | Date,
   user_id: string,

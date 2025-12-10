@@ -13,3 +13,9 @@ export function uniqueId() {
   }
   return id.join(''); // turning the array into string
 }
+
+export function capitalizeInitial(str: string) {
+  return str.split('')
+      .map((l, i) => (i === 0 ? l.toUpperCase() : l))
+      .join('')
+}

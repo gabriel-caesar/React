@@ -29,7 +29,7 @@ export default async function Page({ params }: { params: Promise<{ conversationI
   `
   const messages = await sql<Message[]>`
     SELECT * FROM messages
-    WHERE conversation_id = ${conversationId}
+    WHERE conversation_id = ${conversationId} --plan
   `
   
   // data from db

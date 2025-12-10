@@ -1,3 +1,5 @@
+'use server'
+
 import OpenAI from 'openai';
 import {
   aiChatHistoryType,
@@ -6,7 +8,6 @@ import {
   User,
 } from '@/app/lib/definitions';
 import postgres from 'postgres';
-import { headers } from 'next/headers';
 import { dietFormDataType } from '@/public/plan_metadata/diet-formdata';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
@@ -35,21 +36,23 @@ export async function handleRequest(
   let conversationTitle: string = '';
 
   const conversationRules = `
-    Rule 1: You are Diversus, an AI assistant in a fitness and diet planning web app. You talk with the user, guide them, and collect the information required to complete a workout or diet plan.
+    Rule 1: You are Diversus, an AI assistant for a fitness and diet planning web app. Your role is to interact with the user, guide them, and gather the information needed to build their workout or diet plan. Your name, derived from the Latin word for “different,” reflects your purpose: helping individuals become a stronger, improved version of themselves through better living.
     Rule 2: Use Markdown language for your messages.
     Rule 3: Use "\n" for new lines.
-    Rule 4: Refer naturally to the conversation history when relevant.
-    Rule 5: Call the user by their first name: ${user.firstname}.
-    Rule 6: Never send images.
-    Rule 7: If the signal is "suggest" it means the application was suggested to initiate the plan form filling and a plan creation will be put on to work. Your response should be aligned with that.
-    Rule 8: If the signal is a JSON formatted form data, you shall translate it into markdown and send it to the user.
-    Rule 9: The markdown translation should include all data from the JSON form data without exception.
-    Rule 10: You will include every single detail provided from the JSON plan in the markdown text you generate.
-    Rule 11: You should include the user metadata in the markdown translation as well.
+    Rule 4: Don't use markdown tables.
+    Rule 5: Refer naturally to the conversation history when relevant.
+    Rule 6: Call the user by their first name: ${user.firstname}.
+    Rule 7: Never send images.
+    Rule 8: If the signal is "suggest" it means the application was suggested to initiate the plan form filling and a plan creation will be put on to work. Your response should be aligned with that.
+    Rule 9: If the signal is a JSON formatted form data, you shall translate it into markdown and send it to the user.
+    Rule 10: The markdown translation should include all data from the JSON form data without exception.
+    Rule 11: You will include every single detail provided from the JSON plan in the markdown text you generate.
+    Rule 12: You should include the user metadata in the markdown translation as well.
       Diet Metadata: (plan_type, goal, gender, current_weight, height, weight, activity_level, number_of_meals, meal_timing, duration_weeks, want_supplements, daily_caloric_intake, dietary_restrictions and user_notes).
       Workout Metadata: (plan_type, goal, gender, current_weight, height, weight, experience_level, duration_weeks, number_of_workout_days and user_notes).
-    Rule 12: The user may ask you to open the plan form and you shall answer that you will.
-    Rule 13: You may help the user with any doubts about the form filling, but you can't fill it for them, just direct them how to do so. The form has as many question as the diet or workout metadata options.
+    Rule 13: The user may ask you to open the plan form and you shall answer that you will.
+    Rule 14: You may help the user with any doubts about the form filling, but you can't fill it for them, just direct them how to do so. The form has as many question as the diet or workout metadata options.
+    Rule 15: Avoid being too verbose.
     Signal: ${signal}.
   `;
 
@@ -67,7 +70,6 @@ export async function handleRequest(
         openai,
         signal
       );
-      console.log(`\nconversationTitle: ${conversationTitle}\n`)
       // create a brand new conversation and insert the first user message into it if there is no conversation
       if (!conversationTitle.match(/false/i)) {
         await createNewConversation(localMessages, date, conversationTitle, user);
@@ -128,12 +130,13 @@ async function getConversationContext(
 ) {
   const instructions = `
       Rule 1: For every user message, check whether the message asks for a plan, routine, diet guidance, health advice, fitness information, or any substantial topic related to well-being.
-      Rule 2: If the message is too short or trivial (greetings, weather, unrelated topics), it does not qualify.
-      Rule 3: If the message does not qualify, respond only with the text: false
-      Rule 4: If the message does qualify, output a short conversation title with a maximum of 30 characters, plain text, no quotes, no formatting, and no additional content.
-      Rule 5: Do not use markdown, headings, or line breaks. Output only what Rule 3 or Rule 4 requires.
-      Rule 6: If the signal is a JSON form data, you will create a conversation title out of it.
-      Rule 7: If the signal is "suggest" or "null", respond only with the text: false.
+      Rule 2: If the message is "Give me a full diet plan for a serious hiker" return a random (not generic) title.
+      Rule 3: If the message is too short or trivial (greetings, weather, unrelated topics), it does not qualify.
+      Rule 4: If the message does not qualify, respond only with the text: false
+      Rule 5: If the message does qualify, output a short conversation title with a maximum of 30 characters, plain text, no quotes, no formatting, and no additional content.
+      Rule 6: Do not use markdown, headings, or line breaks. Output only what Rule 3 or Rule 4 requires.
+      Rule 7: If the signal is a JSON form data, you will create a conversation title out of it.
+      Rule 8: If the signal is "suggest" or "null", respond only with the text: false.
       Signal: ${signal}
     `;
 
@@ -179,7 +182,7 @@ async function saveConversationData(
   await sql`
         UPDATE conversations
         SET last_message_date = ${sentMessage[0].sent_date}
-        where id = ${conversationId}
+        WHERE id = ${conversationId}
       `;
 }
 
@@ -189,7 +192,6 @@ async function createNewConversation(
   conversationTitle: string,
   user: User,
 ) {
-  console.log(`\nCREATING NEW CONVERSATION INITIATED!\n`)
   const brandNewConversation = await sql<Conversation[]>`
         INSERT INTO conversations
         (created_date, title, user_id)
@@ -245,7 +247,7 @@ export async function getConversationHistory(localMessages: Message[]) {
   // history to only have valuable data
   localMessages.forEach((msg) => {
     allMessages.push({
-      content: `Sent date: ${msg.sent_date}\n${msg.message_content}`,
+      content: `${msg.message_content}`,
       role: msg.role,
     });
   });
@@ -253,18 +255,60 @@ export async function getConversationHistory(localMessages: Message[]) {
   return allMessages;
 }
 
-// fetching a plan template to feed the AI
-export async function fetchTemplate(type: 'workout' | 'diet') {
-  const baseURL = await getBaseUrl();
 
+
+export async function deleteConversation(id: string) {
   try {
-    const res = await fetch(`${baseURL}/plan_templates/${type}.json`);
-    const data = res.json();
-    return data;
+    await sql`
+      DELETE FROM conversations
+      WHERE id = ${id};
+    `
   } catch (error) {
-    throw new Error(`Couldn't fetch templates. ${error}`);
+    throw new Error(`Couldn't delete conversation. ${error}`)
   }
 }
+
+export async function unsavePlanFromMessage(planId: string) {
+  try {
+    await sql`
+      UPDATE messages
+      SET plan_saved = FALSE
+      WHERE (form_data->>'id')::text = ${planId};
+    `
+  } catch (error) {
+    throw new Error(`Couldn't unsave plan from message. ${error}`)
+  }
+}
+
+export async function getConversationsCount(userId: string) {
+  try {
+    const conversationCount = await sql<{ count: number }[]>`
+      SELECT COUNT(*) FROM conversations
+      WHERE user_id = ${userId};
+    `
+    const total = conversationCount[0].count;
+    return total;
+  } catch (error) {
+    throw new Error(`Couldn't get conversation count for the user. ${error}`);
+  }
+}
+
+export async function getMessagesCount(userId: string) {
+  try {
+    const messagesCount = await sql<{ count: number }[]>`
+      SELECT COUNT(messages.*) FROM messages
+      JOIN conversations ON
+       messages.conversation_id = conversations.id 
+      WHERE conversations.user_id = ${userId};
+    `
+    const total = messagesCount[0].count;
+    return total;
+  } catch (error) {
+    throw new Error(`Couldn't get messages count for the user. ${error}`);
+  }
+}
+
+import { headers } from 'next/headers';
 
 // gets base url dynamically
 export async function getBaseUrl() {
@@ -279,4 +323,17 @@ export async function getBaseUrl() {
   const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
 
   return `${protocol}://${host}`;
+}
+
+export async function getUserProfilePicture(id: string) {
+  try {
+    const pictureQuery = await sql`
+      SELECT * FROM user_profile_pictures
+      WHERE user_id = ${id};
+    `
+    if (pictureQuery[0]) return pictureQuery[0].url;
+    else return '';
+  } catch (error) {
+    throw new Error(`Couldn't get user profile picture. ${error}`)
+  }
 }
