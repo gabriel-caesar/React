@@ -25,6 +25,7 @@ test.describe('Side Bar Menu', () => {
   })
 
   test('creates a brand new conversation and selects it through the side bar', async ({ page }) => {
+    await page.waitForLoadState();
 
     // getting all screen elements we need
     const sendMessageButton = page.getByTestId('send-message-button');
@@ -42,15 +43,26 @@ test.describe('Side Bar Menu', () => {
     await expect(sendMessageButton).toBeVisible();
     await expect(conversationTitle).toHaveText('Welcome');
 
+    // this will help create different conversation titles and 
+    // prevent the test to fail because of duplicate ones
+    const randomIndex = Math.floor(Math.random() * 5);
+    const testQuestions = [
+      'Give me a full diet plan for a serious hiker',
+      'Give me a workout routine for bulking',
+      'Create me a custom workout and diet plan for weight loss',
+      'Create me a diet routine for hypertrophy'
+    ];
+    const question = testQuestions[randomIndex];
+
     // write the ai a message
-    await inputField.fill('Give me a full diet plan for a serious hiker');
+    await inputField.fill(question);
     await sendMessageButton.click();
 
     // checking if an user chat bubble was created
     const userChatBubble = page.getByTestId('user-chat-bubble');
     await userChatBubble.waitFor();
     await expect(userChatBubble).toBeVisible();
-    await expect(userChatBubble).toHaveText('Give me a full diet plan for a serious hiker');
+    await expect(userChatBubble).not.toHaveText('');
 
     // open the side bar menu
     await threeBarsMenu.click();

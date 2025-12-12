@@ -25,7 +25,10 @@ export default function GetStarted() {
   const { setIsSuggest, setPlanType, setDietFormData, setWorkoutFormData } = useAIChatContext();
 
   return (
-    <div id="plan-choices-container" className='flex flex-col justify-center items-center relative'>
+    <div 
+      id="plan-choices-container" 
+      className='flex flex-col justify-center items-center relative'
+    >
       <button 
         type='button'
         id="close-form-button"
@@ -72,6 +75,7 @@ export default function GetStarted() {
         </button>
         <button
           id='diet-plan-button'
+          data-testid='diet-plan-button'
           type='button'
           aria-label='diet-plan-button'
           className={`

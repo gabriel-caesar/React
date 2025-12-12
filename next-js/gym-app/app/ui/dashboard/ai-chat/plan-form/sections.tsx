@@ -96,6 +96,7 @@ export default function Sections() {
       <button
         type='button'
         id='close-form-button'
+        data-testid='close-form-button'
         aria-label='close-form-button'
         className='top-1 right-1 text-lg absolute active:text-red-500 hover:brightness-50 hover:cursor-pointer transition-all'
         onClick={() => {
@@ -106,6 +107,7 @@ export default function Sections() {
       </button>
       <button
         id='go-left-button'
+        data-testid='go-left-button'
         aria-label='go-left-button'
         type='button'
         className={`
@@ -139,6 +141,7 @@ export default function Sections() {
       />
       <button
         id='go-right-button'
+        data-testid='go-right-button'
         aria-label='go-right-button'
         type='button'
         className={`
@@ -294,6 +297,7 @@ function SectionContent({
   return generatingPlan ? (
     <div
       id='generating-plan-wrapper'
+      data-testid='generating-plan-wrapper'
       className='flex flex-col justify-center items-center py-15'
     >
       <AiOutlineLoading3Quarters className={`${animations.loading} text-4xl`} />
@@ -330,6 +334,7 @@ function SectionContent({
             prop === 'generate' ? (
               <button
                 key={prop}
+                data-testid={button.id}
                 type='submit'
                 onClick={() => setWiggle(!wiggle)}
                 className={`
@@ -357,6 +362,7 @@ function SectionContent({
                 `}
                 key={button.id}
                 id={button.id}
+                data-testid={button.id}
                 aria-label={button.id}
                 type='button'
                 onClick={() => handleButtonSelection(button.name)}
@@ -379,6 +385,7 @@ function SectionContent({
             <label htmlFor={txtarea.id}>{txtarea.label}</label>
             <textarea
               id={txtarea.id}
+              data-testid={txtarea.id}
               placeholder={txtarea.placeholder}
               onChange={(e) =>
                 handleTextarea(e)
@@ -404,6 +411,7 @@ function SectionContent({
                 onChange={(e) => setRestriction(e.target.value)}
                 type='text'
                 id={input.id}
+                data-testid={input.id}
                 aria-label={input.id}
                 placeholder={input.placeholder}
                 onKeyDown={(e) => {
@@ -428,6 +436,7 @@ function SectionContent({
                     : String(formData[prop as keyof (dietFormDataType | workoutFormDataType)])
                 }
                 type='text'
+                data-testid={input.id}
                 id={input.id}
                 aria-label={input.id}
                 placeholder={input.placeholder}
@@ -448,6 +457,7 @@ function SectionContent({
               <div
                 ref={errorRef}
                 id='input-error-container'
+                data-testid='input-error-container'
                 aria-label='input-error-container'
                 className={`
                   rounded-lg px-2 bg-red-500 mt-3 text-center
@@ -463,12 +473,14 @@ function SectionContent({
       {isArray && arrayOfRestrictions && arrayOfRestrictions.length > 0 && (
         <div
           id='diet-restriction-container'
+          data-testid='diet-restriction-container'
           className='max-h-40 overflow-y-auto overflow-x-hidden bg-[linear-gradient(45deg,#525252_50%,#656565)] rounded-lg border-1 border-neutral-500 flex flex-wrap gap-2 p-2 mt-3'
         >
           {arrayOfRestrictions?.map((obj) => {
             return (
               <div
                 key={obj.id}
+                data-testid={obj.restriction}
                 className='flex items-center justify-between rounded-lg bg-[linear-gradient(45deg,#E63946_50%,#f06e78)] border-1 border-red-300 text-center px-2 w-fit'
               >
                 <p
@@ -481,6 +493,7 @@ function SectionContent({
                 <button
                   type='button'
                   id='remove-restriction'
+                  data-testid={`remove-${obj.restriction}-restriction`}
                   aria-label='remove-restriction'
                   className='p-1 text-md hover:brightness-50 hover:cursor-pointer transition-all'
                   onClick={() => handleRemoveRestriction(obj.id)}

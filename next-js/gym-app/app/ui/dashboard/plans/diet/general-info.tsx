@@ -114,6 +114,7 @@ export default function DietGeneralInfo({
     <form id='general-info-container' action={editDietGeneralInfoAction}>
       <h1
         id='general-info-header'
+        data-testid='general-info-header'
         aria-label='general-info-header'
         className={`${orbitron.className} text-xl w-full text-center`}
         style={{ letterSpacing: '0.1rem' }}

@@ -157,6 +157,7 @@ export default function PlansCard({
 
       <h1
         id='plans-header'
+        data-testid='plans-header'
         aria-label='plans-header'
         className={`${orbitron.className} text-xl text-center my-2`}
         style={{

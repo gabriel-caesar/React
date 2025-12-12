@@ -130,13 +130,12 @@ async function getConversationContext(
 ) {
   const instructions = `
       Rule 1: For every user message, check whether the message asks for a plan, routine, diet guidance, health advice, fitness information, or any substantial topic related to well-being.
-      Rule 2: If the message is "Give me a full diet plan for a serious hiker" return a random (not generic) title.
-      Rule 3: If the message is too short or trivial (greetings, weather, unrelated topics), it does not qualify.
-      Rule 4: If the message does not qualify, respond only with the text: false
-      Rule 5: If the message does qualify, output a short conversation title with a maximum of 30 characters, plain text, no quotes, no formatting, and no additional content.
-      Rule 6: Do not use markdown, headings, or line breaks. Output only what Rule 3 or Rule 4 requires.
-      Rule 7: If the signal is a JSON form data, you will create a conversation title out of it.
-      Rule 8: If the signal is "suggest" or "null", respond only with the text: false.
+      Rule 2: If the message is too short or trivial (greetings, weather, unrelated topics), it does not qualify.
+      Rule 3: If the message does not qualify, respond only with the text: false
+      Rule 4: If the message does qualify, output a short conversation title with a maximum of 30 characters, plain text, no quotes, no formatting, and no additional content.
+      Rule 5: Do not use markdown, headings, or line breaks. Output only what Rule 3 or Rule 4 requires.
+      Rule 6: If the signal is a JSON form data, you will create a conversation title out of it.
+      Rule 7: If the signal is "suggest" or "null", respond only with the text: false.
       Signal: ${signal}
     `;
 

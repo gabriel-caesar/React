@@ -57,6 +57,7 @@ export default function PlanFormStructure() {
         e.preventDefault();
         handleFormSubmission();
       }}
+      data-testid='plan-choices-container'
       id='plan-form-container'
       className={`
         ${isSuggest ? 'opacity-100' : 'opacity-0 pointer-events-none'}

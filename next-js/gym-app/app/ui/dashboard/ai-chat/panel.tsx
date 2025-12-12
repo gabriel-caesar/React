@@ -209,6 +209,7 @@ export default function Panel() {
                   {bubble.plan_saved && (
                     <button
                       id='view-plan-button'
+                      data-testid='view-plan-button'
                       aria-label='view-plan-button'
                       type='button'
                       className={`
@@ -233,6 +234,9 @@ export default function Panel() {
                   )}
                   <button
                     id='save-plan-button'
+                    data-testid='save-plan-button'
+                    data-plan-id={bubble.form_data ? bubble.form_data.id : ''}
+                    data-conversation-id={bubble.conversation_id ? bubble.conversation_id : ''}
                     aria-label='save-plan-button'
                     type='button'
                     disabled={bubble.plan_saved}

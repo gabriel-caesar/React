@@ -3,6 +3,10 @@
 
 This website was made to assist people that wish to accomplish long or short term workout and diet goals. In a matter of minutes Diversus can shine a light in the end of the tunnel for users that want some solid guidelines in their active life and that is done by only talking with the AI and filling the main dashboard form with some basic answers.  
 
+<div style='width:100%; display:flex; justify-content:center; align-items:center;'>
+  <img style='width:50%; margin:auto' src='./public/diversus-branding.png' alt='diversus-branding'>
+</div>
+
 ## How does it work
 - In the home page, click in the `Get Started` to create an account.
 - After registering yourself, log in.

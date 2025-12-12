@@ -160,6 +160,7 @@ export default function InputForm() {
           disabled={generatingPlan}
           id='form-button'
           aria-label='form-button'
+          data-testid='form-button'
           type='button'
           className={`
             ${styles.red_shadow}
@@ -191,8 +192,7 @@ export default function InputForm() {
         onKeyDown={async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
           const isMobile = window.innerWidth <= 768; // checking viewport view for mobile users
           const isInputEmpty = prompt.trim() === ''; // if input is not a bunch of whitespaces
-          e.stopPropagation(); // stops textarea to jump a paragraph when hitting 'Enter'
-          // checking if the shift key is pressed so it doesn't add a new line
+          if (!isMobile && e.key === 'Enter' && !e.shiftKey) e.preventDefault(); // don't add a new line if its not mobile
           if (
             e.key === 'Enter' &&
             !e.shiftKey &&

@@ -31,7 +31,7 @@ test.describe('Chat input form', () => {
   });
 
   test('user sends the AI a message and receives a valid response', async ({ page }) => {
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState(); // waits the page load
 
     const userInput = page.getByPlaceholder('Enter your message...');
     const sendMessageButton = page.getByRole('button', { name: 'send-message-button' });
@@ -52,5 +52,43 @@ test.describe('Chat input form', () => {
     await aiResponse.waitFor(); // awaiting the response load
     await expect(aiResponse).toBeVisible();
     await expect(aiResponse).not.toHaveText(''); // making sure the response is not empty
+  })
+});
+
+test.describe('Workout/Diet form', () => {
+  test('workout/diet form opens if user requests for it', async ({ page }) => {
+    await page.waitForLoadState(); // waits the page load
+
+    const userInput = page.getByPlaceholder('Enter your message...');
+    await userInput.waitFor();
+    await expect(userInput).toBeVisible();
+  
+    const sendMessageButton = page.getByRole('button', { name: 'send-message-button' });
+    await userInput.waitFor();
+    await expect(sendMessageButton).toBeVisible();
+  
+    await userInput.clear();
+    await userInput.fill('Diversus, open the diet and workout form for me!');
+    await sendMessageButton.click();
+
+    const formContainer = page.getByTestId('plan-choices-container');
+    await formContainer.waitFor();
+    await expect(formContainer).toBeVisible();
+    await expect(formContainer).toHaveClass(/opacity-100/, { timeout: 15000 });
+  });
+
+  test('workout/diet form opens if user clicks in the form button', async ({ page }) => {
+    await page.waitForLoadState(); // waits the page load
+
+    const formButton = page.getByTestId('form-button');
+    await formButton.waitFor();
+    await expect(formButton).toBeVisible();
+
+    formButton.click();
+
+    const formContainer = page.getByTestId('plan-choices-container');
+    await formContainer.waitFor();
+    await expect(formContainer).toBeVisible();
+    await expect(formContainer).toHaveClass(/opacity-100/, { timeout: 15000 });
   })
 })
