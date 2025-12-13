@@ -143,6 +143,7 @@ export default function PlanStructure({
       {(areYouSure || editSuccessDialog) && (
         <div
           id='dimmed-screen'
+          data-testid='dimmed-screen'
           className='fixed inset-0 w-screen h-screen z-9 bg-black/70'
         ></div>
       )}
@@ -150,6 +151,7 @@ export default function PlanStructure({
         <div
           ref={areYouSureRef}
           id='are-you-sure-delete-container'
+          data-testid='are-you-sure-delete-container'
           className='border border-neutral-500 fixed top-1/4 z-10 left-1/2 -translate-x-1/2 p-6 rounded-lg bg-neutral-800 shadow-lg text-[16px] flex flex-col justify-center items-center w-11/12 md:w-[550px]'
         >
           {utilityLoader ? (
@@ -165,6 +167,7 @@ export default function PlanStructure({
             <>
               <h1
                 id='are-you-sure-delete-header'
+                data-testid='are-you-sure-delete-header'
                 aria-label='are-you-sure-delete-header'
                 className='text-center mb-6'
               >
@@ -178,6 +181,7 @@ export default function PlanStructure({
               >
                 <button
                   id='yes-button'
+                  data-testid='yes-button'
                   aria-label='yes-button'
                   className='flex items-center justify-center text-lg text-neutral-200
               shadow-md mr-4 bg-[linear-gradient(45deg,#525252_50%,#737373)]
@@ -207,6 +211,7 @@ export default function PlanStructure({
       {editSuccessDialog && (
         <div
           id='edit-success-container'
+          data-testid='edit-success-container'
           className='border border-neutral-500 fixed top-1/4 z-10 left-1/2 -translate-x-1/2 p-6 rounded-lg bg-neutral-800 shadow-lg text-[16px] flex flex-col justify-center items-center w-11/12 md:w-[550px]'
         >
           <h1
@@ -218,6 +223,7 @@ export default function PlanStructure({
           </h1>
           <button
             id='dismiss-button'
+            data-testid='dismiss-button'
             aria-label='dismiss-button'
             className='flex items-center justify-center text-lg text-neutral-200
               shadow-md bg-[linear-gradient(45deg,#525252_50%,#737373)] 
@@ -238,6 +244,7 @@ export default function PlanStructure({
         <button
           ref={editButtonRef}
           id='three-dots-menu-button'
+          data-testid='three-dots-menu-button'
           aria-label='three-dots-menu-button'
           className={`
             ${openThreeDotsMenu && 'bg-neutral-800'}
@@ -272,6 +279,7 @@ export default function PlanStructure({
               {toggler === 'general' && (
                 <button
                   id='edit-button'
+                  data-testid='edit-button'
                   aria-label='edit-button'
                   className={`
                     transition-all active:scale-95 hover:bg-neutral-600 rounded-lg p-1 mb-1
@@ -287,8 +295,9 @@ export default function PlanStructure({
                 </button>
               )}
               <button
-                id='delete-button'
-                aria-label='delete-button'
+                id='delete-plan-button'
+                data-testid='delete-plan-button'
+                aria-label='delete-plan-button'
                 className={`
               transition-all active:scale-95 hover:bg-neutral-600 rounded-lg p-1 mb-1
               text-center hover:text-red-400 hover:cursor-pointer hover:scale-105

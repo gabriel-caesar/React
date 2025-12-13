@@ -15,18 +15,18 @@ export default function Dropdown({
   style: string;
 }) {
   const [openDropdown, setOpenDropdown] = useState<boolean>(false); // opens the dropdown
-
   return (
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5, delay: 0.1 }}
-      id='dropdown-wrapper' 
+      id='dropdown-wrapper'
       className={`relative mt-2 ${style}`}
     >
       <div
         id='selector-container'
+        data-testid={`${selector.toLowerCase()}-selector-dropdown`}
         className={`
           ${openDropdown ? 'bg-neutral-700 scale-101' : 'bg-neutral-800'}
           rounded-lg shadow-md flex items-center justify-between w-full transition-all duration-300
@@ -52,6 +52,7 @@ export default function Dropdown({
             return (
               <li
                 key={opt}
+                data-testid={`${opt.toLowerCase()}-option`}
                 className={`${i !== options.length - 1 && 'mb-3'} hover:cursor-pointer hover:text-red-400 rounded-lg text-neutral-400 hover:bg-neutral-800 transition-all`}
                 onClick={() => {
                   setSelector(opt);

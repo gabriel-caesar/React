@@ -94,6 +94,7 @@ export default function PlansCard({
       {areYouSure && (
         <div
           id='dimmed-screen'
+          data-testid='dimmed-screen'
           className='fixed inset-0 w-screen h-screen z-9 bg-black/70'
         ></div>
       )}
@@ -101,6 +102,7 @@ export default function PlansCard({
         <div
           ref={areYouSureRef}
           id='are-you-sure-delete-container'
+          data-testid='are-you-sure-delete-container'
           className='border border-neutral-500 fixed top-1/4 z-10 left-1/2 -translate-x-1/2 p-6 rounded-lg bg-neutral-800 shadow-lg text-[16px] flex flex-col justify-center items-center w-11/12 md:w-[550px]'
         >
           {utilityLoader ? (
@@ -116,6 +118,7 @@ export default function PlansCard({
             <>
               <h1
                 id='are-you-sure-delete-header'
+                data-testid='are-you-sure-delete-header'
                 aria-label='are-you-sure-delete-header'
                 className='text-center mb-6'
               >
@@ -129,6 +132,7 @@ export default function PlansCard({
               >
                 <button
                   id='yes-button'
+                  data-testid='yes-button'
                   aria-label='yes-button'
                   className='flex items-center justify-center text-lg text-neutral-200
               shadow-md mr-4 bg-[linear-gradient(45deg,#525252_50%,#737373)]
@@ -185,6 +189,7 @@ export default function PlansCard({
 
       <h3
         id='plan-type-header'
+        data-testid='plan-type-header'
         aria-label='plan-type-header'
         className='my-4 text-neutral-400'
       >
@@ -300,6 +305,8 @@ export default function PlansCard({
                         <Link
                           href={`/dashboard/plans/${plan.id}`}
                           id='view-plan-button'
+                          data-testid='view-plan-button'
+                          data-plan-id={plan.id}
                           aria-label='view-plan-button'
                           type='button'
                           className='text-sm rounded-lg py-1 px-2 bg-transparent hover:bg-neutral-700 hover:text-red-400 hover:cursor-pointer active:scale-95 transition-all border-1 border-neutral-500 mr-2'
@@ -308,6 +315,8 @@ export default function PlansCard({
                         </Link>
                         <button
                           id='delete-plan-button'
+                          data-testid='delete-plan-button'
+                          data-plan-id={plan.id}
                           aria-label='delete-plan-button'
                           type='button'
                           onClick={(e) => {
@@ -382,6 +391,8 @@ export default function PlansCard({
                         <Link
                           href={`/dashboard/plans/${plan.id}`}
                           id='view-plan-button'
+                          data-testid='view-plan-button'
+                          data-plan-id={plan.id}
                           aria-label='view-plan-button'
                           type='button'
                           className='text-sm rounded-lg py-1 px-2 bg-transparent hover:bg-neutral-700 hover:text-red-400 hover:cursor-pointer active:scale-95 transition-all border-1 border-neutral-500 mr-2'
@@ -390,6 +401,8 @@ export default function PlansCard({
                         </Link>
                         <button
                           id='delete-plan-button'
+                          data-testid='delete-plan-button'
+                          data-plan-id={plan.id}
                           aria-label='delete-plan-button'
                           type='button'
                           onClick={(e) => {
@@ -417,7 +430,7 @@ export default function PlansCard({
           id='no-diet-plans-added-container'
           className='w-full flex flex-col justify-center items-center mt-3'
         >
-          <h3 className='text-xl text-center'>No diet plans added yet</h3>
+          <h3 className='text-xl text-center' data-testid='no-diet-plan-header'>No diet plans added yet</h3>
           <FaBowlFood className='text-neutral-400 text-6xl my-4' />
           <p className='text-neutral-400 text-center'>
             To add a plan go to the{' '}

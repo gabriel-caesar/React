@@ -216,13 +216,14 @@ export default function DietGeneralInfo({
                 !editing ? (
                   <div
                     id='dietary_restrictions_container'
+                    data-testid='dietary_restrictions_container'
                     className='text-[16px] w-full flex flex-wrap gap-2 items-center justify-start rounded-md mt-2 bg-neutral-800 p-2 border-1 border-neutral-400 shadow-md'
                   >
                     {dietPlan[data].length > 0 ? (
                       dietPlan[data].map(
                         (r: { restriction: string; id: string }, index) => {
                           return (
-                            <p key={r.id}>
+                            <p key={r.id} data-testid={`submitted-${r.restriction}-text`}>
                               {capitalizeInitial(r.restriction) +
                                 (index !== dietPlan[data].length - 1
                                   ? ','
@@ -232,7 +233,7 @@ export default function DietGeneralInfo({
                         }
                       )
                     ) : (
-                      <p className='text-sm'>No restrictions were added</p>
+                      <p className='text-sm' data-testid='no-restrictions-added-text'>No restrictions were added</p>
                     )}
                   </div>
                 ) : (
@@ -243,6 +244,7 @@ export default function DietGeneralInfo({
                       onChange={(e) => e.target.value.length <= 16 && setRestriction(e.target.value)}
                       placeholder='Restrictions...'
                       id='edit-restrictions-input'
+                      data-testid='edit-restrictions-input'
                       aria-label='edit-restrictions-input'
                       className='text-[16px] w-full focus-within:outline-none px-2 p-1 rounded-md border-1 border-neutral-400 bg-neutral-800'
                       onKeyDown={(e) => {
@@ -255,6 +257,7 @@ export default function DietGeneralInfo({
                     />
                     <div
                       id='restrictions-showcase-container'
+                      data-testid='restrictions-showcase-container'
                       aria-label='restrictions-showcase-container'
                       className={`
                         ${arrayOfRestrictions.length > 0 ? 'opacity-100' : 'opacity-0 pointer-events-none'}
@@ -270,6 +273,7 @@ export default function DietGeneralInfo({
                           >
                             <p
                               id='restriction-name'
+                              data-testid={`${obj.restriction}-restriction`}
                               aria-label='restriction-name'
                               className='mr-2'
                             >
@@ -278,6 +282,7 @@ export default function DietGeneralInfo({
                             <button
                               type='button'
                               id='remove-restriction'
+                              data-testid='remove-restriction'
                               aria-label='remove-restriction'
                               className='p-1 text-md hover:brightness-50 hover:cursor-pointer transition-all'
                               onClick={() => handleRemoveRestriction(obj.id)}
@@ -304,6 +309,7 @@ export default function DietGeneralInfo({
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
                   id={`${data}-text`}
+                  data-testid={`${data}-text`}
                   aria-label={`${data}-text`}
                   className={`border-b-1 border-neutral-500 text-[16px] mt-2 w-full flex flex-col items-start justify-start ${i % 2 !== 0 ? 'md:items-end md:justify-end' : 'md:items-start md:justify-start'}`}
                 >
@@ -319,6 +325,7 @@ export default function DietGeneralInfo({
                     transition={{ duration: 0.5, delay: 0.1 }}
                     type='text'
                     id={`edit-${data}-input`}
+                    data-testid={`edit-${data}-input`}
                     name={data}
                     placeholder={
                       data.includes('_')
@@ -396,8 +403,9 @@ export default function DietGeneralInfo({
           <button
             type='submit'
             disabled={isPending}
-            id='edit-button'
-            aria-label='edit-button'
+            id='edit-plan-button'
+            data-testid='edit-plan-button'
+            aria-label='edit-plan-button'
             className={`
               md:w-1/4 w-full p-2 rounded-lg transition-all flex items-center justify-center border text-[16px]
               ${
