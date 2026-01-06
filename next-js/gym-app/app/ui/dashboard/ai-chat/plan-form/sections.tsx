@@ -59,9 +59,18 @@ export default function Sections() {
   const isDiet = planType === 'diet';
   const currentSection = isDiet ? sections_diet : sections_workout;
 
-  useEffect(() => {
-    if (!missingValues) setSectionIndex(0);
-  }, [generatingPlan]); // restoring the first page of the form
+  function handleResetForm() {
+    if (!generatingPlan) {
+      setPlanType(''); // resets the form and the plan form data states
+      setSectionIndex(0); // set the form page to the origin
+
+      // making sure we change the id as well
+      dietFormRawData.id = v4();
+      workoutFormRawData.id = v4();
+      setDietFormData(dietFormRawData);
+      setWorkoutFormData(workoutFormRawData);
+    }
+  }
 
   return (
     <div
@@ -73,17 +82,7 @@ export default function Sections() {
         id='reset-form-button'
         aria-label='reset-form-button'
         className='group top-1 left-1 text-lg absolute active:brightness-50 hover:text-red-400 hover:cursor-pointer transition-all'
-        onClick={() => {
-          if (!generatingPlan) {
-            // resets the form and the plan form data states
-            setPlanType('');
-            // making sure we change the id as well
-            dietFormRawData.id = v4();
-            workoutFormRawData.id = v4();
-            setDietFormData(dietFormRawData);
-            setWorkoutFormData(workoutFormRawData);
-          }
-        }}
+        onClick={() => handleResetForm()}
       >
         <RiResetLeftLine />
         <div

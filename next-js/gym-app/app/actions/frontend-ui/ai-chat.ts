@@ -42,7 +42,7 @@ export async function submitPrompt(
   conversation: Conversation | null,
   prompt: string,
   user: User | undefined,
-  formData?: dietFormDataType | workoutFormDataType
+  formData?: dietFormDataType | workoutFormDataType,
 ) {
   // don't submit if input is empty
   if (prompt.length === 0) return;

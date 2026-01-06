@@ -41,6 +41,7 @@ export default function InputForm() {
     setIsAIWriting,
     setDietFormData,
     planType,
+    setPlanType,
     setWorkoutFormData,
     workoutFormData,
   } = useAIChatContext();
@@ -88,7 +89,7 @@ export default function InputForm() {
         conversation,
         'Generate the plan.',
         user,
-        formData
+        formData,
       );
       setSubmitPromptData(data ? data : '');
     }
@@ -109,6 +110,8 @@ export default function InputForm() {
   }, [generatingPlan]);
 
   useEffect(() => {
+    // when AI starts writing, close the form plan
+    setIsSuggest(false);
     // when AI stops writing, check if the dietFormData/workoutFormData state is filled, if so "clear it"
     if (
       !isAIWriting &&
@@ -118,6 +121,7 @@ export default function InputForm() {
     ) {
       setDietFormData(dietFormRawData);
       setWorkoutFormData(workoutFormRawData);
+      setPlanType('');
     }
   }, [isAIWriting]);
 
@@ -173,7 +177,7 @@ export default function InputForm() {
                 : 'bg-[linear-gradient(45deg,#c9c9c9_50%,#e8e8e8)] border-neutral-100 text-black'
             }
           `}
-          onClick={() => (!generatingPlan ? setIsSuggest(!isSuggest) : {})}
+          onClick={() => (!generatingPlan && !isAIWriting ? setIsSuggest(!isSuggest) : {})}
         >
           <FaClipboardList />
         </button>

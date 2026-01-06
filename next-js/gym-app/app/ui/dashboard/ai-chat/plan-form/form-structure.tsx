@@ -2,7 +2,7 @@
 
 import { dietFormDataType } from '@/public/plan_metadata/diet-formdata';
 import { aiChatContext } from '../chat-structure';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import GetStarted from './get-started';
 import Sections from './sections';
 import { generatePlan } from '@/app/actions/frontend-ui/ai-chat';
@@ -27,7 +27,8 @@ export default function PlanFormStructure() {
     setWorkoutFormData,
     setMissingValues, 
     setGeneratingPlan,
-    setIsSuggest
+    setIsSuggest,
+    missingValues,
   } = useAIChatContext();
 
   async function handleFormSubmission() {
@@ -38,18 +39,25 @@ export default function PlanFormStructure() {
         planType === 'diet' ? dietFormData as dietFormDataType : workoutFormData as workoutFormDataType,
         planType === 'diet' ? true : false
       ); 
-      if (Array.isArray(response)) setMissingValues(response); // if the function returns the array with missing fields
+
+      if (Array.isArray(response)) {// if the function returns the array with missing fields
+        setMissingValues(response);
+      } else {
+        setMissingValues([]);
+      };
+
       if (response.interpretation) {
         if (planType === 'diet') setDietFormData(response.interpretation as dietFormDataType)
         if (planType === 'workout') setWorkoutFormData(response.interpretation as workoutFormDataType)
       };
+
     } catch (error) {
       throw new Error(`Couldn't submit plan generation form. ${error}`);
     } finally {
       setGeneratingPlan(false); // stops the generating plan loader
-      setIsSuggest(false); // closes the plan form
+      if (!missingValues) setIsSuggest(false); // closes the plan form
     }
-  }
+  };
 
   return (
     <form

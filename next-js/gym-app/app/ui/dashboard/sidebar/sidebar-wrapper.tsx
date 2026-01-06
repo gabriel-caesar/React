@@ -1,12 +1,12 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Conversation, User } from '@/app/lib/definitions';
+import { Conversation } from '@/app/lib/definitions';
 import { usePathname } from 'next/navigation';
 import SideBarNav from './sidebar-nav';
 import NavLinks from './nav-links';
 
-export default function SideBar({ user }: { user: User | undefined }) {
+export default function SideBar() {
   const [openSideBar, setOpenSideBar] = useState(false);
   const [userConversations, setUserConversations] = useState<Conversation[]>(
     []
@@ -44,17 +44,9 @@ export default function SideBar({ user }: { user: User | undefined }) {
     async function fetchLatestConversations() {
       setLoadingNavLinks(true);
       try {
-        if (user) {
-          const res = await fetch('/api/chat/get-latest-conversations', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              user: user,
-            }),
-          });
-          const data = await res.json();
-          setUserConversations(data.conversations);
-        }
+        const res = await fetch('/api/chat/get-latest-conversations')
+        const data = await res.json();
+        setUserConversations(data.conversations);
       } catch (error) {
         throw new Error(
           `Couldn't fetch latest conversations from front-end. ${error}`
