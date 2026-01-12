@@ -57,19 +57,25 @@ test.describe('Chat input form', () => {
 
 test.describe('Workout/Diet form', () => {
   test('workout/diet form opens if user requests for it', async ({ page }) => {
-    await page.waitForLoadState(); // waits the page load
+    const openTheForm = 'Diversus, open the diet and workout form for me!'
+    await page.waitForLoadState('networkidle'); // waits the page load
 
     const userInput = page.getByPlaceholder('Enter your message...');
     await userInput.waitFor();
     await expect(userInput).toBeVisible();
   
     const sendMessageButton = page.getByRole('button', { name: 'send-message-button' });
-    await userInput.waitFor();
+    await userInput.waitFor({ state: 'visible' });
     await expect(sendMessageButton).toBeVisible();
   
     await userInput.clear();
-    await userInput.fill('Diversus, open the diet and workout form for me!');
+    await userInput.fill(openTheForm);
     await sendMessageButton.click();
+
+    const orderMessage = page.getByText(openTheForm);
+    await orderMessage.waitFor({ state: 'visible' });
+    await expect(orderMessage).toBeVisible();
+    await expect(orderMessage).toHaveText(openTheForm)
 
     const formContainer = page.getByTestId('plan-choices-container');
     await formContainer.waitFor();

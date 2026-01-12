@@ -65,7 +65,7 @@ export default function InputForm() {
     const conversationId = urlArray[urlArray.length - 1];
     // if url is not existent
     // or the existent conversation id equals the url being sent, return
-    if (!url || url === conversationId) return; 
+    if (!url || url === conversationId) return;
 
     // if at the current moment the submitPromptData is not
     // equal than the conversation id, redirect the user
@@ -89,29 +89,29 @@ export default function InputForm() {
         conversation,
         'Generate the plan.',
         user,
-        formData,
+        formData
       );
       setSubmitPromptData(data ? data : '');
     }
+
     // assigning the submission condition accordingly
     // if one of these two keys are different than an empty string, it means the AI filled the form
     const submissionCondition =
       planType === 'diet'
-        ? (dietFormData as dietFormDataType).meals[0].meal_name !== ''
-        : (workoutFormData as workoutFormDataType).daily_workouts[0]
-            .workout_name !== '';
+        ? (dietFormData as dietFormDataType).general_notes
+        : (workoutFormData as workoutFormDataType).general_notes
+
     if (!generatingPlan && submissionCondition) {
       executeSubmission(
         planType === 'diet'
           ? (dietFormData as dietFormDataType)
           : (workoutFormData as workoutFormDataType)
       );
+      setIsSuggest(false);
     }
   }, [generatingPlan]);
 
   useEffect(() => {
-    // when AI starts writing, close the form plan
-    setIsSuggest(false);
     // when AI stops writing, check if the dietFormData/workoutFormData state is filled, if so "clear it"
     if (
       !isAIWriting &&
@@ -177,7 +177,9 @@ export default function InputForm() {
                 : 'bg-[linear-gradient(45deg,#c9c9c9_50%,#e8e8e8)] border-neutral-100 text-black'
             }
           `}
-          onClick={() => (!generatingPlan && !isAIWriting ? setIsSuggest(!isSuggest) : {})}
+          onClick={() =>
+            !generatingPlan && !isAIWriting ? setIsSuggest(!isSuggest) : {}
+          }
         >
           <FaClipboardList />
         </button>
