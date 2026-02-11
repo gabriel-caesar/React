@@ -1,0 +1,29 @@
+{
+	"nodes":[
+		{"id":"c5a303ca86a585a0","type":"group","x":-20,"y":0,"width":168,"height":340,"label":"Catalog"},
+		{"id":"59dcb5800df7a3b4","type":"group","x":-340,"y":0,"width":168,"height":340,"label":"Catalog"},
+		{"id":"126f436494ccf659","type":"group","x":308,"y":-96,"width":171,"height":204,"label":"Catalog"},
+		{"id":"88c6a4b6a3362389","type":"text","text":"# Jewelry","x":-160,"y":-280,"width":156,"height":60,"color":"3"},
+		{"id":"9e095cf593e77a3c","type":"text","text":"**Gemstone**\n","x":-320,"y":-156,"width":136,"height":60},
+		{"id":"cdccf5f1ef51ece3","type":"text","text":"**Sterling Silver**","x":-20,"y":-156,"width":160,"height":60},
+		{"id":"95e8c8ac5985a5f2","type":"text","text":"# Statues\n","x":320,"y":-280,"width":160,"height":60,"color":"4"},
+		{"id":"bdb6ba9893336c09","type":"text","text":"Necklaces","x":0,"y":99,"width":128,"height":60},
+		{"id":"51f9070dee65a1e0","type":"text","text":"Earrings","x":0,"y":180,"width":128,"height":60},
+		{"id":"f0b7d2efb2436884","type":"text","text":"Bracelets\n","x":0,"y":20,"width":128,"height":60},
+		{"id":"e2c7df8e7b3f3eb1","type":"text","text":"Rings\n","x":0,"y":260,"width":128,"height":60},
+		{"id":"89d37551cabca01c","type":"text","text":"Bracelets\n","x":-320,"y":20,"width":128,"height":60},
+		{"id":"1fb500ce1e221fcd","type":"text","text":"Necklaces","x":-320,"y":99,"width":128,"height":60},
+		{"id":"8b3b1077ae9700fe","type":"text","text":"Earrings","x":-320,"y":180,"width":128,"height":60},
+		{"id":"e1bcb70760c1c456","type":"text","text":"Rings\n","x":-320,"y":260,"width":128,"height":60},
+		{"id":"6e96673ad351bdca","type":"text","text":"Buddha","x":343,"y":-58,"width":115,"height":60},
+		{"id":"ef610d07d948079b","type":"text","text":"Elephants","x":335,"y":28,"width":131,"height":60},
+		{"id":"52141a1e479ef6ad","type":"text","text":"# Singing Bowls","x":680,"y":-280,"width":250,"height":60,"color":"6"}
+	],
+	"edges":[
+		{"id":"fe8dd1f471b8e10f","fromNode":"88c6a4b6a3362389","fromSide":"left","toNode":"9e095cf593e77a3c","toSide":"top"},
+		{"id":"2ef9bc039c7ec48f","fromNode":"88c6a4b6a3362389","fromSide":"right","toNode":"cdccf5f1ef51ece3","toSide":"top"},
+		{"id":"fa34343a46d95c6a","fromNode":"95e8c8ac5985a5f2","fromSide":"bottom","toNode":"126f436494ccf659","toSide":"top"},
+		{"id":"ec13bb093b83acc3","fromNode":"cdccf5f1ef51ece3","fromSide":"bottom","toNode":"c5a303ca86a585a0","toSide":"top"},
+		{"id":"bd17fb2d679aa772","fromNode":"9e095cf593e77a3c","fromSide":"bottom","toNode":"59dcb5800df7a3b4","toSide":"top"}
+	]
+}

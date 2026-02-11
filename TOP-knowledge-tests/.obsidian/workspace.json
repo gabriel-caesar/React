@@ -4,24 +4,24 @@
     "type": "split",
     "children": [
       {
-        "id": "c167b85445e6b0f1",
+        "id": "7ad9a3b895419203",
         "type": "tabs",
         "children": [
           {
-            "id": "2356fdeb2b84b58a",
+            "id": "202b312f801c8d22",
             "type": "leaf",
             "state": {
               "type": "canvas",
               "state": {
-                "file": "Diversus/Untitled.canvas",
+                "file": "MTG Simplified/Online connections.canvas",
                 "viewState": {
-                  "x": 0,
-                  "y": -61.93423649923284,
-                  "zoom": -1
+                  "x": 0.3223333612589201,
+                  "y": -0.07784353625453022,
+                  "zoom": -0.2779026686350504
                 }
               },
               "icon": "lucide-layout-dashboard",
-              "title": "Untitled"
+              "title": "Online connections"
             }
           }
         ]
@@ -81,7 +81,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 303.5
+    "width": 303.5,
+    "collapsed": true
   },
   "right": {
     "id": "405765336cf26a1a",
@@ -163,6 +164,7 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "bases:Create new base": false,
       "switcher:Open quick switcher": false,
       "graph:Open graph view": false,
       "canvas:Create new canvas": false,
@@ -171,33 +173,46 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "2356fdeb2b84b58a",
+  "active": "202b312f801c8d22",
   "lastOpenFiles": [
+    "MTG Simplified/Extending the project.md",
+    "MTG Simplified/Online connections.canvas",
+    "MongoDB.md",
+    "Pygame/New Game Idea.md",
+    "Diversus/Graph.canvas",
+    "MTG Simplified",
+    "Diversus/A.I. planner.md",
+    "August of 2025.md",
+    "Pygame",
+    "Zen Stones/Product organization.md",
+    "Zen Stones/Category hierarquy.canvas",
+    "NodeJS/Authentication Basics.md",
+    "Untitled 2.base",
+    "Untitled 1.base",
+    "Untitled.base",
+    "NodeJS/Forms and Data Handling.md",
+    "NodeJS/PostgreSQL.md",
+    "NodeJS/Intro to the back-end.md",
+    "NodeJS/Deployment.md",
+    "NodeJS/Express.md",
+    "NodeJS/Backend Frameworks.md",
+    "NodeJS/Environment Variables.md",
+    "NodeJS/What is NodeJS.md",
+    "NextJS/Database.md",
+    "NextJS/Mutating data.md",
+    "NextJS/Streaming.md",
+    "NextJS/Testing.md",
+    "NextJS/User auth and manipulation.md",
+    "NextJS/Types of rendering.md",
+    "NextJS/Adding search params.md",
+    "Zen Stones",
     "Diversus/Plan as for August, the 18th.md",
-    "Diversus/Untitled.canvas",
     "Diversus/Community and social features.md",
     "Diversus/Linking AI Chat with Database.md",
-    "August of 2025.md",
     "Untitled 1",
     "Study Routine",
-    "Debugging Taskerer.md",
-    "Buccal Fat Removal Inquiries.md",
-    "Guide for new projects.md",
-    "React/Reducer Hook.md",
-    "Untitled 1.md",
-    "React/Context API.md",
-    "CS50/The Web.md",
-    "NodeJS/Introduction to the Back End.md",
     "CS50",
     "NodeJS",
-    "React/Refs and Memoization.md",
-    "SQL/Databases and SQL.md",
-    "SQL/Databases.md",
-    "Untitled.canvas",
-    "SQL",
-    "Knowledge Tests for REACT.md",
-    "React",
-    "guide.md",
-    "Welcome.md"
+    "Untitled.canvas"
   ]
 }

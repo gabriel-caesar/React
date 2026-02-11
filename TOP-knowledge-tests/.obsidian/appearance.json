@@ -3,5 +3,6 @@
   "enabledCssSnippets": [
     "inline-code-style"
   ],
-  "accentColor": "#ff6f61"
+  "accentColor": "#ff6f61",
+  "baseFontSize": 15
 }
